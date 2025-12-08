@@ -27,13 +27,15 @@ Antes de fazer deploy, atualize a URL da API de produção:
 
 ```typescript
 export const environment = {
-    production: true,
-    apiUrl: 'https://basic-studio-api.onrender.com/api',
+  production: true,
+  apiUrl: "https://basic-studio-api.onrender.com/api",
 };
 ```
+
 **⚠️ IMPORTANTE:** Use a URL exata do seu backend Render (copie do dashboard do Render)
 
 3. Commit e push:
+
 ```bash
 git add src/environments/environment.prod.ts
 git commit -m "Update production API URL"
@@ -65,21 +67,27 @@ git push
 ### 2.3 Configurar o Projeto
 
 **Framework Preset:**
+
 ```
 Angular
 ```
+
 (O Vercel detecta automaticamente, mas confirme)
 
 **Project Name:**
+
 ```
 basic-studio
 ```
+
 (ou o nome que preferir - isso será parte da URL)
 
 **Root Directory:**
+
 ```
 ./
 ```
+
 (deixe como está)
 
 **Build and Output Settings:**
@@ -87,14 +95,17 @@ basic-studio
 Clique em **"Override"** se necessário e configure:
 
 - **Build Command:**
+
   ```
   npm run build
   ```
 
 - **Output Directory:**
+
   ```
   dist/basic-frontend/browser
   ```
+
   **⚠️ IMPORTANTE:** Para Angular 18+, o output está em `/browser`
 
 - **Install Command:**
@@ -137,15 +148,16 @@ Agora que você tem a URL do Vercel, precisa permitir que o frontend acesse a AP
 ```typescript
 app.enableCors({
   origin: [
-    'http://localhost:4200',
-    'https://basic-studio.vercel.app'  // ← Adicione sua URL aqui
+    "http://localhost:4200",
+    "https://basic-studio.vercel.app", // ← Adicione sua URL aqui
   ],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true,
 });
 ```
 
 3. Commit e push:
+
 ```bash
 cd basic_backend
 git add src/main.ts
@@ -169,11 +181,13 @@ git push
 ## 🔄 Deploys Futuros (Automático)
 
 Agora, **toda vez** que você fizer `git push` no GitHub:
+
 - ✅ Vercel faz deploy automático do frontend
 - ✅ Render faz deploy automático do backend
 - ✅ Você não precisa fazer nada!
 
 Para ver os deploys:
+
 - **Frontend:** https://vercel.com/dashboard
 - **Backend:** https://dashboard.render.com
 
@@ -190,6 +204,7 @@ Para ver os deploys:
 5. Aguarde propagação (até 48h, geralmente 1h)
 
 **Não esqueça:**
+
 - Atualize CORS no backend com o novo domínio
 - Teste após propagação DNS
 
@@ -214,8 +229,10 @@ Para ver os deploys:
 **Causa:** SPA routing não configurado
 
 **Solução:**
+
 1. Verifique se existe `vercel.json` na raiz do projeto
 2. Conteúdo deve ser:
+
 ```json
 {
   "rewrites": [
@@ -226,6 +243,7 @@ Para ver os deploys:
   ]
 }
 ```
+
 3. Commit e push se não existir
 
 ### Build falha: "Output directory not found"
@@ -233,6 +251,7 @@ Para ver os deploys:
 **Causa:** Caminho de output incorreto
 
 **Solução:**
+
 1. No Vercel, vá em **Settings** → **General**
 2. Em **Build & Development Settings**
 3. Output Directory: `dist/basic-frontend/browser`
@@ -243,6 +262,7 @@ Para ver os deploys:
 **Causa:** Backend não permite acesso do Vercel
 
 **Solução:**
+
 1. Abra console do browser (F12)
 2. Copie a URL exata do erro CORS
 3. Adicione essa URL no `main.ts` do backend
@@ -253,6 +273,7 @@ Para ver os deploys:
 **Causa:** URL da API incorreta em `environment.prod.ts`
 
 **Solução:**
+
 1. Verifique a URL em `environment.prod.ts`
 2. Deve terminar com `/api` (sem barra final)
 3. Exemplo correto: `https://seu-app.onrender.com/api`
@@ -263,6 +284,7 @@ Para ver os deploys:
 **Causa:** Backend no Render "dormiu" (free tier)
 
 **Solução:**
+
 - Primeira requisição após 15min sempre demora
 - É comportamento normal do plano free
 - Aguarde 30-60 segundos
@@ -293,11 +315,13 @@ O Vercel cria **preview deployments** automáticos para cada Pull Request:
   - Domínio customizado (1 por projeto)
 
 **Limitações:**
+
 - Máximo de 100GB/mês de bandwidth
 - Execução: 100h/mês
 - Suficiente para maioria dos projetos pessoais
 
 **Quando atualizar?**
+
 - Tráfego > 100GB/mês → Vercel Pro $20/mês
 - Precisa de analytics avançado
 - Precisa de mais domínios customizados
