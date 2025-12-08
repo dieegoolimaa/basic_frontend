@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -19,7 +18,6 @@ import { ReviewService, CreateReviewDto, Review } from '../../services/review.se
         NzModalModule,
         NzButtonModule,
         NzInputModule,
-        NzRateModule,
         NzCheckboxModule,
         NzIconModule,
     ],
