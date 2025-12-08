@@ -21,7 +21,7 @@ export class AuthService {
     private loadUserFromStorage() {
         const storedUser = localStorage.getItem('user');
         const token = localStorage.getItem('auth_token');
-        
+
         if (storedUser && token) {
             try {
                 this.currentUser.set(JSON.parse(storedUser));
