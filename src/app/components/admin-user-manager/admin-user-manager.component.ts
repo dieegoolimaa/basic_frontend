@@ -12,6 +12,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { User, InviteCode, Course } from '../../models';
 import { AuthService } from '../../services/auth.service';
 import { CourseService } from '../../services/course.service';
+import { InviteService } from '../../services/invite.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-admin-user-manager',
@@ -35,6 +37,8 @@ export class AdminUserManagerComponent implements OnInit {
     private message = inject(NzMessageService);
     private authService = inject(AuthService);
     private courseService = inject(CourseService);
+    private inviteService = inject(InviteService);
+    private userService = inject(UserService);
 
     users: User[] = [];
     inviteCodes: InviteCode[] = [];
@@ -67,13 +71,14 @@ export class AdminUserManagerComponent implements OnInit {
         });
 
         // Load pending invites
-        this.authService.getPendingInvites().subscribe(invites => {
+        this.inviteService.getPendingInvites().subscribe(invites => {
             this.inviteCodes = invites;
         });
 
-        // Load registered users from localStorage (demo)
-        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-        this.users = storedUsers;
+        // Load users from API
+        this.userService.getAllStudents().subscribe(users => {
+            this.users = users;
+        });
     }
 
     getActiveUsers(): number {
@@ -133,17 +138,19 @@ export class AdminUserManagerComponent implements OnInit {
 
         const courseIds = this.getSelectedCourseIds();
 
-        // Simulate sending email
-        setTimeout(() => {
-            this.authService.createInviteCode(this.newInviteEmail, courseIds).subscribe(invite => {
+        // Create invite via API
+        this.inviteService.createInvite({ email: this.newInviteEmail, courseIds }).subscribe({
+            next: (invite) => {
                 this.generatedCode = invite.code;
                 this.inviteCodes.push(invite);
                 this.isSending = false;
-
-                // Simulate email sent
-                console.log(`Email enviado para ${this.newInviteEmail} com código ${invite.code}`);
-            });
-        }, 1500);
+                this.message.success(`Convite criado com sucesso!`);
+            },
+            error: (err) => {
+                this.isSending = false;
+                this.message.error(err.message || 'Erro ao criar convite');
+            }
+        });
     }
 
     resendInvite(invite: InviteCode) {
@@ -156,9 +163,9 @@ export class AdminUserManagerComponent implements OnInit {
         });
     }
 
-    deleteInvite(id: string) {
-        this.authService.deleteInviteCode(id).subscribe(() => {
-            this.inviteCodes = this.inviteCodes.filter(i => i._id !== id);
+    deleteInvite(code: string) {
+        this.inviteService.deleteInvite(code).subscribe(() => {
+            this.inviteCodes = this.inviteCodes.filter(i => i.code !== code);
             this.message.success('Convite cancelado');
         });
     }

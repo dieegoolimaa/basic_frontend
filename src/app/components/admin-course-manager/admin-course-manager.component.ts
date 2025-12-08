@@ -78,9 +78,15 @@ export class AdminCourseManagerComponent implements OnInit {
 
   loadCourses() {
     this.isLoading = true;
-    this.courseService.getAllCourses().subscribe(data => {
-      this.courses = data;
-      this.isLoading = false;
+    this.courseService.getAllCoursesAdmin().subscribe({
+      next: (data) => {
+        this.courses = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.message.error('Erro ao carregar cursos');
+        this.isLoading = false;
+      }
     });
   }
 
@@ -106,23 +112,46 @@ export class AdminCourseManagerComponent implements OnInit {
   }
 
   deleteCourse(id: string) {
-    if (confirm('Tem certeza?')) {
-      this.courses = this.courses.filter(c => c._id !== id);
-      this.message.success('Curso removido');
+    if (confirm('Tem certeza que deseja deletar este curso?')) {
+      this.courseService.deleteCourse(id).subscribe({
+        next: () => {
+          this.courses = this.courses.filter(c => c._id !== id);
+          this.message.success('Curso removido com sucesso');
+        },
+        error: (err) => {
+          this.message.error('Erro ao remover curso');
+        }
+      });
     }
   }
 
   saveCourse() {
-    // Mock Save
     if (this.currentCourse._id) {
-      const idx = this.courses.findIndex(c => c._id === this.currentCourse._id);
-      if (idx !== -1) this.courses[idx] = this.currentCourse as Course;
+      // Update existing course
+      this.courseService.updateCourse(this.currentCourse._id, this.currentCourse).subscribe({
+        next: (updated) => {
+          const idx = this.courses.findIndex(c => c._id === this.currentCourse._id);
+          if (idx !== -1) this.courses[idx] = updated;
+          this.isEditingMode = false;
+          this.message.success('Curso atualizado com sucesso!');
+        },
+        error: (err) => {
+          this.message.error('Erro ao atualizar curso');
+        }
+      });
     } else {
-      this.currentCourse._id = Date.now().toString();
-      this.courses.push(this.currentCourse as Course);
+      // Create new course
+      this.courseService.createCourse(this.currentCourse).subscribe({
+        next: (newCourse) => {
+          this.courses.push(newCourse);
+          this.isEditingMode = false;
+          this.message.success('Curso criado com sucesso!');
+        },
+        error: (err) => {
+          this.message.error('Erro ao criar curso');
+        }
+      });
     }
-    this.isEditingMode = false;
-    this.message.success('Alterações salvas com sucesso!');
   }
 
   cancelEdit() {
