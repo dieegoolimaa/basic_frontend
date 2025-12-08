@@ -1,0 +1,41 @@
+<nz-layout class="layout">
+    <header class="site-header">
+        <div class="header-container">
+            <a routerLink="/" class="logo">basic.</a>
+
+            <nav class="main-nav">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    class="nav-link">Home</a>
+                <a routerLink="/formacoes" routerLinkActive="active" class="nav-link">Formações</a>
+                <!-- Dashboard for students -->
+                <a *ngIf="isLoggedIn() && !isAdmin()" routerLink="/meus-cursos" routerLinkActive="active"
+                    class="nav-link">Meus Cursos</a>
+                <!-- Admin link only for admins -->
+                <a *ngIf="isAdmin()" routerLink="/admin/home" routerLinkActive="active"
+                    class="nav-link admin-link">Admin</a>
+            </nav>
+
+            <div class="auth-area">
+                <ng-container *ngIf="!isLoggedIn(); else loggedInTemplate">
+                    <a routerLink="/login" class="btn-login">Entrar</a>
+                    <a routerLink="/registro" class="btn-register">Criar Conta</a>
+                </ng-container>
+                <ng-template #loggedInTemplate>
+                    <span class="user-greeting">Olá, {{ userName() }}</span>
+                    <button (click)="logout()" class="btn-logout">Sair</button>
+                </ng-template>
+            </div>
+        </div>
+    </header>
+
+    <nz-content>
+        <router-outlet></router-outlet>
+    </nz-content>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <span class="footer-logo">basic.</span>
+            <span class="footer-copy">© 2025 Todos os direitos reservados</span>
+        </div>
+    </footer>
+</nz-layout>

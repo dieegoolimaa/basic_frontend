@@ -1,0 +1,112 @@
+<div class="player-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Conteúdo do Curso</h3>
+            <span class="lesson-count">{{ getTotalLessons() }} aulas</span>
+        </div>
+
+        <div class="modules-list">
+            @for (module of course()?.modules; track module.title; let modIdx = $index) {
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-number">{{ modIdx + 1 }}</span>
+                    {{ module.title }}
+                </div>
+
+                @for (lesson of module.lessons; track lesson.title) {
+                <div class="lesson-item" [class.active]="currentLesson() === lesson"
+                    [class.completed]="lesson.completed" (click)="selectLesson(lesson)">
+                    <div class="lesson-icon">
+                        <span nz-icon [nzType]="getLessonIcon(lesson)"></span>
+                    </div>
+                    <div class="lesson-details">
+                        <span class="lesson-name">{{ lesson.title }}</span>
+                        <span class="lesson-type">{{ getTypeLabel(lesson.contentType) }}</span>
+                    </div>
+                    <span class="lesson-time">{{ lesson.duration }}</span>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Video/Header Area -->
+        <div class="content-header" [class.has-video]="currentVideoUrl()">
+            @if (currentVideoUrl()) {
+            <div class="video-wrapper">
+                <iframe [src]="currentVideoUrl()" allowfullscreen></iframe>
+            </div>
+            } @else {
+            <div class="text-header">
+                <span class="lesson-badge">{{ getTypeLabel(currentLesson()?.contentType) }}</span>
+                <h1>{{ currentLesson()?.title }}</h1>
+            </div>
+            }
+        </div>
+
+        <!-- Content Body -->
+        <div class="content-body">
+            <!-- For text or mixed content -->
+            @if (currentLesson()?.content) {
+            <div class="text-content" [innerHTML]="currentLesson()?.content"></div>
+            }
+
+            <!-- Steps Checklist -->
+            @if (currentLesson()?.steps?.length) {
+            <div class="steps-section">
+                <h3 class="section-title">
+                    <span nz-icon nzType="check-circle"></span>
+                    Passo a Passo
+                </h3>
+                <div class="steps-list">
+                    @for(step of currentLesson()?.steps; track step.id; let i = $index) {
+                    <div class="step-item" [class.completed]="step.isCompleted">
+                        <label nz-checkbox [ngModel]="step.isCompleted" (ngModelChange)="toggleStep(step)">
+                            <span class="step-number">{{ i + 1 }}</span>
+                            <span class="step-text">{{ step.text }}</span>
+                        </label>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+
+            <!-- Quiz Section -->
+            @if (currentLesson()?.contentType === 'quiz' && currentLesson()?.quiz) {
+            <div class="quiz-section">
+                <h3 class="section-title">
+                    <span nz-icon nzType="question-circle"></span>
+                    Questionário
+                </h3>
+                @for(q of currentLesson()?.quiz?.questions; track q.id; let qIdx = $index) {
+                <div class="quiz-question">
+                    <p class="question-text">{{ qIdx + 1 }}. {{ q.question }}</p>
+                    <div class="options-list">
+                        @for(opt of q.options; track opt; let oIdx = $index) {
+                        <label class="option-item">
+                            <input type="radio" [name]="'quiz-' + q.id" [value]="oIdx" />
+                            <span class="option-text">{{ opt }}</span>
+                        </label>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+            }
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <button nz-button nzType="default" (click)="previousLesson()" [disabled]="!hasPrevious()">
+                    <span nz-icon nzType="arrow-left"></span> Anterior
+                </button>
+                <button nz-button nzType="primary" (click)="markAsCompleted()">
+                    <span nz-icon nzType="check"></span> Concluir e Avançar
+                </button>
+            </div>
+        </div>
+    </main>
+</div>

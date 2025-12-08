@@ -1,0 +1,576 @@
+/* VARIABLES - FEMININE THEME */
+$bg-color: #fdfbf9;
+$primary: #2d2a2a;
+$accent: #c9a5a5; /* Soft dusty rose */
+$accent-light: #f3e8e8;
+$text-light: #9a9a9a;
+$border: #ebe8e5;
+$radius: 10px;
+$shadow: 0 2px 12px rgba(0,0,0,0.03);
+$shadow-hover: 0 6px 20px rgba(0,0,0,0.06);
+
+/* ANIMATIONS */
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(8px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+.page-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* PAGE HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    
+    .page-title { 
+        font-size: 1.8rem; 
+        font-weight: 300; 
+        color: $primary; 
+        margin: 0 0 0.3rem 0; 
+        letter-spacing: -0.5px;
+    }
+    .page-subtitle { color: $text-light; margin: 0; font-size: 0.9rem; }
+    
+    .btn-create { 
+        background: $primary; 
+        border-color: $primary; 
+        border-radius: 25px;
+        padding: 0 24px;
+        height: 40px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: lighten($primary, 8%);
+            transform: translateY(-2px);
+            box-shadow: $shadow-hover;
+        }
+    }
+}
+
+/* TABLE CARD */
+.table-card {
+    background: #fff;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    overflow: hidden;
+    border: 1px solid $border;
+
+    ::ng-deep {
+        .ant-table-thead > tr > th {
+            background: #fff;
+            font-weight: 500;
+            color: $text-light;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 1.2px;
+            padding: 14px 16px;
+            border-bottom: 1px solid $border;
+        }
+        .ant-table-tbody > tr > td { 
+            padding: 14px 16px; 
+            vertical-align: middle; 
+            border-bottom: 1px solid rgba(0,0,0,0.02);
+        }
+        .ant-table-tbody > tr { transition: background 0.2s; }
+        .ant-table-tbody > tr:hover > td { background: $accent-light; }
+    }
+
+    .thumb-wrapper {
+        width: 70px; height: 45px;
+        border-radius: 6px; overflow: hidden; background: #f5f5f5;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        img { width: 100%; height: 100%; object-fit: cover; }
+    }
+
+    .priority-circle {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 28px; height: 28px;
+        background: $accent-light; 
+        border-radius: 50%;
+        font-weight: 600; font-size: 0.8rem; color: $accent;
+    }
+
+    .course-info {
+        .course-title { display: block; font-weight: 500; color: $primary; font-size: 0.95rem; }
+        .course-desc { display: block; color: $text-light; font-size: 0.8rem; max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    }
+
+    .custom-tag { 
+        color: darken($accent, 15%) !important; 
+        font-size: 0.72rem; 
+        border-radius: 12px;
+        background: $accent-light !important;
+        border: none !important;
+    }
+
+    .status-badge {
+        display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: $text-light;
+        .dot { width: 6px; height: 6px; background: #7bc47f; border-radius: 50%; }
+    }
+    
+    /* Action buttons subtle */
+    button[nz-button][nzType="text"] {
+        opacity: 0.5;
+        transition: opacity 0.2s, color 0.2s;
+        &:hover { opacity: 1; }
+    }
+}
+
+/* EDITOR VIEW */
+.editor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    
+    .editor-title { 
+        flex: 1; 
+        font-size: 1.15rem; 
+        font-weight: 400; 
+        color: $primary; 
+        margin: 0; 
+        text-align: center; 
+        letter-spacing: -0.3px;
+    }
+    
+    button[nz-button][nzType="primary"] {
+        border-radius: 20px;
+        padding: 0 20px;
+        background: $primary;
+        border-color: $primary;
+    }
+}
+
+.editor-layout {
+    display: flex;
+    gap: 1.5rem;
+    min-height: calc(100vh - 180px);
+}
+
+.editor-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    ::ng-deep {
+        .ant-tabs-nav { 
+            padding: 0 16px; 
+            margin-bottom: 0;
+        }
+        .ant-tabs-tab {
+            color: $text-light;
+            font-size: 0.85rem;
+            &.ant-tabs-tab-active .ant-tabs-tab-btn { color: $primary; }
+        }
+        .ant-tabs-ink-bar { background: $accent; }
+    }
+
+    .form-section, .structure-section {
+        padding: 1.2rem;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .form-group {
+        margin-bottom: 1.4rem;
+        label { 
+            display: block; 
+            font-size: 0.7rem; 
+            font-weight: 500; 
+            color: $text-light; 
+            margin-bottom: 0.5rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.8px;
+        }
+        
+        input[nz-input], textarea[nz-input] {
+            border-radius: 6px;
+            border-color: $border;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            
+            &:focus, &:hover {
+                border-color: $accent;
+                box-shadow: 0 0 0 2px rgba(201, 165, 165, 0.15);
+            }
+        }
+    }
+
+    .thumb-upload {
+        border: 2px dashed $border; 
+        border-radius: 8px;
+        height: 100px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        overflow: hidden; 
+        cursor: pointer; 
+        background: $bg-color;
+        transition: border-color 0.3s, background 0.3s;
+        
+        &:hover { 
+            border-color: $accent; 
+            background: $accent-light;
+        }
+        
+        .thumb-preview { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-placeholder { color: $accent; font-size: 1.5rem; }
+    }
+
+    /* Structure tab */
+    .structure-section {
+        button[nz-button][nzType="dashed"] {
+            border-color: $border;
+            color: $text-light;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            
+            &:hover {
+                border-color: $accent;
+                color: $accent;
+                background: $accent-light;
+            }
+        }
+    }
+
+    .module-collapse {
+        ::ng-deep {
+            .ant-collapse-header { 
+                padding: 12px 0 !important; 
+                font-weight: 500; 
+                font-size: 0.9rem;
+                color: $primary;
+            }
+            .ant-collapse-content-box { padding: 0 !important; }
+            .ant-collapse-item { border-bottom: 1px solid $border; }
+        }
+    }
+
+    .module-head {
+        display: flex; 
+        gap: 8px; 
+        align-items: center; 
+        padding: 0.6rem 0; 
+        margin-bottom: 0.5rem; 
+        border-bottom: 1px solid $border;
+        
+        input { flex: 1; font-size: 0.85rem; }
+    }
+
+    .lesson-list {
+        .lesson-item {
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            padding: 10px 12px; 
+            border-radius: 6px; 
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            
+            &:hover { background: $bg-color; }
+            &.selected { 
+                background: $accent-light; 
+                font-weight: 500;
+                
+                .lesson-icon { color: $accent; }
+            }
+            
+            .lesson-icon { color: #ccc; font-size: 0.9rem; }
+            .lesson-name { font-size: 0.85rem; color: $primary; }
+        }
+        
+        .btn-add-lesson { 
+            color: $accent; 
+            margin-top: 0.5rem; 
+            font-size: 0.8rem;
+            padding-left: 12px;
+        }
+    }
+}
+
+.editor-main {
+    flex: 1;
+    background: #fff;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+    padding: 2rem;
+    overflow-y: auto;
+
+    .empty-editor {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        height: 100%; 
+        color: #ddd; 
+        text-align: center;
+        
+        .empty-icon { font-size: 3rem; margin-bottom: 1rem; color: $accent-light; }
+        p { color: $text-light; font-size: 0.9rem; }
+    }
+
+    .lesson-editor {
+        .lesson-title-input {
+            font-size: 1.5rem; 
+            font-weight: 300; 
+            color: $primary;
+            border: none; 
+            border-bottom: 1px solid transparent;
+            width: 100%; 
+            padding: 0.5rem 0; 
+            margin-bottom: 1.2rem; 
+            background: transparent;
+            transition: border-color 0.2s;
+            letter-spacing: -0.5px;
+            
+            &:focus { 
+                outline: none; 
+                border-bottom-color: $accent; 
+            }
+        }
+
+        .lesson-meta { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            flex-wrap: wrap; 
+            margin-bottom: 1rem;
+            
+            ::ng-deep nz-select {
+                .ant-select-selector {
+                    border-radius: 6px;
+                    border-color: $border;
+                }
+            }
+            
+            label[nz-checkbox] {
+                font-size: 0.85rem;
+                color: $text-light;
+            }
+        }
+
+        .content-section {
+            margin-top: 1.8rem;
+            animation: fadeIn 0.3s ease;
+            
+            label { 
+                display: block; 
+                font-size: 0.72rem; 
+                font-weight: 500; 
+                color: $text-light; 
+                margin-bottom: 0.6rem; 
+                text-transform: uppercase; 
+                letter-spacing: 0.8px;
+            }
+            
+            .field-hint {
+                display: block;
+                font-size: 0.75rem;
+                color: #bbb;
+                margin-top: 0.4rem;
+            }
+            
+            .text-editor {
+                border-radius: 8px;
+                border-color: $border;
+                font-size: 0.95rem;
+                line-height: 1.7;
+                resize: vertical;
+                
+                &:focus {
+                    border-color: $accent;
+                    box-shadow: 0 0 0 3px rgba(201, 165, 165, 0.1);
+                }
+            }
+        }
+
+        /* Quiz styling */
+        .quiz-section {
+            .quiz-card {
+                background: $bg-color; 
+                padding: 1.2rem; 
+                border-radius: 8px; 
+                margin-bottom: 1rem; 
+                border: 1px solid $border;
+                
+                .quiz-header { 
+                    display: flex; 
+                    justify-content: space-between; 
+                    margin-bottom: 0.8rem; 
+                    align-items: center;
+                    
+                    .q-number { font-weight: 500; color: $accent; font-size: 0.8rem; }
+                }
+                .q-input { 
+                    margin-bottom: 0.8rem; 
+                    font-weight: 500;
+                    border-radius: 6px;
+                }
+                .options-label {
+                    font-size: 0.7rem;
+                    color: $text-light;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 0.5rem;
+                }
+                .opt-row { 
+                    display: flex; 
+                    align-items: center; 
+                    gap: 10px; 
+                    margin-bottom: 0.5rem;
+                    
+                    input[nz-input] { flex: 1; }
+                }
+                
+                /* Custom radio button */
+                .radio-option {
+                    position: relative;
+                    cursor: pointer;
+                    
+                    input[type="radio"] {
+                        position: absolute;
+                        opacity: 0;
+                        
+                        &:checked + .radio-custom {
+                            border-color: $accent;
+                            background: $accent;
+                            
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                top: 50%; left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 6px; height: 6px;
+                                background: #fff;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                    
+                    .radio-custom {
+                        display: inline-block;
+                        width: 18px; height: 18px;
+                        border: 2px solid $border;
+                        border-radius: 50%;
+                        position: relative;
+                        transition: all 0.2s;
+                        
+                        &:hover { border-color: $accent; }
+                    }
+                }
+            }
+        }
+
+        /* Steps styling */
+        .step-row {
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 0.6rem;
+            
+            .step-num { 
+                width: 24px; height: 24px; 
+                background: $accent; 
+                color: #fff; 
+                border-radius: 50%; 
+                font-size: 0.7rem; 
+                font-weight: 600;
+                display: flex; 
+                align-items: center; 
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            
+            input { flex: 1; }
+            
+            button { opacity: 0; transition: opacity 0.2s; }
+            &:hover button { opacity: 1; }
+        }
+        
+        .btn-add-item {
+            margin-top: 0.8rem;
+            border-radius: 20px;
+            color: $accent;
+            border-color: $accent;
+            font-size: 0.8rem;
+            
+            &:hover {
+                background: $accent-light;
+            }
+        }
+    }
+}
+
+/* Global button refinements */
+::ng-deep {
+    .ant-btn-primary {
+        background: $primary;
+        border-color: $primary;
+        border-radius: 6px;
+        font-weight: 500;
+        box-shadow: none;
+        
+        &:hover, &:focus {
+            background: lighten($primary, 8%);
+            border-color: lighten($primary, 8%);
+        }
+    }
+    
+    .ant-btn-dashed {
+        border-radius: 6px;
+    }
+    
+    .ant-divider {
+        border-color: $border;
+    }
+}
+
+/* RESPONSIVE - Mobile First */
+@media (max-width: 900px) {
+    .editor-layout {
+        flex-direction: column;
+    }
+    .editor-sidebar {
+        width: 100%;
+        max-height: 320px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        .btn-create { width: 100%; }
+    }
+    .table-card {
+        ::ng-deep .ant-table-thead > tr > th { font-size: 0.6rem; padding: 10px 8px; }
+        ::ng-deep .ant-table-tbody > tr > td { padding: 10px 8px; }
+        .thumb-wrapper { width: 50px; height: 35px; }
+        .course-info .course-desc { max-width: 120px; }
+    }
+    .editor-header { flex-wrap: wrap; }
+    .editor-main { padding: 1.2rem; }
+    .editor-main .lesson-editor .lesson-title-input { font-size: 1.2rem; }
+}

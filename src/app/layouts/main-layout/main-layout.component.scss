@@ -1,0 +1,221 @@
+/* VARIABLES - FEMININE THEME */
+$bg-color: #fdfbf9;
+$primary: #2d2a2a;
+$accent: #c9a5a5;
+$accent-light: #f3e8e8;
+$text-light: #9a9a9a;
+$border: #ebe8e5;
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid $border;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $primary;
+        text-decoration: none;
+        letter-spacing: -1px;
+        transition: color 0.2s;
+        
+        &:hover { color: $accent; }
+    }
+    
+    .main-nav {
+        display: flex;
+        gap: 0.5rem;
+        
+        .nav-link {
+            padding: 0.6rem 1.2rem;
+            color: $text-light;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            transition: all 0.25s ease;
+            position: relative;
+            
+            &:hover {
+                color: $primary;
+                background: $bg-color;
+            }
+            
+            &.active {
+                color: $primary;
+                background: $accent-light;
+                
+                /* Subtle underline accent instead of harsh line */
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 6px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 20px;
+                    height: 2px;
+                    background: $accent;
+                    border-radius: 1px;
+                }
+            }
+            
+            &.admin-link {
+                color: lighten($text-light, 10%);
+                font-size: 0.8rem;
+            }
+        }
+    }
+    
+    .auth-area {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        
+        .btn-login {
+            padding: 0.5rem 1.2rem;
+            color: $primary;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border: 1px solid $border;
+            border-radius: 20px;
+            transition: all 0.2s;
+            
+            &:hover {
+                border-color: $accent;
+                background: $accent-light;
+            }
+        }
+        
+        .btn-register {
+            padding: 0.5rem 1.2rem;
+            background: $primary;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            transition: all 0.2s;
+            
+            &:hover {
+                background: lighten($primary, 8%);
+                transform: translateY(-1px);
+            }
+        }
+        
+        .user-greeting {
+            font-size: 0.85rem;
+            color: $text-light;
+        }
+        
+        .btn-logout {
+            padding: 0.4rem 1rem;
+            background: transparent;
+            color: $text-light;
+            border: 1px solid $border;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            
+            &:hover {
+                border-color: #e88;
+                color: #c55;
+            }
+        }
+    }
+}
+
+/* CONTENT */
+::ng-deep nz-content {
+    flex: 1;
+    background: $bg-color;
+}
+
+/* FOOTER */
+.site-footer {
+    background: #fff;
+    border-top: 1px solid $border;
+    padding: 1.5rem;
+    
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .footer-logo {
+            font-weight: 600;
+            color: $primary;
+            font-size: 1rem;
+        }
+        
+        .footer-copy {
+            font-size: 0.8rem;
+            color: $text-light;
+        }
+    }
+}
+
+/* RESPONSIVE - Mobile First */
+@media (max-width: 768px) {
+    .site-header {
+        .header-container {
+            padding: 0 1rem;
+            height: auto;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+        }
+        
+        .logo { order: 1; }
+        .auth-area { order: 2; margin-left: auto; }
+        
+        .main-nav {
+            order: 3;
+            width: 100%;
+            justify-content: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid $border;
+            margin-top: 0.3rem;
+            gap: 0.3rem;
+            
+            .nav-link { 
+                padding: 0.5rem 0.8rem; 
+                font-size: 0.8rem; 
+            }
+        }
+        
+        .auth-area {
+            gap: 0.5rem;
+            .btn-login, .btn-register { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+        }
+    }
+    
+    .site-footer .footer-content {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}

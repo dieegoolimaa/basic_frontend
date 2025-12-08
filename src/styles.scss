@@ -1,0 +1,71 @@
+/* Import Ng-Zorro Ant Design Styles */
+@import 'ng-zorro-antd/ng-zorro-antd.min.css';
+
+/* Global Variables */
+:root {
+  --primary-color: #232222;
+  --background-color: #f5f4f1;
+  --text-color: #232222;
+  
+  /* Ant Design Variable Overrides where supported by CSS vars in v18+ or manually */
+  --ant-primary-color: #232222;
+  --ant-primary-color-hover: #3a3a3a;
+  --ant-primary-color-active: #000000;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override Ant Design Primary Color Classes if CSS vars aren't fully covering it */
+.ant-btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  
+  &:hover, &:focus {
+    background-color: #3a3a3a;
+    border-color: #3a3a3a;
+  }
+}
+
+.ant-menu-item-selected {
+  color: var(--primary-color) !important;
+}
+
+.ant-menu-item::after {
+  border-bottom-color: var(--primary-color) !important;
+}
+
+/* Aesthetic & Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcdcdc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}

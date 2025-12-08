@@ -1,0 +1,194 @@
+::ng-deep .review-modal {
+  .ant-modal {
+    max-width: 480px;
+  }
+  
+  .ant-modal-content {
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+}
+
+.review-content {
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.review-header {
+  margin-bottom: 2rem;
+
+  .celebration-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: bounce 1s ease-in-out;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #d4a5a5 0%, #8b6b8f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    color: #666;
+    font-size: 0.95rem;
+
+    strong {
+      color: #8b6b8f;
+    }
+  }
+}
+
+.rating-section {
+  margin-bottom: 1.5rem;
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 0.25rem;
+  }
+
+  .rating-subtitle {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1rem;
+  }
+
+  .stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      transition: all 0.2s ease;
+      
+      span {
+        font-size: 2.5rem;
+        color: #ddd;
+        transition: all 0.2s ease;
+      }
+
+      &.active span,
+      &:hover span {
+        color: #ffc107;
+        transform: scale(1.1);
+      }
+
+      &:active span {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .rating-text {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #8b6b8f;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.comment-section {
+  margin-bottom: 1rem;
+  text-align: left;
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  textarea {
+    border-radius: 12px;
+    border-color: #e8e0e6;
+    resize: none;
+
+    &:focus {
+      border-color: #d4a5a5;
+      box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
+    }
+  }
+}
+
+.anonymous-section {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: #f8f5f7;
+  border-radius: 12px;
+
+  label {
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .anonymous-hint {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.25rem 0 0 1.75rem;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  button {
+    min-width: 140px;
+    border-radius: 25px;
+    height: 44px;
+    font-weight: 500;
+
+    &[nzType="primary"] {
+      background: linear-gradient(135deg, #d4a5a5 0%, #8b6b8f 100%);
+      border: none;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #c99898 0%, #7a5a7e 100%);
+      }
+
+      &:disabled {
+        background: #ddd;
+        color: #999;
+      }
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-7px);
+  }
+}

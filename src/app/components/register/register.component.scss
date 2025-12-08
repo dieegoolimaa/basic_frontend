@@ -1,0 +1,234 @@
+/* VARIABLES */
+$bg-color: #fdfbf9;
+$primary: #2d2a2a;
+$accent: #c9a5a5;
+$accent-light: #f3e8e8;
+$text-light: #9a9a9a;
+$border: #ebe8e5;
+$radius: 10px;
+
+.register-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $bg-color;
+    padding: 20px;
+    
+    .register-card {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border-radius: $radius;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+        border: 1px solid $border;
+        
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            
+            .logo { 
+                font-size: 2rem; 
+                font-weight: 700; 
+                color: $primary; 
+                letter-spacing: -1px; 
+                margin-bottom: 0.5rem; 
+            }
+            .subtitle { color: $text-light; font-size: 0.9rem; margin: 0; }
+        }
+        
+        .step-content {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: $primary;
+            margin-bottom: 0.5rem;
+            
+            .step-number {
+                width: 24px;
+                height: 24px;
+                background: $accent;
+                color: #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+        }
+        
+        .step-desc {
+            color: $text-light;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .code-input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+            
+            .code-input {
+                width: 100%;
+                padding: 14px 50px 14px 16px;
+                font-size: 1.2rem;
+                font-weight: 600;
+                text-align: center;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                border: 2px solid $border;
+                border-radius: 8px;
+                transition: border-color 0.2s;
+                
+                &:focus {
+                    outline: none;
+                    border-color: $accent;
+                }
+                
+                &.error { border-color: #e88; }
+            }
+            
+            .loading-icon, .valid-icon {
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.2rem;
+            }
+            
+            .loading-icon { color: $accent; }
+            .valid-icon { color: #6b9; }
+        }
+        
+        .error-msg {
+            color: #c66;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .btn-next {
+            height: 48px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            background: $primary;
+            color: #fff;
+            border: none;
+            transition: all 0.2s;
+            
+            &:hover:not(:disabled) {
+                background: lighten($primary, 8%);
+            }
+            
+            &:disabled {
+                background: #ddd;
+                color: #999;
+            }
+        }
+        
+        .help-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: $text-light;
+            margin-top: 1.5rem;
+            
+            a { color: $accent; text-decoration: none; font-weight: 500; }
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 1.2rem;
+            
+            label {
+                display: block;
+                font-size: 0.75rem;
+                font-weight: 500;
+                color: $text-light;
+                margin-bottom: 0.4rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            input {
+                border-radius: 6px;
+                border-color: $border;
+                padding: 10px 12px;
+                
+                &:focus {
+                    border-color: $accent;
+                    box-shadow: 0 0 0 2px rgba(201, 165, 165, 0.15);
+                }
+            }
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            
+            @media (max-width: 480px) {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .separator {
+            height: 1px;
+            background: $border;
+            margin: 1.5rem 0;
+        }
+        
+        .btn-submit {
+            height: 48px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            background: $primary;
+            border-color: $primary;
+            margin-top: 0.5rem;
+            
+            &:hover {
+                background: lighten($primary, 8%);
+                transform: translateY(-1px);
+            }
+        }
+        
+        .btn-back {
+            width: 100%;
+            margin-top: 1rem;
+            color: $text-light;
+            font-size: 0.85rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            font-size: 0.85rem;
+            color: $text-light;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid $border;
+            
+            a { color: $accent; text-decoration: none; font-weight: 600; }
+        }
+    }
+    
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(15px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .register-wrapper .register-card {
+        padding: 30px 20px;
+    }
+}

@@ -1,0 +1,91 @@
+@if (course(); as c) {
+<div class="detail-container fade-in">
+    <!-- Header Section -->
+    <div class="course-header">
+        <div class="header-content">
+            <span class="category-tag">FORMAÇÃO PROFISSIONAL</span>
+            <h1 class="course-title">{{ c.title }}</h1>
+            <div class="course-meta">
+                <span><span nz-icon nzType="clock-circle"></span> {{ getTotalDuration(c) }}</span>
+                <span class="divider">•</span>
+                <span><span nz-icon nzType="safety-certificate"></span> Certificado</span>
+                <span class="divider">•</span>
+                <span>{{ getTotalLessons(c) }} aulas</span>
+            </div>
+
+            <div class="cta-area">
+                @if (isLoggedIn()) {
+                <button nz-button nzType="primary" nzSize="large" class="start-btn" (click)="startCourse(c._id)">
+                    Acessar Conteúdo
+                    <span nz-icon nzType="arrow-right"></span>
+                </button>
+                } @else {
+                <button nz-button nzType="primary" nzSize="large" class="start-btn" routerLink="/login"
+                    [queryParams]="{returnUrl: '/player/' + c._id}">
+                    Entrar para Acessar
+                    <span nz-icon nzType="arrow-right"></span>
+                </button>
+                <p class="auth-hint">Faça login ou <a routerLink="/registro">crie sua conta</a></p>
+                }
+            </div>
+        </div>
+
+        <div class="header-image-wrapper">
+            <div class="image-frame">
+                <img [src]="c.thumbnailUrl" class="feature-image" [alt]="c.title"
+                    onerror="this.src='https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format'" />
+            </div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="main-info">
+            <h2 class="section-title">Sobre a Formação</h2>
+            <p class="description-text">{{ c.description }}</p>
+
+            <p class="description-text secondary">
+                Esta formação foi desenhada meticulosamente para profissionais que buscam excelência.
+                Você aprenderá desde a preparação perfeita até o acabamento de alto nível,
+                utilizando técnicas que são tendência nos maiores centros de beleza do mundo.
+            </p>
+
+            @if (c.modules.length > 0) {
+            <h3 class="section-subtitle">O que você vai aprender:</h3>
+            <div class="modules-preview">
+                @for(mod of c.modules; track mod.title; let i = $index) {
+                <div class="module-item">
+                    <div class="module-number">{{ i + 1 }}</div>
+                    <div class="module-info">
+                        <span class="module-name">{{ mod.title }}</span>
+                        <span class="module-lessons">{{ mod.lessons.length }} aulas</span>
+                    </div>
+                    <span nz-icon nzType="arrow-right" class="module-arrow"></span>
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+        <div class="sidebar-info">
+            <div class="info-card">
+                <h4>Incluso na formação:</h4>
+                <ul class="benefits-list">
+                    <li><span nz-icon nzType="check-circle" class="benefit-icon"></span> Acesso vitalício ao conteúdo
+                    </li>
+                    <li><span nz-icon nzType="check-circle" class="benefit-icon"></span> Certificado de conclusão</li>
+                    <li><span nz-icon nzType="check-circle" class="benefit-icon"></span> Material complementar em PDF
+                    </li>
+                    <li><span nz-icon nzType="check-circle" class="benefit-icon"></span> Suporte via comunidade</li>
+                    <li><span nz-icon nzType="check-circle" class="benefit-icon"></span> Atualizações gratuitas</li>
+                </ul>
+
+                <button nz-button nzBlock nzSize="large" class="sidebar-cta"
+                    [routerLink]="isLoggedIn() ? ['/player', c._id] : ['/login']"
+                    [queryParams]="isLoggedIn() ? {} : {returnUrl: '/player/' + c._id}">
+                    {{ isLoggedIn() ? 'Começar Agora' : 'Fazer Login' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+}
