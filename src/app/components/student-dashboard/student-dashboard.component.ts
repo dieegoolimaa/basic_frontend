@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuthService } from '../../services/auth.service';
-import { CourseService } from '../../services/course.service';
+import { UserService } from '../../services/user.service';
 import { Course } from '../../models';
 
 @Component({
@@ -16,7 +16,7 @@ import { Course } from '../../models';
 })
 export class StudentDashboardComponent implements OnInit {
     private authService = inject(AuthService);
-    private courseService = inject(CourseService);
+    private userService = inject(UserService);
 
     userName = '';
     enrolledCourses: Course[] = [];
@@ -25,10 +25,14 @@ export class StudentDashboardComponent implements OnInit {
         const user = this.authService.currentUser();
         this.userName = user?.name?.split(' ')[0] || 'Aluna';
 
-        // Load only enrolled courses
-        const enrolledIds = user?.enrolledCourses || [];
-        this.courseService.getAllCourses().subscribe(courses => {
-            this.enrolledCourses = courses.filter(c => enrolledIds.includes(c._id));
+        // Load enrolled courses from API
+        this.userService.getMyCourses().subscribe({
+            next: (courses) => {
+                this.enrolledCourses = courses;
+            },
+            error: (err) => {
+                console.error('Erro ao carregar cursos:', err);
+            }
         });
     }
 
