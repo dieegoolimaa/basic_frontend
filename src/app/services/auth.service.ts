@@ -35,16 +35,12 @@ export class AuthService {
      * LOGIN - Integrado com backend
      */
     login(credentials: { email: string, password: string }): Observable<{ token: string, user: User }> {
-        return this.http.post<{ access_token: string, user: User }>(
+        return this.http.post<{ token: string, user: User }>(
             `${this.apiUrl}/auth/login`,
             credentials
         ).pipe(
             tap(response => {
-                const sessionData = {
-                    token: response.access_token,
-                    user: response.user
-                };
-                this.saveSession(sessionData);
+                this.saveSession(response);
             }),
             catchError(error => {
                 const message = error.error?.message || 'Credenciais inválidas';
