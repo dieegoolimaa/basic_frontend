@@ -190,32 +190,40 @@ export class AdminUserManagerComponent implements OnInit {
                 .filter(([_, selected]) => selected)
                 .map(([id, _]) => id);
 
-            this.editingUser.enrolledCourses = newCourses;
-
-            // Update in localStorage
-            const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-            const idx = storedUsers.findIndex((u: User) => u._id === this.editingUser?._id);
-            if (idx >= 0) {
-                storedUsers[idx] = this.editingUser;
-                localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
-            }
-
-            this.message.success('Cursos atualizados com sucesso');
-            this.isEditModalVisible = false;
+            // Update via API
+            this.userService.updateUser(this.editingUser._id, { enrolledCourses: newCourses }).subscribe({
+                next: (updated) => {
+                    // Update local array
+                    const idx = this.users.findIndex(u => u._id === this.editingUser?._id);
+                    if (idx >= 0) {
+                        this.users[idx] = updated;
+                    }
+                    this.message.success('Cursos atualizados com sucesso');
+                    this.isEditModalVisible = false;
+                },
+                error: (err) => {
+                    this.message.error('Erro ao atualizar cursos');
+                }
+            });
         }
     }
 
     toggleUserStatus(user: User) {
-        user.isActive = !user.isActive;
+        const newStatus = !user.isActive;
 
-        // Update in localStorage
-        const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-        const idx = storedUsers.findIndex((u: User) => u._id === user._id);
-        if (idx >= 0) {
-            storedUsers[idx] = user;
-            localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
-        }
-
-        this.message.success(`Aluna ${user.isActive ? 'ativada' : 'desativada'}`);
+        // Update via API
+        this.userService.toggleUserStatus(user._id, newStatus).subscribe({
+            next: (updated) => {
+                // Update local array
+                const idx = this.users.findIndex(u => u._id === user._id);
+                if (idx >= 0) {
+                    this.users[idx] = updated;
+                }
+                this.message.success(`Aluna ${newStatus ? 'ativada' : 'desativada'}`);
+            },
+            error: (err) => {
+                this.message.error('Erro ao atualizar status');
+            }
+        });
     }
 }
