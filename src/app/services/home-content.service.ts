@@ -1,37 +1,32 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
 import { HomeBanner } from '../models';
-import { Observable, of, tap } from 'rxjs';
-import { MOCK_BANNERS } from '../data/mock-data';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HomeContentService {
-    private http = inject(HttpClient);
-    private apiUrl = 'api/home-content'; // Mock URL
+    private api = inject(ApiService);
+    private endpoint = '/home-content';
 
     private bannersSignal = signal<HomeBanner[]>([]);
     readonly banners = this.bannersSignal.asReadonly();
 
     loadBanners() {
-        // Return mock data directly for frontend-first development
-        this.bannersSignal.set(MOCK_BANNERS);
+        this.api.get<HomeBanner[]>(this.endpoint).subscribe({
+            next: (banners) => this.bannersSignal.set(banners),
+            error: (err) => console.error('Error loading banners', err)
+        });
     }
 
     addBanner(base64: string): Observable<any> {
-        const newBanner: HomeBanner = {
-            _id: Date.now().toString(),
-            imageUrl: base64,
-            active: true,
-            createdAt: new Date()
-        };
-        this.bannersSignal.update(list => [...list, newBanner]);
+        // TODO: Implement backend endpoint
         return of(true);
     }
 
     removeBanner(id: string): Observable<void> {
-        this.bannersSignal.update(list => list.filter(b => b._id !== id));
+        // TODO: Implement backend endpoint
         return of(void 0);
     }
 }
