@@ -92,16 +92,12 @@ export class AuthService {
         password: string,
         inviteCode: string
     }): Observable<{ token: string, user: User }> {
-        return this.http.post<{ access_token: string, user: User }>(
+        return this.http.post<{ token: string, user: User }>(
             `${this.apiUrl}/auth/register`,
             data
         ).pipe(
             tap(response => {
-                const sessionData = {
-                    token: response.access_token,
-                    user: response.user
-                };
-                this.saveSession(sessionData);
+                this.saveSession(response);
             }),
             catchError(error => {
                 const message = error.error?.message || 'Erro ao registrar usuário';
