@@ -164,7 +164,7 @@ export class AdminCourseManagerComponent implements OnInit {
 
   addModule() {
     if (!this.currentCourse.modules) this.currentCourse.modules = [];
-    this.currentCourse.modules.push({ title: 'Novo Módulo', lessons: [] });
+    this.currentCourse.modules.push({ id: Date.now().toString(), title: 'Novo Módulo', lessons: [] });
     this.activeModuleIndex = this.currentCourse.modules.length - 1;
   }
 
@@ -181,11 +181,10 @@ export class AdminCourseManagerComponent implements OnInit {
 
   addLesson(moduleIndex: number) {
     const newLesson: Lesson = {
+      id: Date.now().toString(),
       title: 'Nova Aula',
       duration: '00:00',
-      completed: false,
-      contentType: 'video',
-      isMandatory: false
+      contentType: 'video'
     };
     this.currentCourse.modules![moduleIndex].lessons.push(newLesson);
     this.selectedLesson = newLesson;
@@ -227,17 +226,17 @@ export class AdminCourseManagerComponent implements OnInit {
   }
 
   getSteps(lesson: Lesson) {
-    if (!lesson.steps) lesson.steps = [];
-    return lesson.steps;
+    if (!lesson.procedureSteps) lesson.procedureSteps = [];
+    return lesson.procedureSteps;
   }
 
   addStep(lesson: Lesson) {
-    if (!lesson.steps) lesson.steps = [];
-    lesson.steps.push({ id: Date.now().toString(), text: '', isCompleted: false });
+    if (!lesson.procedureSteps) lesson.procedureSteps = [];
+    lesson.procedureSteps.push({ step: lesson.procedureSteps.length + 1, description: '', tips: [] });
   }
 
   removeStep(lesson: Lesson, idx: number) {
-    lesson.steps?.splice(idx, 1);
+    lesson.procedureSteps?.splice(idx, 1);
   }
 
   trackByIndex(index: number, obj: any): any {
@@ -262,8 +261,7 @@ export class AdminCourseManagerComponent implements OnInit {
     const file = item.file as File;
     // For demo, we'll create a blob URL. In production, you'd upload to a server.
     const videoUrl = URL.createObjectURL(file);
-    this.selectedLesson.videoFile = videoUrl;
-    this.selectedLesson.videoUrl = undefined; // Clear URL if using file
+    this.selectedLesson.videoUrl = videoUrl;
 
     item.onSuccess({}, item.file, event);
     this.message.success(`Vídeo "${file.name}" carregado com sucesso!`);

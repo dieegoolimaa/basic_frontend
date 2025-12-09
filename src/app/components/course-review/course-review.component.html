@@ -1,5 +1,7 @@
-<nz-modal [nzVisible]="isVisible" [nzTitle]="null" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="false"
-    nzClassName="review-modal" (nzOnCancel)="close()">
+<nz-modal [nzVisible]="isVisible" [nzClosable]="false" [nzMaskClosable]="false" nzClassName="review-modal"
+    (nzOnCancel)="close()">
+
+    <div *nzModalTitle></div>
 
     <ng-container *nzModalContent>
         <div class="review-content">
@@ -46,4 +48,6 @@
             </div>
         </div>
     </ng-container>
+
+    <div *nzModalFooter></div>
 </nz-modal>

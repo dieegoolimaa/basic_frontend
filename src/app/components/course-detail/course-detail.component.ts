@@ -38,9 +38,11 @@ export class CourseDetailComponent implements OnInit {
     let totalMinutes = 0;
     course.modules.forEach(mod => {
       mod.lessons.forEach(lesson => {
-        const parts = lesson.duration.split(':');
-        if (parts.length === 2) {
-          totalMinutes += parseInt(parts[0]) * 60 + parseInt(parts[1]);
+        if (lesson.duration) {
+          const parts = lesson.duration.split(':');
+          if (parts.length === 2) {
+            totalMinutes += parseInt(parts[0]) * 60 + parseInt(parts[1]);
+          }
         }
       });
     });

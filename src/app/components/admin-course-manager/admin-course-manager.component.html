@@ -115,7 +115,7 @@
                                     <div class="lesson-list">
                                         <div *ngFor="let lesson of mod.lessons" class="lesson-item"
                                             [class.selected]="selectedLesson === lesson" (click)="selectLesson(lesson)">
-                                            <span nz-icon [nzType]="getIconForType(lesson.contentType)"
+                                            <span nz-icon [nzType]="getIconForType(lesson.contentType || 'video')"
                                                 class="lesson-icon"></span>
                                             <span class="lesson-name">{{ lesson.title }}</span>
                                         </div>
@@ -148,7 +148,6 @@
                         </nz-select>
                         <input nz-input [(ngModel)]="selectedLesson.duration" placeholder="Duração (00:00)"
                             style="width: 100px;" />
-                        <label nz-checkbox [(ngModel)]="selectedLesson.isMandatory">Obrigatório</label>
                     </div>
 
                     <nz-divider></nz-divider>
@@ -156,13 +155,14 @@
                     <!-- Text Content -->
                     <div *ngIf="selectedLesson.contentType === 'text'" class="content-section">
                         <label>Conteúdo de Texto</label>
-                        <textarea nz-input [(ngModel)]="selectedLesson.content" rows="12"
+                        <textarea nz-input [(ngModel)]="selectedLesson.textContent" rows="12"
                             placeholder="Digite o conteúdo da aula aqui... Você pode usar HTML básico para formatação."
                             class="text-editor"></textarea>
                     </div>
 
                     <!-- Video -->
-                    <div *ngIf="['video', 'mixed'].includes(selectedLesson.contentType)" class="content-section">
+                    <div *ngIf="selectedLesson.contentType === 'video' || selectedLesson.contentType === 'mixed'"
+                        class="content-section">
                         <label>Vídeo da Aula</label>
                         <div class="video-options">
                             <nz-radio-group [(ngModel)]="videoInputType" class="video-type-selector">
@@ -184,7 +184,8 @@
                                         Selecionar Arquivo de Vídeo
                                     </button>
                                 </nz-upload>
-                                <div *ngIf="selectedLesson.videoFile" class="uploaded-video-info">
+                                <div *ngIf="selectedLesson.videoUrl && videoInputType === 'file'"
+                                    class="uploaded-video-info">
                                     <span nz-icon nzType="check-circle" style="color: #52c41a;"></span>
                                     Vídeo carregado com sucesso
                                 </div>
@@ -196,7 +197,7 @@
                     <!-- Text for Mixed -->
                     <div *ngIf="selectedLesson.contentType === 'mixed'" class="content-section">
                         <label>Texto Complementar</label>
-                        <textarea nz-input [(ngModel)]="selectedLesson.content" rows="6"
+                        <textarea nz-input [(ngModel)]="selectedLesson.textContent" rows="6"
                             placeholder="Adicione texto complementar ao vídeo..." class="text-editor"></textarea>
                     </div>
 
@@ -205,7 +206,7 @@
                         <label>Passos Práticos (Checklist)</label>
                         <div *ngFor="let step of getSteps(selectedLesson); let sIdx = index" class="step-row">
                             <span class="step-num">{{sIdx + 1}}</span>
-                            <input nz-input [(ngModel)]="step.text" placeholder="Descreva o passo..." />
+                            <input nz-input [(ngModel)]="step.description" placeholder="Descreva o passo..." />
                             <button nz-button nzType="text" nzDanger nzSize="small"
                                 (click)="removeStep(selectedLesson, sIdx)">
                                 <span nz-icon nzType="close"></span>

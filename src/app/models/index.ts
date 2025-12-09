@@ -1,29 +1,39 @@
 export interface Course {
     _id: string;
     title: string;
-    description: string;
-    videoUrl?: string;
-    thumbnailUrl: string;
+    subtitle: string;
+    description?: string;
+    instructor: string;
+    imageUrl?: string;
+    thumbnailUrl?: string;
     modules: CourseModule[];
-    createdAt: Date;
-    updatedAt: Date;
+    isActive: boolean;
+    averageRating: number;
+    totalReviews: number;
+    totalStudents: number;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface CourseModule {
+    id: string;
     title: string;
+    description?: string;
     lessons: Lesson[];
 }
 
 export interface Lesson {
+    id: string;
     title: string;
-    duration: string;
-    completed: boolean;
-    contentType: 'video' | 'text' | 'mixed' | 'quiz';
+    description?: string;
     videoUrl?: string;
-    videoFile?: string; // Base64 or blob URL for uploaded video
-    content?: string;
-    steps?: ProcedureStep[];
-    isMandatory?: boolean;
+    thumbnailUrl?: string;
+    duration?: string;
+    procedureSteps?: ProcedureStep[];
+    textContent?: string;
+    supplementaryMaterial?: string[];
+    contentType?: 'video' | 'text' | 'mixed' | 'quiz';
+    completed?: boolean;
     quiz?: {
         questions: QuizQuestion[];
         minPassScore: number;
@@ -31,10 +41,11 @@ export interface Lesson {
 }
 
 export interface ProcedureStep {
-    id: string;
-    text: string;
-    isCompleted: boolean;
-    timeOffset?: number;
+    step: number;
+    description: string;
+    timeOffset?: string;
+    tips?: string[];
+    isCompleted?: boolean;
 }
 
 export interface QuizQuestion {
@@ -54,9 +65,12 @@ export interface User {
     role: 'student' | 'admin';
     isActive: boolean;
     enrolledCourses?: string[];
-    progress?: { [courseId: string]: CourseProgress };
+    completedLessons?: string[];
+    courseProgress?: { [courseId: string]: number };
+    avatar?: string;
     inviteCode?: string;
     createdAt?: Date;
+    progress?: { [courseId: string]: CourseProgress };
 }
 
 export interface CourseProgress {
@@ -69,7 +83,8 @@ export interface HomeBanner {
     imageUrl: string;
     title?: string;
     subtitle?: string;
-    active: boolean;
+    linkUrl?: string;
+    isActive: boolean;
     createdAt?: Date;
 }
 
@@ -78,9 +93,28 @@ export interface InviteCode {
     _id: string;
     code: string;
     email: string;
-    courseIds: string[]; // Courses the user will have access to
-    used: boolean;
+    courseIds: string[];
+    status: 'pending' | 'used' | 'cancelled' | 'expired';
+    createdBy?: string;
     usedBy?: string;
-    createdAt: Date;
+    usedAt?: Date;
     expiresAt?: Date;
+    createdAt?: Date;
+}
+
+export interface Review {
+    _id: string;
+    userId: string | { _id: string; name: string; avatar?: string };
+    courseId: string;
+    rating: number;
+    comment?: string;
+    isAnonymous: boolean;
+    isActive: boolean;
+    createdAt: string;
+}
+
+export interface CourseStats {
+    averageRating: number;
+    totalReviews: number;
+    distribution: Record<number, number>;
 }

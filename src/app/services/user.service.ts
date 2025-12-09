@@ -3,6 +3,11 @@ import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { User } from '../models';
 
+export interface UserProgress {
+    completedLessons: string[];
+    courseProgress: { [courseId: string]: number };
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -31,6 +36,27 @@ export class UserService {
     }
 
     /**
+     * Get my progress
+     */
+    getMyProgress(): Observable<UserProgress> {
+        return this.api.get<UserProgress>('/users/me/progress');
+    }
+
+    /**
+     * Mark lesson as complete
+     */
+    markLessonComplete(lessonId: string): Observable<User> {
+        return this.api.put<User>(`/users/me/lessons/${lessonId}/complete`, {});
+    }
+
+    /**
+     * Update course progress
+     */
+    updateCourseProgress(courseId: string, progress: number): Observable<User> {
+        return this.api.put<User>(`/users/me/courses/${courseId}/progress`, { progress });
+    }
+
+    /**
      * Get user by ID
      */
     getUserById(id: string): Observable<User> {
@@ -38,10 +64,17 @@ export class UserService {
     }
 
     /**
-     * Update user
+     * Update user (Admin)
      */
     updateUser(id: string, data: Partial<User>): Observable<User> {
         return this.api.put<User>(`/users/${id}`, data);
+    }
+
+    /**
+     * Update user courses (Admin)
+     */
+    updateUserCourses(id: string, courseIds: string[]): Observable<User> {
+        return this.api.put<User>(`/users/${id}/courses`, { courseIds });
     }
 
     /**
@@ -55,6 +88,6 @@ export class UserService {
      * Toggle user active status (Admin only)
      */
     toggleUserStatus(id: string, isActive: boolean): Observable<User> {
-        return this.api.put<User>(`/users/${id}`, { isActive });
+        return this.api.put<User>(`/users/${id}/active`, { isActive });
     }
 }
