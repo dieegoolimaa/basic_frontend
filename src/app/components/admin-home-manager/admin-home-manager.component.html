@@ -2,71 +2,173 @@
     <div class="page-header">
         <div>
             <h1 class="page-title">Gestão da Home</h1>
-            <p class="page-subtitle">Configure os banners rotativos da página principal.</p>
+            <p class="page-subtitle">Configure os banners e a seção "Sobre" da página principal.</p>
         </div>
-        <button class="mt-20" nz-button nzType="primary" (click)="showAddModal()">
-            <span nz-icon nzType="plus"></span>
-            Novo Banner
-        </button>
     </div>
 
-    <!-- Banners List -->
-    <div class="table-card">
-        <nz-table #bannerTable [nzData]="banners" [nzBordered]="false" [nzShowPagination]="false"
-            [nzLoading]="isLoading" nzSize="middle">
-            <thead>
-                <tr>
-                    <th nzWidth="140px">Visualização</th>
-                    <th>Título</th>
-                    <th>Subtítulo</th>
-                    <th nzWidth="100px" nzAlign="center">Status</th>
-                    <th nzWidth="120px" nzAlign="center">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of bannerTable.data; trackBy: trackByBannerId">
-                    <td>
-                        <div class="banner-preview">
-                            <img [src]="data.imageUrl" alt="Banner" />
+    <!-- Tabs -->
+    <nz-tabset nzType="card" class="home-tabs">
+        <!-- Tab: Banners -->
+        <nz-tab nzTitle="Banners">
+            <div class="tab-header">
+                <p>Configure os banners rotativos exibidos no topo da página.</p>
+                <button nz-button nzType="primary" (click)="showAddModal()">
+                    <span nz-icon nzType="plus"></span>
+                    Novo Banner
+                </button>
+            </div>
+
+            <div class="table-card">
+                <nz-table #bannerTable [nzData]="banners" [nzBordered]="false" [nzShowPagination]="false"
+                    [nzLoading]="isLoading" nzSize="middle">
+                    <thead>
+                        <tr>
+                            <th nzWidth="140px">Visualização</th>
+                            <th>Título</th>
+                            <th>Subtítulo</th>
+                            <th nzWidth="100px" nzAlign="center">Status</th>
+                            <th nzWidth="120px" nzAlign="center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of bannerTable.data; trackBy: trackByBannerId">
+                            <td>
+                                <div class="banner-preview">
+                                    <img [src]="data.imageUrl" alt="Banner" />
+                                </div>
+                            </td>
+                            <td>{{ data.title || '-' }}</td>
+                            <td>{{ data.subtitle || '-' }}</td>
+                            <td nzAlign="center">
+                                <nz-tag [nzColor]="data.isActive ? 'green' : 'default'">
+                                    {{ data.isActive ? 'Ativo' : 'Inativo' }}
+                                </nz-tag>
+                            </td>
+                            <td nzAlign="center">
+                                <button nz-button nzType="text" nzSize="small" (click)="showEditModal(data)" nz-tooltip
+                                    nzTooltipTitle="Editar">
+                                    <span nz-icon nzType="edit"></span>
+                                </button>
+                                <button nz-button nzType="text" nzSize="small" (click)="toggleStatus(data)" nz-tooltip
+                                    [nzTooltipTitle]="data.isActive ? 'Desativar' : 'Ativar'">
+                                    <span nz-icon [nzType]="data.isActive ? 'eye-invisible' : 'eye'"></span>
+                                </button>
+                                <button nz-button nzType="text" nzDanger nzSize="small" (click)="removeBanner(data._id)"
+                                    nz-tooltip nzTooltipTitle="Excluir">
+                                    <span nz-icon nzType="delete"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+
+                <div *ngIf="banners.length === 0 && !isLoading" class="empty-state">
+                    <span nz-icon nzType="inbox" class="empty-icon"></span>
+                    <p>Nenhum banner cadastrado.</p>
+                    <button nz-button nzType="primary" (click)="showAddModal()">
+                        <span nz-icon nzType="plus"></span>
+                        Adicionar Banner
+                    </button>
+                </div>
+            </div>
+        </nz-tab>
+
+        <!-- Tab: Sobre -->
+        <nz-tab nzTitle="Seção Sobre">
+            <div class="tab-header">
+                <p>Configure a seção "Sobre" exibida na página inicial.</p>
+            </div>
+
+            <div class="settings-grid">
+                <!-- Left Column: Image -->
+                <nz-card nzTitle="Imagem da Seção" class="settings-card">
+                    <nz-upload nzType="drag" [nzCustomRequest]="handleAboutImageUpload" [nzShowUploadList]="false"
+                        class="about-image-upload" [class.has-image]="settingsForm.aboutImageUrl">
+                        <div class="upload-content">
+                            @if (settingsForm.aboutImageUrl) {
+                            <div class="preview-container">
+                                <img [src]="settingsForm.aboutImageUrl" alt="About Image" class="upload-preview" />
+                                <div class="preview-overlay">
+                                    <span nz-icon nzType="camera" class="overlay-icon"></span>
+                                    <span>Alterar imagem</span>
+                                </div>
+                            </div>
+                            } @else {
+                            <div class="upload-placeholder">
+                                <span nz-icon nzType="cloud-upload" class="upload-icon"></span>
+                                <p class="upload-text">Arraste ou clique para upload</p>
+                                <p class="upload-hint">
+                                    <strong>Dimensão:</strong> 800 × 600 pixels<br>
+                                    <strong>Formatos:</strong> JPG, PNG ou WebP
+                                </p>
+                            </div>
+                            }
                         </div>
-                    </td>
-                    <td>{{ data.title || '-' }}</td>
-                    <td>{{ data.subtitle || '-' }}</td>
-                    <td nzAlign="center">
-                        <nz-tag [nzColor]="data.isActive ? 'green' : 'default'">
-                            {{ data.isActive ? 'Ativo' : 'Inativo' }}
-                        </nz-tag>
-                    </td>
-                    <td nzAlign="center">
-                        <button nz-button nzType="text" nzSize="small" (click)="showEditModal(data)" nz-tooltip
-                            nzTooltipTitle="Editar">
-                            <span nz-icon nzType="edit"></span>
-                        </button>
-                        <button nz-button nzType="text" nzSize="small" (click)="toggleStatus(data)" nz-tooltip
-                            [nzTooltipTitle]="data.isActive ? 'Desativar' : 'Ativar'">
-                            <span nz-icon [nzType]="data.isActive ? 'eye-invisible' : 'eye'"></span>
-                        </button>
-                        <button nz-button nzType="text" nzDanger nzSize="small" (click)="removeBanner(data._id)"
-                            nz-tooltip nzTooltipTitle="Excluir">
-                            <span nz-icon nzType="delete"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </nz-table>
+                    </nz-upload>
+                </nz-card>
 
-        <div *ngIf="banners.length === 0 && !isLoading" class="empty-state">
-            <span nz-icon nzType="inbox" class="empty-icon"></span>
-            <p>Nenhum banner cadastrado.</p>
-            <button nz-button nzType="primary" (click)="showAddModal()">
-                <span nz-icon nzType="plus"></span>
-                Adicionar Banner
-            </button>
-        </div>
-    </div>
+                <!-- Right Column: Content -->
+                <nz-card nzTitle="Conteúdo" class="settings-card">
+                    <div class="form-section">
+                        <label class="form-label">Tag da Seção</label>
+                        <input nz-input [(ngModel)]="settingsForm.aboutTag" placeholder="Ex: Sobre a Basic Studio" />
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Título Principal</label>
+                        <input nz-input [(ngModel)]="settingsForm.aboutTitle"
+                            placeholder="Ex: Formando Nail Artists em Portugal" />
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Parágrafo 1</label>
+                        <textarea nz-input [(ngModel)]="settingsForm.aboutParagraph1" [nzAutosize]="{ minRows: 3 }"
+                            placeholder="Primeiro parágrafo descritivo..."></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Parágrafo 2</label>
+                        <textarea nz-input [(ngModel)]="settingsForm.aboutParagraph2" [nzAutosize]="{ minRows: 3 }"
+                            placeholder="Segundo parágrafo descritivo..."></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Nome da Fundadora</label>
+                        <input nz-input [(ngModel)]="settingsForm.founderName" placeholder="Ex: Cris Souza" />
+                    </div>
+                </nz-card>
+
+                <!-- Stats Card -->
+                <nz-card nzTitle="Estatísticas" class="settings-card stats-card">
+                    <div class="stats-grid">
+                        <div class="form-section">
+                            <label class="form-label">Anos de Experiência</label>
+                            <input nz-input [(ngModel)]="settingsForm.experienceYears" placeholder="Ex: 10+" />
+                        </div>
+                        <div class="form-section">
+                            <label class="form-label">Alunas Formadas</label>
+                            <input nz-input [(ngModel)]="settingsForm.studentsFormed" placeholder="Ex: 5k+" />
+                        </div>
+                        <div class="form-section">
+                            <label class="form-label">Avaliação Média</label>
+                            <input nz-input [(ngModel)]="settingsForm.averageRating" placeholder="Ex: 4.9" />
+                        </div>
+                    </div>
+                </nz-card>
+            </div>
+
+            <div class="settings-footer">
+                <button nz-button nzType="primary" nzSize="large" (click)="saveSettings()"
+                    [nzLoading]="isSavingSettings">
+                    <span nz-icon nzType="save"></span>
+                    Salvar Configurações
+                </button>
+            </div>
+        </nz-tab>
+    </nz-tabset>
 </div>
 
-<!-- Add/Edit Modal -->
+<!-- Add/Edit Banner Modal -->
 <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="editingBanner ? 'Editar Banner' : 'Novo Banner'"
     [nzFooter]="modalFooter" (nzOnCancel)="closeModal()" nzWidth="640px" nzCentered>
     <ng-container *nzModalContent>

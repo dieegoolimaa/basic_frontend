@@ -24,9 +24,11 @@ export class HomeComponent implements OnInit {
   private router = inject(Router);
 
   banners = this.homeContentService.banners;
+  settings = this.homeContentService.settings;
 
   ngOnInit() {
     this.homeContentService.loadBanners();
+    this.homeContentService.loadSettings();
   }
 
   navigateToCourses() {

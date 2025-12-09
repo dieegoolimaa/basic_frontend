@@ -118,3 +118,16 @@ export interface CourseStats {
     totalReviews: number;
     distribution: Record<number, number>;
 }
+
+export interface SiteSettings {
+    _id?: string;
+    aboutTag: string;
+    aboutTitle: string;
+    aboutParagraph1: string;
+    aboutParagraph2: string;
+    aboutImageUrl: string;
+    experienceYears: string;
+    studentsFormed: string;
+    averageRating: string;
+    founderName: string;
+}

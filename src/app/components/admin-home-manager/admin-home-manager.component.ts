@@ -12,9 +12,11 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { HomeContentService } from '../../services/home-content.service';
 import { UploadService } from '../../services/upload.service';
-import { HomeBanner } from '../../models';
+import { HomeBanner, SiteSettings } from '../../models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -33,7 +35,9 @@ import { Subscription } from 'rxjs';
     NzTableModule,
     NzTagModule,
     NzModalModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzTabsModule,
+    NzCardModule
   ],
   templateUrl: './admin-home-manager.component.html',
   styleUrl: './admin-home-manager.component.scss'
@@ -43,10 +47,11 @@ export class AdminHomeManagerComponent implements OnInit {
   private uploadService = inject(UploadService);
   private message = inject(NzMessageService);
 
+  // Banners
   banners: HomeBanner[] = [];
   isLoading = false;
 
-  // Add/Edit Modal
+  // Banner Modal
   isModalVisible = false;
   editingBanner: HomeBanner | null = null;
   bannerForm = {
@@ -55,9 +60,26 @@ export class AdminHomeManagerComponent implements OnInit {
     imageUrl: ''
   };
 
+  // Site Settings
+  settingsForm: Partial<SiteSettings> = {
+    aboutTag: '',
+    aboutTitle: '',
+    aboutParagraph1: '',
+    aboutParagraph2: '',
+    aboutImageUrl: '',
+    experienceYears: '',
+    studentsFormed: '',
+    averageRating: '',
+    founderName: ''
+  };
+  isSavingSettings = false;
+
   ngOnInit() {
     this.loadBanners();
+    this.loadSettings();
   }
+
+  // ========== BANNERS ==========
 
   loadBanners() {
     this.isLoading = true;
@@ -77,7 +99,6 @@ export class AdminHomeManagerComponent implements OnInit {
   handleUpload = (item: NzUploadXHRArgs) => {
     const file = item.file as any;
 
-    // Validate file
     if (!this.uploadService.isValidImage(file)) {
       this.message.error('Formato de imagem inválido');
       if (item.onError) {
@@ -86,7 +107,6 @@ export class AdminHomeManagerComponent implements OnInit {
       return new Subscription();
     }
 
-    // Upload to backend
     this.uploadService.uploadFile(file, 'image').subscribe({
       next: (response) => {
         this.bannerForm.imageUrl = response.url;
@@ -134,7 +154,6 @@ export class AdminHomeManagerComponent implements OnInit {
     }
 
     if (this.editingBanner) {
-      // Update existing
       this.homeContentService.updateBanner(this.editingBanner._id, this.bannerForm).subscribe({
         next: (updated) => {
           const idx = this.banners.findIndex(b => b._id === updated._id);
@@ -145,7 +164,6 @@ export class AdminHomeManagerComponent implements OnInit {
         error: () => this.message.error('Erro ao atualizar banner')
       });
     } else {
-      // Create new
       this.homeContentService.addBanner(this.bannerForm).subscribe({
         next: (newBanner) => {
           this.banners.push(newBanner);
@@ -180,5 +198,63 @@ export class AdminHomeManagerComponent implements OnInit {
 
   trackByBannerId(index: number, banner: HomeBanner): string {
     return banner._id;
+  }
+
+  // ========== SITE SETTINGS ==========
+
+  loadSettings() {
+    this.homeContentService.getSettings().subscribe({
+      next: (settings) => {
+        this.settingsForm = { ...settings };
+      },
+      error: (err) => {
+        console.error('Error loading settings:', err);
+      }
+    });
+  }
+
+  handleAboutImageUpload = (item: NzUploadXHRArgs) => {
+    const file = item.file as any;
+
+    if (!this.uploadService.isValidImage(file)) {
+      this.message.error('Formato de imagem inválido');
+      if (item.onError) {
+        item.onError(new Error('Invalid image'), item.file);
+      }
+      return new Subscription();
+    }
+
+    this.uploadService.uploadFile(file, 'image').subscribe({
+      next: (response) => {
+        this.settingsForm.aboutImageUrl = response.url;
+        if (item.onSuccess) {
+          item.onSuccess(response, item.file, new Event(''));
+        }
+        this.message.success('Imagem carregada!');
+      },
+      error: (err) => {
+        if (item.onError) {
+          item.onError(err, item.file);
+        }
+        this.message.error('Erro ao carregar imagem');
+      }
+    });
+
+    return new Subscription();
+  };
+
+  saveSettings() {
+    this.isSavingSettings = true;
+    this.homeContentService.updateSettings(this.settingsForm).subscribe({
+      next: () => {
+        this.message.success('Configurações salvas com sucesso!');
+        this.isSavingSettings = false;
+      },
+      error: (err) => {
+        console.error('Error saving settings:', err);
+        this.message.error('Erro ao salvar configurações');
+        this.isSavingSettings = false;
+      }
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { ApiService } from './api.service';
-import { HomeBanner } from '../models';
+import { HomeBanner, SiteSettings } from '../models';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,11 @@ export class HomeContentService {
 
     private bannersSignal = signal<HomeBanner[]>([]);
     readonly banners = this.bannersSignal.asReadonly();
+
+    private settingsSignal = signal<SiteSettings | null>(null);
+    readonly settings = this.settingsSignal.asReadonly();
+
+    // ========== BANNERS ==========
 
     /**
      * Load all active banners
@@ -34,7 +39,7 @@ export class HomeContentService {
     /**
      * Add new banner
      */
-    addBanner(data: { imageUrl: string; title?: string; subtitle?: string; linkUrl?: string }): Observable<HomeBanner> {
+    addBanner(data: { imageUrl: string; title?: string; subtitle?: string }): Observable<HomeBanner> {
         return this.api.post<HomeBanner>('/banners', data).pipe(
             tap(newBanner => {
                 this.bannersSignal.update(banners => [...banners, newBanner]);
@@ -78,6 +83,36 @@ export class HomeContentService {
                     banners.map(b => b._id === id ? updated : b)
                 );
             })
+        );
+    }
+
+    // ========== SITE SETTINGS ==========
+
+    /**
+     * Load site settings
+     */
+    loadSettings() {
+        this.api.get<SiteSettings>('/settings').subscribe({
+            next: (settings) => this.settingsSignal.set(settings),
+            error: (err) => console.error('Error loading settings', err)
+        });
+    }
+
+    /**
+     * Get site settings (returns Observable)
+     */
+    getSettings(): Observable<SiteSettings> {
+        return this.api.get<SiteSettings>('/settings').pipe(
+            tap(settings => this.settingsSignal.set(settings))
+        );
+    }
+
+    /**
+     * Update site settings (Admin)
+     */
+    updateSettings(data: Partial<SiteSettings>): Observable<SiteSettings> {
+        return this.api.put<SiteSettings>('/settings', data).pipe(
+            tap(updated => this.settingsSignal.set(updated))
         );
     }
 }

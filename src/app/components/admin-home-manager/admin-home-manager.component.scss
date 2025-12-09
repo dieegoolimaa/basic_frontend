@@ -178,11 +178,6 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
 
 /* Global button refinements */
 ::ng-deep {
-    .ant-btn-primary {
-        border-radius: 6px;
-        font-weight: 500;
-    }
-    
     .ant-switch {
         &.ant-switch-checked {
             background: $accent;
@@ -193,26 +188,23 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
 /* BANNER FORM MODAL */
 .banner-form {
     .form-section {
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
         
         &.flex-1 { flex: 1; }
     }
 
     .form-row {
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
     }
 
     .form-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: $primary;
-        margin-bottom: 0.5rem;
+        /* Global styles handle base look, adding specifics here */
+        margin-bottom: 0.75rem;
         
         &.required::after {
             content: ' *';
-            color: #e74c3c;
+            color: #d93025;
         }
     }
 
@@ -220,7 +212,7 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
         display: block;
         font-size: 0.75rem;
         color: $text-light;
-        margin-top: 0.35rem;
+        margin-top: 0.5rem;
         text-align: right;
     }
 
@@ -326,6 +318,160 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
     gap: 0.75rem;
 }
 
+/* TABS */
+.home-tabs {
+    ::ng-deep {
+        .ant-tabs-nav {
+            margin-bottom: 1.5rem;
+        }
+        .ant-tabs-tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+    }
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    
+    p {
+        margin: 0;
+        color: $text-light;
+        font-size: 0.9rem;
+    }
+}
+
+/* SETTINGS GRID */
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    
+    .stats-card {
+        grid-column: 1 / -1;
+    }
+}
+
+.settings-card {
+    background: #fff;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+    
+    .form-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    ::ng-deep {
+        .ant-card-head {
+            border-bottom: 1px solid $border;
+            padding: 0 1rem;
+            min-height: 48px;
+        }
+        .ant-card-head-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: $primary;
+        }
+        .ant-card-body {
+            padding: 1.5rem; /* Aumentei padding do body tbm */
+        }
+    }
+}
+
+.about-image-upload {
+    ::ng-deep .ant-upload-drag {
+        background: $bg-color;
+        border: 2px dashed $border;
+        border-radius: $radius;
+        transition: all 0.3s ease;
+        
+        &:hover { 
+            border-color: $accent; 
+            background: $accent-light;
+        }
+    }
+    
+    &.has-image ::ng-deep .ant-upload-drag {
+        border: none;
+        background: transparent;
+    }
+
+    .upload-content {
+        padding: 1.5rem;
+        text-align: center;
+        
+        .upload-icon {
+            font-size: 2.5rem;
+            color: $accent;
+            margin-bottom: 0.75rem;
+        }
+        .upload-text {
+            font-size: 0.9rem;
+            color: $primary;
+            margin: 0 0 0.25rem 0;
+        }
+        .upload-hint {
+            font-size: 0.75rem;
+            color: $text-light;
+            margin: 0;
+        }
+    }
+
+    .preview-container {
+        position: relative;
+        border-radius: $radius;
+        overflow: hidden;
+        
+        .upload-preview {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+
+            .overlay-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        &:hover .preview-overlay {
+            opacity: 1;
+        }
+    }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.settings-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid $border;
+}
+
 /* RESPONSIVE - Mobile First */
 @media (max-width: 768px) {
     .page-header .page-title { font-size: 1.5rem; }
@@ -348,5 +494,19 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
             flex-direction: column;
             gap: 0;
         }
+    }
+
+    .tab-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }

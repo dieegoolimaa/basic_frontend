@@ -19,34 +19,29 @@
 <section class="about-section">
     <div class="about-container">
         <div class="image-wrapper">
-            <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80"
+            <img [src]="settings()?.aboutImageUrl || 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80'"
                 alt="Instrutora Master" class="about-image" />
             <div class="experience-badge">
-                <span class="years">10+</span>
+                <span class="years">{{ settings()?.experienceYears || '10+' }}</span>
                 <span class="text">Anos de<br>Experiência</span>
             </div>
         </div>
 
         <div class="about-content">
-            <span class="section-tag">Sobre a Basic Studio</span>
-            <h2>Formando Nail Artists em Portugal</h2>
-            <p>
-                A Basic nasceu do desejo de elevar o nível profissional do mercado de unhas.
-                Nossa fundadora, <strong>Cris Souza</strong>, desenvolveu uma metodologia
-                única que une técnica precisa, saúde das unhas e arte de alto nível.
-            </p>
-            <p>
-                Nossos cursos não ensinam apenas a "fazer unhas". Ensinamos você a construir uma carreira sólida,
-                conquistar clientes de alto padrão e se destacar em um mercado competitivo.
-            </p>
+            <span class="section-tag">{{ settings()?.aboutTag || 'Sobre a Basic Studio' }}</span>
+            <h2>{{ settings()?.aboutTitle || 'Formando Nail Artists em Portugal' }}</h2>
+            <p>{{ settings()?.aboutParagraph1 || 'A Basic nasceu do desejo de elevar o nível profissional do mercado de
+                unhas.' }}</p>
+            <p>{{ settings()?.aboutParagraph2 || 'Nossos cursos não ensinam apenas a "fazer unhas". Ensinamos você a
+                construir uma carreira sólida.' }}</p>
 
             <div class="stats-row">
                 <div class="stat-item">
-                    <span class="number">5k+</span>
+                    <span class="number">{{ settings()?.studentsFormed || '5k+' }}</span>
                     <span class="label">Alunas Formadas</span>
                 </div>
                 <div class="stat-item">
-                    <span class="number">4.9</span>
+                    <span class="number">{{ settings()?.averageRating || '4.9' }}</span>
                     <span class="label">Avaliação Média</span>
                 </div>
             </div>

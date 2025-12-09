@@ -4,8 +4,14 @@
 /* Global Variables */
 :root {
   --primary-color: #232222;
-  --background-color: #f5f4f1;
-  --text-color: #232222;
+  --secondary-color: #6b7280;
+  --background-color: #f5f6f8; /* Softer gray background */
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
+  --input-bg: #ffffff;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   
   /* Ant Design Variable Overrides where supported by CSS vars in v18+ or manually */
   --ant-primary-color: #232222;
@@ -19,53 +25,232 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-/* Override Ant Design Primary Color Classes if CSS vars aren't fully covering it */
+/* =========================================
+   BUTTONS (Premium Feel)
+   ========================================= */
+.ant-btn {
+  border-radius: var(--radius-md);
+  height: 40px;
+  padding: 0 20px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ant-btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   
   &:hover, &:focus {
-    background-color: #3a3a3a;
-    border-color: #3a3a3a;
+    background-color: #374151; /* Gray-700 */
+    border-color: #374151;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  &:active {
+    transform: translateY(0);
+    background-color: #111827; /* Gray-900 */
   }
 }
 
-.ant-menu-item-selected {
-  color: var(--primary-color) !important;
+.ant-btn-lg {
+  height: 48px;
+  font-size: 16px;
+  padding: 0 32px;
 }
 
-.ant-menu-item::after {
-  border-bottom-color: var(--primary-color) !important;
+.ant-btn-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
 }
 
-/* Aesthetic & Typography */
+/* =========================================
+   INPUTS & TEXTAREAS
+   ========================================= */
+.ant-input, 
+.ant-input-number {
+  border-radius: var(--radius-md) !important;
+  padding: 8px 12px !important;
+  border-color: var(--border-color) !important;
+  color: #111827; /* Gray-900 */
+  transition: all 0.2s ease;
+  font-size: 14px;
+  
+  &:hover {
+    border-color: #9ca3af !important; /* Gray-400 */
+  }
+
+  &:focus, &.ant-input-focused {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(35, 34, 34, 0.1) !important;
+    outline: none;
+  }
+}
+
+/* Specific fix for Select Dropdown alignment */
+.ant-select-selector {
+    border-radius: var(--radius-md) !important;
+    border-color: var(--border-color) !important;
+    color: #111827 !important;
+    font-size: 14px;
+    height: 38px !important; /* Fixed height match typical input including padding */
+    padding: 0 12px !important; /* Remove vertical padding, let line-height/flex handle it */
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: none !important;
+    
+    .ant-select-selection-search-input {
+        height: 100% !important;
+        align-self: center;
+    }
+
+    .ant-select-selection-item, 
+    .ant-select-selection-placeholder {
+        line-height: normal !important; /* Let flexbox center it */
+        margin: 0 !important;
+        padding-right: 20px; /* Space for arrow */
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: #9ca3af !important;
+}
+
+.ant-select-focused .ant-select-selector {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(35, 34, 34, 0.1) !important;
+}
+
+textarea.ant-input {
+  padding: 12px !important;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: #374151; /* Gray-700 */
+  font-size: 14px;
+  height: auto;
+}
+
+/* Custom spacing for labels to inputs */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   CARDS & CONTAINERS
+   ========================================= */
+.ant-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(229, 231, 235, 0.5); /* Subtle border */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.01), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 24px;
+}
+
+.ant-card-body {
+  padding: 24px;
+}
+
+/* =========================================
+   TYPOGRAPHY
+   ========================================= */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5em;
 }
 
+.page-title {
+    font-size: 2rem;
+    color: #111827;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* =========================================
+   UTILITIES
+   ========================================= */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Simple fade animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #dcdcdc;
+  background: #d1d5db;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b0b0b0;
+  background: #9ca3af;
+}
+
+/* Fix for Nz Tabset to look cleaner */
+.ant-tabs-nav {
+    margin-bottom: 24px !important;
+}
+.ant-tabs-tab {
+    padding: 12px 0 !important;
+    margin-right: 32px !important;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.ant-tabs-tab + .ant-tabs-tab {
+    margin-left: 0 !important;
+}
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+.ant-tabs-ink-bar {
+    background-color: var(--primary-color) !important;
+    height: 3px !important;
+    border-radius: 3px 3px 0 0;
 }
