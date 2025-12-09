@@ -274,6 +274,91 @@ $radius: 10px;
             background: lighten($primary, 8%);
         }
     }
+
+    .contact-card {
+        margin-top: 1.5rem;
+        background: linear-gradient(135deg, #f8f5f7 0%, #fff 100%);
+        border: 1px solid $border;
+        border-radius: $radius;
+        padding: 1.5rem;
+
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: $primary;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .contact-text {
+            font-size: 0.85rem;
+            color: $text-light;
+            line-height: 1.5;
+            margin: 0 0 1rem 0;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+
+            span[nz-icon] {
+                font-size: 1.2rem;
+            }
+
+            &.whatsapp {
+                background: #25d366;
+                color: #fff;
+
+                &:hover {
+                    background: #20bd5a;
+                    transform: translateX(3px);
+                }
+            }
+
+            &.instagram {
+                background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+                color: #fff;
+
+                &:hover {
+                    opacity: 0.9;
+                    transform: translateX(3px);
+                }
+            }
+        }
+    }
+}
+
+.course-subtitle {
+    font-size: 1.1rem;
+    color: $text-light;
+    margin: -0.5rem 0 1rem 0;
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    .star-icon {
+        color: #ffc107;
+    }
+}
+
+.whatsapp-link {
+    color: #25d366;
+    font-weight: 600;
+    text-decoration: none;
+    
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 /* RESPONSIVE */

@@ -5,12 +5,20 @@
         <div class="header-content">
             <span class="category-tag">FORMAÇÃO PROFISSIONAL</span>
             <h1 class="course-title">{{ c.title }}</h1>
+            <p class="course-subtitle" *ngIf="c.subtitle">{{ c.subtitle }}</p>
             <div class="course-meta">
                 <span><span nz-icon nzType="clock-circle"></span> {{ getTotalDuration(c) }}</span>
                 <span class="divider">•</span>
                 <span><span nz-icon nzType="safety-certificate"></span> Certificado</span>
                 <span class="divider">•</span>
                 <span>{{ getTotalLessons(c) }} aulas</span>
+                @if (c.averageRating > 0) {
+                <span class="divider">•</span>
+                <span class="rating">
+                    <span nz-icon nzType="star" nzTheme="fill" class="star-icon"></span>
+                    {{ c.averageRating.toFixed(1) }} ({{ c.totalReviews }} avaliações)
+                </span>
+                }
             </div>
 
             <div class="cta-area">
@@ -25,14 +33,20 @@
                     Entrar para Acessar
                     <span nz-icon nzType="arrow-right"></span>
                 </button>
-                <p class="auth-hint">Faça login ou <a routerLink="/registro">crie sua conta</a></p>
+                <p class="auth-hint">
+                    Faça login ou
+                    <a href="https://wa.me/351937299329?text=Olá! Gostaria de me inscrever na Basic Studio"
+                        target="_blank" class="whatsapp-link">
+                        entre em contato via WhatsApp
+                    </a>
+                </p>
                 }
             </div>
         </div>
 
         <div class="header-image-wrapper">
             <div class="image-frame">
-                <img [src]="c.thumbnailUrl" class="feature-image" [alt]="c.title"
+                <img [src]="c.imageUrl || c.thumbnailUrl" class="feature-image" [alt]="c.title"
                     onerror="this.src='https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format'" />
             </div>
         </div>
@@ -52,7 +66,7 @@
             @if (c.modules.length > 0) {
             <h3 class="section-subtitle">O que você vai aprender:</h3>
             <div class="modules-preview">
-                @for(mod of c.modules; track mod.title; let i = $index) {
+                @for(mod of c.modules; track mod.id; let i = $index) {
                 <div class="module-item">
                     <div class="module-number">{{ i + 1 }}</div>
                     <div class="module-info">
@@ -84,6 +98,24 @@
                     [queryParams]="isLoggedIn() ? {} : {returnUrl: '/player/' + c._id}">
                     {{ isLoggedIn() ? 'Começar Agora' : 'Fazer Login' }}
                 </button>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-card">
+                <h4>📞 Dúvidas ou Interesse?</h4>
+                <p class="contact-text">Entre em contato conosco para saber mais sobre os cursos e como se inscrever.
+                </p>
+
+                <a href="https://wa.me/351937299329?text=Olá! Gostaria de saber mais sobre os cursos da Basic Studio"
+                    target="_blank" class="contact-btn whatsapp">
+                    <span nz-icon nzType="whats-app" nzTheme="outline"></span>
+                    WhatsApp: +351 937 299 329
+                </a>
+
+                <a href="https://instagram.com/basic.studio7" target="_blank" class="contact-btn instagram">
+                    <span nz-icon nzType="instagram" nzTheme="outline"></span>
+                    @basic.studio7
+                </a>
             </div>
         </div>
     </div>
