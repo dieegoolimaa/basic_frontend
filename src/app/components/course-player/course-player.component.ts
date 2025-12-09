@@ -47,10 +47,10 @@ export class CoursePlayerComponent implements OnInit {
   currentVideoUrl = computed(() => {
     const lesson = this.currentLesson();
     if (!lesson || ['text', 'quiz'].includes(lesson.contentType || '')) return null;
-    if (lesson.videoUrl) {
-      return this.getSafeUrl(lesson.videoUrl);
+    if (lesson.videoUrl && lesson.videoUrl.trim()) {
+      return this.processVideoUrl(lesson.videoUrl);
     }
-    return this.getSafeUrl('https://www.youtube.com/embed/dQw4w9WgXcQ');
+    return null;
   });
 
   ngOnInit() {
@@ -223,6 +223,24 @@ export class CoursePlayerComponent implements OnInit {
 
   closeReviewModal() {
     this.showReviewModal.set(false);
+  }
+
+  private processVideoUrl(url: string): SafeResourceUrl {
+    // YouTube
+    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const youtubeMatch = url.match(youtubeRegex);
+    if (youtubeMatch && youtubeMatch[1]) {
+      return this.getSafeUrl(`https://www.youtube.com/embed/${youtubeMatch[1]}?rel=0&modestbranding=1`);
+    }
+
+    // Vimeo
+    const vimeoRegex = /(?:vimeo\.com\/)(\d+)/;
+    const vimeoMatch = url.match(vimeoRegex);
+    if (vimeoMatch && vimeoMatch[1]) {
+      return this.getSafeUrl(`https://player.vimeo.com/video/${vimeoMatch[1]}`);
+    }
+
+    return this.getSafeUrl(url);
   }
 
   private getSafeUrl(url: string): SafeResourceUrl {
