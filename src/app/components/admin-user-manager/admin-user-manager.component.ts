@@ -89,11 +89,17 @@ export class AdminUserManagerComponent implements OnInit {
         return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
     }
 
-    getCourseNames(courseIds: string[]): string {
-        if (!courseIds || courseIds.length === 0) return 'Nenhum curso';
-        return courseIds.map(id => {
-            const course = this.courses.find(c => c._id === id);
-            return course?.title || id;
+    getCourseNames(enrolledCourses: any[]): string {
+        if (!enrolledCourses || enrolledCourses.length === 0) return 'Nenhum curso';
+
+        return enrolledCourses.map((courseOrId: any) => {
+            // If populated object, use title directly
+            if (typeof courseOrId === 'object' && courseOrId.title) {
+                return courseOrId.title;
+            }
+            // If string ID, find in courses array
+            const course = this.courses.find(c => c._id === courseOrId);
+            return course?.title || courseOrId;
         }).join(', ');
     }
 
@@ -177,9 +183,16 @@ export class AdminUserManagerComponent implements OnInit {
 
     editUser(user: User) {
         this.editingUser = user;
+
+        // Get enrolled course IDs - handle both populated objects and plain IDs
+        const enrolledIds = (user.enrolledCourses || []).map((course: any) => {
+            // If populated as object, get _id; otherwise it's already a string
+            return typeof course === 'object' ? course._id : course;
+        });
+
         // Initialize edit course selection
         this.courses.forEach(c => {
-            this.editCourseSelection[c._id] = user.enrolledCourses?.includes(c._id) || false;
+            this.editCourseSelection[c._id] = enrolledIds.includes(c._id);
         });
         this.isEditModalVisible = true;
     }
@@ -190,8 +203,8 @@ export class AdminUserManagerComponent implements OnInit {
                 .filter(([_, selected]) => selected)
                 .map(([id, _]) => id);
 
-            // Update via API
-            this.userService.updateUser(this.editingUser._id, { enrolledCourses: newCourses }).subscribe({
+            // Update via API - use the correct endpoint for updating courses
+            this.userService.updateUserCourses(this.editingUser._id, newCourses).subscribe({
                 next: (updated) => {
                     // Update local array
                     const idx = this.users.findIndex(u => u._id === this.editingUser?._id);
@@ -200,8 +213,10 @@ export class AdminUserManagerComponent implements OnInit {
                     }
                     this.message.success('Cursos atualizados com sucesso');
                     this.isEditModalVisible = false;
+                    this.editingUser = null;
                 },
                 error: (err) => {
+                    console.error('Error updating courses:', err);
                     this.message.error('Erro ao atualizar cursos');
                 }
             });

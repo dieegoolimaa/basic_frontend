@@ -71,7 +71,13 @@ export class HomeContentService {
     /**
      * Toggle banner active status
      */
-    toggleBannerStatus(id: string, isActive: boolean): Observable<HomeBanner> {
-        return this.api.put<HomeBanner>(`/banners/${id}`, { isActive });
+    toggleBannerStatus(id: string): Observable<HomeBanner> {
+        return this.api.put<HomeBanner>(`/banners/${id}/toggle`, {}).pipe(
+            tap(updated => {
+                this.bannersSignal.update(banners =>
+                    banners.map(b => b._id === id ? updated : b)
+                );
+            })
+        );
     }
 }

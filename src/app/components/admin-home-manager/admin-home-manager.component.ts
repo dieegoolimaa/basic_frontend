@@ -52,7 +52,6 @@ export class AdminHomeManagerComponent implements OnInit {
   bannerForm = {
     title: '',
     subtitle: '',
-    linkUrl: '',
     imageUrl: ''
   };
 
@@ -109,7 +108,7 @@ export class AdminHomeManagerComponent implements OnInit {
 
   showAddModal() {
     this.editingBanner = null;
-    this.bannerForm = { title: '', subtitle: '', linkUrl: '', imageUrl: '' };
+    this.bannerForm = { title: '', subtitle: '', imageUrl: '' };
     this.isModalVisible = true;
   }
 
@@ -118,7 +117,6 @@ export class AdminHomeManagerComponent implements OnInit {
     this.bannerForm = {
       title: banner.title || '',
       subtitle: banner.subtitle || '',
-      linkUrl: banner.linkUrl || '',
       imageUrl: banner.imageUrl || ''
     };
     this.isModalVisible = true;
@@ -170,7 +168,7 @@ export class AdminHomeManagerComponent implements OnInit {
   }
 
   toggleStatus(banner: HomeBanner) {
-    this.homeContentService.toggleBannerStatus(banner._id, !banner.isActive).subscribe({
+    this.homeContentService.toggleBannerStatus(banner._id).subscribe({
       next: (updated) => {
         const idx = this.banners.findIndex(b => b._id === updated._id);
         if (idx >= 0) this.banners[idx] = updated;

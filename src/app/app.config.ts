@@ -12,7 +12,9 @@ import {
   PictureOutline, ReadOutline, ArrowLeftOutline, UserOutline, CloudUploadOutline,
   MailOutline, LockOutline, AppstoreOutline, QuestionCircleOutline, FileTextOutline,
   ExperimentOutline, FileOutline, SaveOutline, CameraOutline, FormOutline, CloseOutline,
-  LoadingOutline
+  LoadingOutline, EyeOutline, EyeInvisibleOutline, InfoCircleOutline,
+  UserAddOutline, StopOutline, TeamOutline, SendOutline, SyncOutline, SearchOutline,
+  SettingOutline, BellOutline, StarOutline, StarFill, HeartOutline, DownloadOutline
 } from '@ant-design/icons-angular/icons';
 
 import { routes } from './app.routes';
@@ -28,7 +30,9 @@ const icons = [
   PictureOutline, ReadOutline, ArrowLeftOutline, UserOutline, CloudUploadOutline,
   MailOutline, LockOutline, AppstoreOutline, QuestionCircleOutline, FileTextOutline,
   ExperimentOutline, FileOutline, SaveOutline, CameraOutline, FormOutline, CloseOutline,
-  LoadingOutline
+  LoadingOutline, EyeOutline, EyeInvisibleOutline, InfoCircleOutline,
+  UserAddOutline, StopOutline, TeamOutline, SendOutline, SyncOutline, SearchOutline,
+  SettingOutline, BellOutline, StarOutline, StarFill, HeartOutline, DownloadOutline
 ];
 
 export const appConfig: ApplicationConfig = {

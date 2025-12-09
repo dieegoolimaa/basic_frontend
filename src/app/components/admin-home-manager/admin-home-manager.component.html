@@ -4,7 +4,7 @@
             <h1 class="page-title">Gestão da Home</h1>
             <p class="page-subtitle">Configure os banners rotativos da página principal.</p>
         </div>
-        <button nz-button nzType="primary" (click)="showAddModal()">
+        <button class="mt-20" nz-button nzType="primary" (click)="showAddModal()">
             <span nz-icon nzType="plus"></span>
             Novo Banner
         </button>
@@ -12,8 +12,8 @@
 
     <!-- Banners List -->
     <div class="table-card">
-        <nz-table #bannerTable [nzData]="banners" [nzBordered]="false" [nzShowPagination]="false" 
-                  [nzLoading]="isLoading" nzSize="middle">
+        <nz-table #bannerTable [nzData]="banners" [nzBordered]="false" [nzShowPagination]="false"
+            [nzLoading]="isLoading" nzSize="middle">
             <thead>
                 <tr>
                     <th nzWidth="140px">Visualização</th>
@@ -38,16 +38,16 @@
                         </nz-tag>
                     </td>
                     <td nzAlign="center">
-                        <button nz-button nzType="text" nzSize="small" (click)="showEditModal(data)" 
-                                nz-tooltip nzTooltipTitle="Editar">
+                        <button nz-button nzType="text" nzSize="small" (click)="showEditModal(data)" nz-tooltip
+                            nzTooltipTitle="Editar">
                             <span nz-icon nzType="edit"></span>
                         </button>
-                        <button nz-button nzType="text" nzSize="small" (click)="toggleStatus(data)"
-                                nz-tooltip [nzTooltipTitle]="data.isActive ? 'Desativar' : 'Ativar'">
+                        <button nz-button nzType="text" nzSize="small" (click)="toggleStatus(data)" nz-tooltip
+                            [nzTooltipTitle]="data.isActive ? 'Desativar' : 'Ativar'">
                             <span nz-icon [nzType]="data.isActive ? 'eye-invisible' : 'eye'"></span>
                         </button>
                         <button nz-button nzType="text" nzDanger nzSize="small" (click)="removeBanner(data._id)"
-                                nz-tooltip nzTooltipTitle="Excluir">
+                            nz-tooltip nzTooltipTitle="Excluir">
                             <span nz-icon nzType="delete"></span>
                         </button>
                     </td>
@@ -67,50 +67,70 @@
 </div>
 
 <!-- Add/Edit Modal -->
-<nz-modal [(nzVisible)]="isModalVisible" 
-          [nzTitle]="editingBanner ? 'Editar Banner' : 'Novo Banner'"
-          [nzFooter]="modalFooter"
-          (nzOnCancel)="closeModal()"
-          nzWidth="600px">
+<nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="editingBanner ? 'Editar Banner' : 'Novo Banner'"
+    [nzFooter]="modalFooter" (nzOnCancel)="closeModal()" nzWidth="640px" nzCentered>
     <ng-container *nzModalContent>
         <div class="banner-form">
-            <div class="form-group">
-                <label>Imagem do Banner *</label>
-                <nz-upload nzType="drag" [nzCustomRequest]="handleUpload" [nzShowUploadList]="false" 
-                           class="conceptual-upload">
+            <!-- Image Upload Section -->
+            <div class="form-section">
+                <label class="form-label required">Imagem do Banner</label>
+                <nz-upload nzType="drag" [nzCustomRequest]="handleUpload" [nzShowUploadList]="false"
+                    class="banner-upload" [class.has-image]="bannerForm.imageUrl">
                     <div class="upload-content">
                         @if (bannerForm.imageUrl) {
+                        <div class="preview-container">
                             <img [src]="bannerForm.imageUrl" alt="Preview" class="upload-preview" />
-                            <p class="upload-hint">Clique para trocar a imagem</p>
+                            <div class="preview-overlay">
+                                <span nz-icon nzType="camera" class="overlay-icon"></span>
+                                <span>Alterar imagem</span>
+                            </div>
+                        </div>
                         } @else {
+                        <div class="upload-placeholder">
                             <span nz-icon nzType="cloud-upload" class="upload-icon"></span>
                             <p class="upload-text">Arraste ou clique para upload</p>
-                            <p class="upload-hint">1920x600px recomendado • JPG/PNG</p>
+                            <p class="upload-hint">
+                                <strong>Dimensão:</strong> 1920 × 600 pixels<br>
+                                <strong>Formatos:</strong> JPG, PNG ou WebP
+                            </p>
+                        </div>
                         }
                     </div>
                 </nz-upload>
             </div>
 
-            <div class="form-group">
-                <label>Título</label>
-                <input nz-input [(ngModel)]="bannerForm.title" placeholder="Título do Banner" />
+            <!-- Title & Subtitle Section -->
+            <div class="form-row">
+                <div class="form-section flex-1">
+                    <label class="form-label">Título</label>
+                    <input nz-input [(ngModel)]="bannerForm.title" placeholder="Ex: Transforme sua carreira"
+                        maxlength="60" />
+                    <span class="input-hint">{{ (bannerForm.title || '').length }}/60 caracteres</span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Subtítulo</label>
-                <input nz-input [(ngModel)]="bannerForm.subtitle" placeholder="Subtítulo (opcional)" />
+            <div class="form-section">
+                <label class="form-label">Subtítulo</label>
+                <input nz-input [(ngModel)]="bannerForm.subtitle" placeholder="Ex: Cursos profissionais com certificado"
+                    maxlength="100" />
+                <span class="input-hint">{{ (bannerForm.subtitle || '').length }}/100 caracteres</span>
             </div>
 
-            <div class="form-group">
-                <label>Link (URL)</label>
-                <input nz-input [(ngModel)]="bannerForm.linkUrl" placeholder="https://..." />
+            <!-- Info Note -->
+            <div class="info-note">
+                <span nz-icon nzType="info-circle"></span>
+                <span>Os banners direcionam automaticamente para a página de formações.</span>
             </div>
         </div>
     </ng-container>
     <ng-template #modalFooter>
-        <button nz-button nzType="default" (click)="closeModal()">Cancelar</button>
-        <button nz-button nzType="primary" (click)="saveBanner()" [disabled]="!bannerForm.imageUrl">
-            {{ editingBanner ? 'Salvar' : 'Criar Banner' }}
-        </button>
+        <div class="modal-footer">
+            <button nz-button nzType="default" (click)="closeModal()">Cancelar</button>
+            <button nz-button nzType="primary" (click)="saveBanner()" [disabled]="!bannerForm.imageUrl"
+                [nzLoading]="isLoading">
+                <span nz-icon nzType="check"></span>
+                {{ editingBanner ? 'Salvar Alterações' : 'Criar Banner' }}
+            </button>
+        </div>
     </ng-template>
 </nz-modal>
