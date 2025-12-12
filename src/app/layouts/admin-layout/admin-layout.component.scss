@@ -104,36 +104,84 @@ $border: #ebe8e5;
             .header-content {
                 flex-wrap: wrap;
                 height: auto;
-                padding: 0.6rem 0.8rem;
-                gap: 0.5rem;
+                padding: 0.5rem 0.75rem;
+                gap: 0.4rem;
             }
             .logo { 
                 order: 1; 
-                font-size: 0.9rem;
+                font-size: 1rem;
+                font-weight: 600;
             }
             .header-actions { 
                 order: 2; 
                 margin-left: auto; 
                 
                 .back-link {
-                    font-size: 0.75rem;
-                    padding: 0.3rem 0.6rem;
+                    font-size: 0.7rem;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 4px;
                 }
             }
             .nav-tabs { 
                 order: 3; 
                 width: 100%; 
-                justify-content: space-around; 
-                border-top: 1px solid $border;
-                padding-top: 0.6rem;
-                margin-top: 0.3rem;
-                gap: 0.2rem;
+                justify-content: space-between;
+                background: rgba(0,0,0,0.02);
+                margin: 0.4rem -0.75rem -0.5rem;
+                padding: 0.5rem 0.5rem 0.4rem;
+                gap: 0;
+                border-radius: 0;
                 
                 .tab-item {
-                    font-size: 0.75rem;
-                    padding: 0.4rem 0.7rem;
+                    font-size: 0.65rem;
+                    padding: 0.5rem 0.4rem;
                     flex-direction: column;
-                    gap: 2px;
+                    gap: 3px;
+                    flex: 1;
+                    text-align: center;
+                    border-radius: 6px;
+                    min-height: 50px;
+                    justify-content: center;
+                    
+                    span[nz-icon] {
+                        font-size: 1.1rem;
+                    }
+
+                    &.active {
+                        background: rgba(255,255,255,0.9);
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                    }
+                }
+            }
+        }
+        .admin-main { 
+            padding: 1rem 0.75rem; 
+            min-height: calc(100vh - 110px);
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-layout {
+        .admin-header {
+            .header-content {
+                padding: 0.4rem 0.5rem;
+            }
+            .logo {
+                font-size: 0.9rem;
+            }
+            .header-actions .back-link {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.4rem;
+            }
+            .nav-tabs {
+                margin: 0.3rem -0.5rem -0.4rem;
+                padding: 0.4rem 0.3rem 0.3rem;
+                
+                .tab-item {
+                    font-size: 0.6rem;
+                    padding: 0.4rem 0.3rem;
+                    min-height: 46px;
                     
                     span[nz-icon] {
                         font-size: 1rem;
@@ -142,24 +190,9 @@ $border: #ebe8e5;
             }
         }
         .admin-main { 
-            padding: 1rem 0.8rem; 
+            padding: 0.75rem 0.5rem;
         }
     }
 }
 
-@media (max-width: 480px) {
-    .admin-layout {
-        .admin-header {
-            .nav-tabs {
-                .tab-item {
-                    font-size: 0.7rem;
-                    padding: 0.35rem 0.5rem;
-                }
-            }
-        }
-        .admin-main { 
-            padding: 0.8rem 0.5rem; 
-        }
-    }
-}
 
