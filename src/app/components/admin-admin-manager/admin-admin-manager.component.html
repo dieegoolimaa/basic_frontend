@@ -9,11 +9,11 @@
         </button>
     </div>
 
-    <!-- Stats Card -->
+    <!-- Stats Cards -->
     <div class="stats-row">
         <div class="stat-card">
-            <span class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <span nz-icon nzType="crown" style="color: #fff;"></span>
+            <span class="stat-icon" style="background: #f0e8f4;">
+                <span nz-icon nzType="safety-certificate" style="color: #722ed1;"></span>
             </span>
             <div class="stat-info">
                 <span class="stat-number">{{ admins.length }}</span>
@@ -33,7 +33,7 @@
 
         <div *ngIf="admins.length === 0" class="empty-state">
             <div class="empty-icon-wrapper">
-                <span nz-icon nzType="crown" class="empty-icon"></span>
+                <span nz-icon nzType="safety-certificate" class="empty-icon"></span>
             </div>
             <p class="empty-title">Nenhum administrador cadastrado</p>
             <p class="empty-hint">Crie o primeiro administrador para gerenciar o sistema.</p>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="admins-grid" *ngIf="admins.length > 0">
-            <div *ngFor="let admin of admins" class="admin-card" [class.current-user]="admin._id === currentUserId">
+            <div *ngFor="let admin of admins" class="admin-card">
                 <div class="admin-header">
                     <div class="admin-avatar">{{ getInitials(admin.name) }}</div>
                     <div class="admin-badge" *ngIf="admin._id === currentUserId">
@@ -53,6 +53,7 @@
                 <div class="admin-body">
                     <h4 class="admin-name">{{ admin.name }}</h4>
                     <p class="admin-email">{{ admin.email }}</p>
+                    <span class="admin-role">Administrador</span>
                 </div>
                 <div class="admin-footer">
                     <button *ngIf="canDelete(admin)" nz-button nzType="text" nzDanger nzSize="small" nz-popconfirm
@@ -100,7 +101,7 @@
             <button nz-button nzType="primary" nzBlock nzSize="large"
                 [disabled]="!newAdminName || !newAdminEmail || !newAdminPassword" [nzLoading]="isCreating"
                 (click)="createAdmin()" class="btn-create-admin">
-                <span nz-icon nzType="crown"></span>
+                <span nz-icon nzType="safety-certificate"></span>
                 Criar Administrador
             </button>
         </div>

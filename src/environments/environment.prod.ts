@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
-    // Update this URL after deploying backend to Render
-    apiUrl: 'http://localhost:3000/api',
+    // TODO: Update this URL with your Render backend URL
+    // Example: https://basic-backend.onrender.com/api
+    apiUrl: 'https://basic-backend.onrender.com/api',
 };

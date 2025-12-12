@@ -1,4 +1,7 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/nail-art-academy/browser",
+  "framework": null,
   "rewrites": [
     {
       "source": "/(.*)",
