@@ -113,4 +113,11 @@ export class UserService {
     deleteUser(id: string): Observable<any> {
         return this.api.delete(`/users/${id}`);
     }
+
+    /**
+     * Change password (for first-login flow)
+     */
+    changePassword(newPassword: string): Observable<{ message: string }> {
+        return this.api.post<{ message: string }>('/users/change-password', { newPassword });
+    }
 }

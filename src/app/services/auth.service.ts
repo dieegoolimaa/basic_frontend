@@ -62,6 +62,14 @@ export class AuthService {
     }
 
     /**
+     * Update current user state (used after password change)
+     */
+    updateCurrentUser(user: User) {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUser.set(user);
+    }
+
+    /**
      * VALIDATE INVITE CODE - Integrado com backend
      */
     validateInviteCode(code: string): Observable<{ valid: boolean, courseIds?: string[] }> {

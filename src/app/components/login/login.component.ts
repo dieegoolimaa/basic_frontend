@@ -50,8 +50,16 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (response) => {
-        this.message.success('Login realizado com sucesso!');
         this.isLoading = false;
+
+        // Check if user must change password (first-login flow)
+        if (response.user.mustChangePassword) {
+          this.message.info('Por segurança, defina uma nova senha.');
+          this.router.navigate(['/alterar-senha']);
+          return;
+        }
+
+        this.message.success('Login realizado com sucesso!');
 
         // If there's a specific return URL, use it
         if (this.returnUrl !== '/formacoes') {

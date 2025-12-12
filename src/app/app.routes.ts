@@ -12,9 +12,16 @@ import { RegisterComponent } from './components/register/register.component';
 import { CourseListComponent } from './components/course-list/course-list.component';
 import { AdminCourseManagerComponent } from './components/admin-course-manager/admin-course-manager.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { authGuard, adminGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+    // Change Password Route (requires auth but no layout)
+    {
+        path: 'alterar-senha',
+        component: ChangePasswordComponent,
+        canActivate: [authGuard]
+    },
     // Public Routes
     {
         path: '',
@@ -46,3 +53,4 @@ export const routes: Routes = [
     },
     { path: '**', redirectTo: '' }
 ];
+

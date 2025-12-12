@@ -64,6 +64,7 @@ export interface User {
     city?: string;
     role: 'student' | 'admin';
     isActive: boolean;
+    mustChangePassword?: boolean;
     enrolledCourses?: string[];
     completedLessons?: string[];
     courseProgress?: { [courseId: string]: number };
