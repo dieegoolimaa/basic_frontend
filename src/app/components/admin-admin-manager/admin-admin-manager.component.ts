@@ -41,7 +41,6 @@ export class AdminAdminManagerComponent implements OnInit {
     isCreateModalVisible = false;
     newAdminName = '';
     newAdminEmail = '';
-    newAdminPassword = '';
     isCreating = false;
 
     ngOnInit() {
@@ -74,7 +73,6 @@ export class AdminAdminManagerComponent implements OnInit {
         this.isCreateModalVisible = true;
         this.newAdminName = '';
         this.newAdminEmail = '';
-        this.newAdminPassword = '';
         this.isCreating = false;
     }
 
@@ -83,13 +81,8 @@ export class AdminAdminManagerComponent implements OnInit {
     }
 
     createAdmin() {
-        if (!this.newAdminName || !this.newAdminEmail || !this.newAdminPassword) {
+        if (!this.newAdminName || !this.newAdminEmail) {
             this.message.warning('Preencha todos os campos');
-            return;
-        }
-
-        if (this.newAdminPassword.length < 6) {
-            this.message.warning('A senha deve ter no mínimo 6 caracteres');
             return;
         }
 
@@ -97,12 +90,11 @@ export class AdminAdminManagerComponent implements OnInit {
 
         this.userService.createAdmin({
             name: this.newAdminName,
-            email: this.newAdminEmail,
-            password: this.newAdminPassword
+            email: this.newAdminEmail
         }).subscribe({
             next: (admin) => {
                 this.admins.push(admin);
-                this.message.success('Administrador criado com sucesso!');
+                this.message.success('Administrador criado! Credenciais enviadas por email.');
                 this.closeCreateModal();
                 this.isCreating = false;
             },

@@ -77,7 +77,8 @@
     <ng-container *nzModalContent>
         <div class="create-form">
             <div class="form-intro">
-                <p>Preencha os dados do novo administrador. Ele terá acesso completo ao painel de gerenciamento.</p>
+                <p>Preencha os dados do novo administrador. Uma senha será gerada automaticamente e enviada para o email
+                    informado.</p>
             </div>
 
             <div class="form-group">
@@ -89,20 +90,13 @@
                 <label>Email *</label>
                 <input nz-input [(ngModel)]="newAdminEmail" placeholder="email@exemplo.com" type="email"
                     nzSize="large" />
+                <small class="field-hint">A senha de acesso será enviada para este email</small>
             </div>
 
-            <div class="form-group">
-                <label>Senha *</label>
-                <input nz-input [(ngModel)]="newAdminPassword" placeholder="Mínimo 6 caracteres" type="password"
-                    nzSize="large" />
-                <small class="field-hint">A senha deve ter no mínimo 6 caracteres</small>
-            </div>
-
-            <button nz-button nzType="primary" nzBlock nzSize="large"
-                [disabled]="!newAdminName || !newAdminEmail || !newAdminPassword" [nzLoading]="isCreating"
-                (click)="createAdmin()" class="btn-create-admin">
-                <span nz-icon nzType="safety-certificate"></span>
-                Criar Administrador
+            <button nz-button nzType="primary" nzBlock nzSize="large" [disabled]="!newAdminName || !newAdminEmail"
+                [nzLoading]="isCreating" (click)="createAdmin()" class="btn-create-admin">
+                <span nz-icon nzType="mail"></span>
+                Criar e Enviar Credenciais
             </button>
         </div>
     </ng-container>

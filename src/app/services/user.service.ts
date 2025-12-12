@@ -103,7 +103,7 @@ export class UserService {
     /**
      * Create new admin user (Admin only)
      */
-    createAdmin(data: { name: string; email: string; password: string }): Observable<User> {
+    createAdmin(data: { name: string; email: string }): Observable<User> {
         return this.api.post<User>('/users/admins', data);
     }
 
