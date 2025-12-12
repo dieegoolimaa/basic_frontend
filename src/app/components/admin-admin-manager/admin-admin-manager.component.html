@@ -1,0 +1,108 @@
+<div class="page-container fade-in">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Gerenciar Administradores</h1>
+            <p class="page-subtitle">Crie e gerencie contas de administradores do sistema.</p>
+        </div>
+        <button nz-button nzType="primary" class="btn-create" (click)="showCreateModal()">
+            <span nz-icon nzType="plus"></span> Novo Administrador
+        </button>
+    </div>
+
+    <!-- Stats Card -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <span class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <span nz-icon nzType="crown" style="color: #fff;"></span>
+            </span>
+            <div class="stat-info">
+                <span class="stat-number">{{ admins.length }}</span>
+                <span class="stat-label">Administradores</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admins Grid -->
+    <div class="section-card">
+        <div class="section-header-row">
+            <h3 class="section-heading">
+                <span nz-icon nzType="team"></span>
+                Equipe Administrativa
+            </h3>
+        </div>
+
+        <div *ngIf="admins.length === 0" class="empty-state">
+            <div class="empty-icon-wrapper">
+                <span nz-icon nzType="crown" class="empty-icon"></span>
+            </div>
+            <p class="empty-title">Nenhum administrador cadastrado</p>
+            <p class="empty-hint">Crie o primeiro administrador para gerenciar o sistema.</p>
+            <button nz-button nzType="primary" (click)="showCreateModal()">
+                <span nz-icon nzType="plus"></span> Criar Administrador
+            </button>
+        </div>
+
+        <div class="admins-grid" *ngIf="admins.length > 0">
+            <div *ngFor="let admin of admins" class="admin-card" [class.current-user]="admin._id === currentUserId">
+                <div class="admin-header">
+                    <div class="admin-avatar">{{ getInitials(admin.name) }}</div>
+                    <div class="admin-badge" *ngIf="admin._id === currentUserId">
+                        <span nz-icon nzType="user"></span> Você
+                    </div>
+                </div>
+                <div class="admin-body">
+                    <h4 class="admin-name">{{ admin.name }}</h4>
+                    <p class="admin-email">{{ admin.email }}</p>
+                </div>
+                <div class="admin-footer">
+                    <button *ngIf="canDelete(admin)" nz-button nzType="text" nzDanger nzSize="small" nz-popconfirm
+                        nzPopconfirmTitle="Tem certeza que deseja remover este administrador?"
+                        nzPopconfirmPlacement="top" (nzOnConfirm)="deleteAdmin(admin)" nz-tooltip
+                        nzTooltipTitle="Remover administrador">
+                        <span nz-icon nzType="delete"></span>
+                    </button>
+                    <span *ngIf="!canDelete(admin)" class="protected-text">
+                        <span nz-icon nzType="lock"></span> Protegido
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Admin Modal -->
+<nz-modal [(nzVisible)]="isCreateModalVisible" nzTitle="Criar Novo Administrador" [nzFooter]="null"
+    (nzOnCancel)="closeCreateModal()" nzWidth="480px" nzCentered>
+    <ng-container *nzModalContent>
+        <div class="create-form">
+            <div class="form-intro">
+                <p>Preencha os dados do novo administrador. Ele terá acesso completo ao painel de gerenciamento.</p>
+            </div>
+
+            <div class="form-group">
+                <label>Nome Completo *</label>
+                <input nz-input [(ngModel)]="newAdminName" placeholder="Nome do administrador" nzSize="large" />
+            </div>
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input nz-input [(ngModel)]="newAdminEmail" placeholder="email@exemplo.com" type="email"
+                    nzSize="large" />
+            </div>
+
+            <div class="form-group">
+                <label>Senha *</label>
+                <input nz-input [(ngModel)]="newAdminPassword" placeholder="Mínimo 6 caracteres" type="password"
+                    nzSize="large" />
+                <small class="field-hint">A senha deve ter no mínimo 6 caracteres</small>
+            </div>
+
+            <button nz-button nzType="primary" nzBlock nzSize="large"
+                [disabled]="!newAdminName || !newAdminEmail || !newAdminPassword" [nzLoading]="isCreating"
+                (click)="createAdmin()" class="btn-create-admin">
+                <span nz-icon nzType="crown"></span>
+                Criar Administrador
+            </button>
+        </div>
+    </ng-container>
+</nz-modal>

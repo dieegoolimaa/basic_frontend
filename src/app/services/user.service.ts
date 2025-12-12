@@ -90,4 +90,27 @@ export class UserService {
     toggleUserStatus(id: string, isActive: boolean): Observable<User> {
         return this.api.put<User>(`/users/${id}/active`, { isActive });
     }
+
+    // ===== ADMIN MANAGEMENT =====
+
+    /**
+     * Get all admin users (Admin only)
+     */
+    getAllAdmins(): Observable<User[]> {
+        return this.api.get<User[]>('/users/admins');
+    }
+
+    /**
+     * Create new admin user (Admin only)
+     */
+    createAdmin(data: { name: string; email: string; password: string }): Observable<User> {
+        return this.api.post<User>('/users/admins', data);
+    }
+
+    /**
+     * Delete user (Admin only)
+     */
+    deleteUser(id: string): Observable<any> {
+        return this.api.delete(`/users/${id}`);
+    }
 }

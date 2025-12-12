@@ -4,6 +4,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { HomeComponent } from './components/home/home.component';
 import { AdminHomeManagerComponent } from './components/admin-home-manager/admin-home-manager.component';
 import { AdminUserManagerComponent } from './components/admin-user-manager/admin-user-manager.component';
+import { AdminAdminManagerComponent } from './components/admin-admin-manager/admin-admin-manager.component';
 import { CoursePlayerComponent } from './components/course-player/course-player.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { LoginComponent } from './components/login/login.component';
@@ -40,6 +41,7 @@ export const routes: Routes = [
             { path: 'home', component: AdminHomeManagerComponent },
             { path: 'courses', component: AdminCourseManagerComponent },
             { path: 'users', component: AdminUserManagerComponent },
+            { path: 'admins', component: AdminAdminManagerComponent },
         ]
     },
     { path: '**', redirectTo: '' }
