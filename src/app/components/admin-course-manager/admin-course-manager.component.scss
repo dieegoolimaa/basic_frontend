@@ -574,19 +574,26 @@ $shadow-hover: 0 6px 20px rgba(0,0,0,0.06);
     }
     .table-card {
         border-radius: 10px;
+        overflow-x: auto;
         
         ::ng-deep .ant-table-thead > tr > th { 
             font-size: 0.6rem; 
             padding: 10px 8px;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
         ::ng-deep .ant-table-tbody > tr > td { 
-            padding: 10px 8px; 
+            padding: 10px 8px;
+            vertical-align: middle;
         }
-        .thumb-wrapper { width: 55px; height: 38px; }
+        .thumb-wrapper { 
+            width: 65px; 
+            height: 45px; 
+            border-radius: 6px;
+        }
         .course-info {
-            .course-title { font-size: 0.85rem; }
-            .course-desc { max-width: 150px; font-size: 0.75rem; }
+            .course-title { font-size: 0.9rem; font-weight: 500; }
+            .course-desc { max-width: 180px; font-size: 0.75rem; }
         }
     }
     .editor-header { 
