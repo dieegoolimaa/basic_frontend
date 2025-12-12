@@ -1,5 +1,6 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "rm -rf node_modules/.cache && npm run build",
+  "installCommand": "npm ci",
   "outputDirectory": "dist/nail-art-academy/browser",
   "framework": null,
   "rewrites": [
