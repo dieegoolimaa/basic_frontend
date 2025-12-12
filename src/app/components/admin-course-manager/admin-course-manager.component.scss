@@ -558,19 +558,83 @@ $shadow-hover: 0 6px 20px rgba(0,0,0,0.06);
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .page-header {
         flex-direction: column;
         align-items: flex-start;
-        .btn-create { width: 100%; }
+        margin-bottom: 1.5rem;
+        
+        .page-title { font-size: 1.5rem; }
+        .page-subtitle { font-size: 0.85rem; }
+        .btn-create { 
+            width: 100%;
+            justify-content: center;
+            height: 44px;
+        }
     }
     .table-card {
-        ::ng-deep .ant-table-thead > tr > th { font-size: 0.6rem; padding: 10px 8px; }
-        ::ng-deep .ant-table-tbody > tr > td { padding: 10px 8px; }
-        .thumb-wrapper { width: 50px; height: 35px; }
-        .course-info .course-desc { max-width: 120px; }
+        border-radius: 10px;
+        
+        ::ng-deep .ant-table-thead > tr > th { 
+            font-size: 0.6rem; 
+            padding: 10px 8px;
+            letter-spacing: 0.5px;
+        }
+        ::ng-deep .ant-table-tbody > tr > td { 
+            padding: 10px 8px; 
+        }
+        .thumb-wrapper { width: 55px; height: 38px; }
+        .course-info {
+            .course-title { font-size: 0.85rem; }
+            .course-desc { max-width: 150px; font-size: 0.75rem; }
+        }
     }
-    .editor-header { flex-wrap: wrap; }
-    .editor-main { padding: 1.2rem; }
-    .editor-main .lesson-editor .lesson-title-input { font-size: 1.2rem; }
+    .editor-header { 
+        flex-wrap: wrap;
+        .editor-title { font-size: 1rem; }
+    }
+    .editor-sidebar {
+        max-height: 280px;
+        
+        .form-section, .structure-section { padding: 1rem; }
+        .form-group label { font-size: 0.65rem; }
+    }
+    .editor-main { 
+        padding: 1.2rem;
+        
+        .lesson-editor {
+            .lesson-title-input { font-size: 1.2rem; }
+            .lesson-meta { gap: 0.6rem; }
+            .content-section label { font-size: 0.65rem; }
+        }
+    }
 }
+
+@media (max-width: 480px) {
+    .page-header {
+        .page-title { font-size: 1.3rem; }
+    }
+    .table-card {
+        ::ng-deep .ant-table-thead > tr > th { 
+            font-size: 0.55rem; 
+            padding: 8px 5px; 
+        }
+        ::ng-deep .ant-table-tbody > tr > td { 
+            padding: 8px 5px; 
+        }
+        .thumb-wrapper { width: 45px; height: 32px; }
+        .course-info .course-desc { display: none; }
+        .priority-circle { width: 24px; height: 24px; font-size: 0.7rem; }
+    }
+    .editor-sidebar {
+        max-height: 250px;
+        .form-section, .structure-section { padding: 0.8rem; }
+    }
+    .editor-main { 
+        padding: 1rem;
+        
+        .lesson-editor .lesson-title-input { font-size: 1.1rem; }
+        .empty-editor .empty-icon { font-size: 2rem; }
+    }
+}
+

@@ -510,3 +510,29 @@ $shadow: 0 2px 12px rgba(0,0,0,0.03);
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 480px) {
+    .page-header { 
+        .page-title { font-size: 1.3rem; }
+        .page-subtitle { font-size: 0.8rem; }
+    }
+    
+    .upload-card {
+        padding: 0.8rem;
+        border-radius: 10px;
+        .conceptual-upload .upload-content { padding: 1.5rem 0.5rem; }
+    }
+    
+    .table-card {
+        padding: 0.5rem;
+        .banner-preview { width: 60px; height: 28px; }
+    }
+    
+    .card-header {
+        padding: 0.8rem;
+        h3 { font-size: 0.95rem; }
+    }
+    
+    .form-group label { font-size: 0.65rem; }
+}
+

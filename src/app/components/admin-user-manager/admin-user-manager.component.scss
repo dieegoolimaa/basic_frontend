@@ -493,8 +493,99 @@ $shadow: 0 2px 12px rgba(0,0,0,0.04);
 
 /* Responsive */
 @media (max-width: 768px) {
-    .page-header { flex-direction: column; align-items: flex-start; }
-    .stats-row { grid-template-columns: 1fr; }
-    .users-grid { grid-template-columns: 1fr; }
-    .invite-card { flex-wrap: wrap; }
+    .page-header { 
+        flex-direction: column; 
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        
+        .page-title { font-size: 1.5rem; }
+        .page-subtitle { font-size: 0.85rem; }
+        .btn-invite { 
+            width: 100%; 
+            justify-content: center;
+            height: 44px;
+        }
+    }
+    .stats-row { 
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        
+        .stat-card {
+            padding: 1rem;
+            
+            .stat-icon { width: 42px; height: 42px; font-size: 1.2rem; }
+            .stat-info {
+                .stat-number { font-size: 1.5rem; }
+                .stat-label { font-size: 0.7rem; }
+            }
+        }
+    }
+    .section-card { 
+        padding: 1rem;
+        border-radius: 10px;
+    }
+    .users-grid { 
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    .user-card {
+        .user-header {
+            padding: 0.8rem;
+            .user-avatar { width: 42px; height: 42px; font-size: 1rem; }
+        }
+        .user-body {
+            padding: 0.8rem;
+            .user-name { font-size: 0.95rem; }
+            .user-stats { flex-direction: column; gap: 0.5rem; }
+            .stat-item { font-size: 0.75rem; }
+        }
+        .user-footer { padding: 0.6rem; }
+    }
+    .invite-card { 
+        flex-wrap: wrap;
+        padding: 0.8rem;
+        
+        .invite-info {
+            width: 100%;
+            .invite-code { font-size: 1.1rem; }
+        }
+        .invite-courses { 
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .invite-actions {
+            width: 100%;
+            margin-top: 0.5rem;
+            justify-content: flex-end;
+        }
+    }
+    .empty-state {
+        padding: 2rem 1rem;
+        .empty-icon-wrapper { width: 60px; height: 60px; }
+        .empty-icon { font-size: 2rem; }
+        .empty-title { font-size: 1rem; }
+        .empty-hint { font-size: 0.85rem; }
+    }
+    .success-state {
+        h3 { font-size: 1.3rem; }
+        .code-display {
+            padding: 1rem;
+            .code-value span:first-child { font-size: 1.4rem; }
+        }
+        .success-actions { flex-direction: column; }
+    }
 }
+
+@media (max-width: 480px) {
+    .page-header {
+        .page-title { font-size: 1.3rem; }
+    }
+    .section-card { padding: 0.8rem; }
+    .user-card {
+        .user-header { padding: 0.7rem; }
+        .user-body { padding: 0.7rem; }
+    }
+    .invite-card { padding: 0.7rem; }
+}
+
