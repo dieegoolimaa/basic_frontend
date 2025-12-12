@@ -5,35 +5,59 @@ $accent: #d4a5a5;
 $text-light: #888;
 $radius: 12px;
 
+/* Host element - full screen fixed */
+:host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
 .login-wrapper {
-    min-height: 100vh;
-    min-height: 100dvh; /* Dynamic viewport height for mobile */
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: $bg-color;
     padding: 20px;
     box-sizing: border-box;
+    overflow: hidden;
     
     .login-card {
         width: 100%;
-        max-width: 400px;
+        max-width: 380px;
         background: #fff;
         border-radius: $radius;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        padding: 36px 32px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
         text-align: center;
         
         .brand-header {
-            margin-bottom: 2.5rem;
-            .logo { font-size: 2rem; font-weight: 700; color: $primary; letter-spacing: -1px; margin-bottom: 0.5rem; }
-            .subtitle { color: $text-light; font-size: 0.95rem; font-weight: 400; }
+            margin-bottom: 2rem;
+            .logo { 
+                font-size: 2rem; 
+                font-weight: 600; 
+                color: $primary; 
+                letter-spacing: -1px; 
+                margin-bottom: 0.4rem;
+                font-family: 'Poppins', sans-serif;
+            }
+            .subtitle { 
+                color: $text-light; 
+                font-size: 0.9rem; 
+                font-weight: 400;
+                margin: 0;
+            }
         }
         
         .login-form {
             text-align: left;
             
-            nz-form-item { margin-bottom: 1.5rem; }
+            nz-form-item { margin-bottom: 1.25rem; }
             
             ::ng-deep .ant-input-affix-wrapper {
                 border: none;
@@ -46,20 +70,20 @@ $radius: 12px;
             }
             
             .custom-input {
-                font-size: 1rem;
-                &::placeholder { color: #ccc; }
+                font-size: 0.95rem;
+                &::placeholder { color: #bbb; }
             }
             
-            .input-icon { color: $accent; font-size: 1.1rem; margin-right: 10px; }
+            .input-icon { color: $accent; font-size: 1rem; margin-right: 10px; }
 
             .forgot-password {
                 text-align: right;
-                margin-bottom: 1.5rem;
-                margin-top: -0.5rem;
+                margin-bottom: 1.25rem;
+                margin-top: -0.25rem;
 
                 .forgot-link {
                     color: $accent;
-                    font-size: 0.85rem;
+                    font-size: 0.8rem;
                     text-decoration: none;
                     transition: color 0.2s;
 
@@ -71,33 +95,33 @@ $radius: 12px;
             }
             
             .btn-submit {
-                height: 48px;
+                height: 46px;
                 background: $primary;
                 border: none;
                 border-radius: 8px;
-                font-size: 1rem;
+                font-size: 0.95rem;
                 font-weight: 500;
-                letter-spacing: 0.5px;
-                box-shadow: 0 4px 12px rgba(35, 34, 34, 0.2);
+                letter-spacing: 0.3px;
+                box-shadow: 0 4px 12px rgba(35, 34, 34, 0.15);
                 transition: transform 0.2s, box-shadow 0.2s;
                 
                 &:hover {
                     background: lighten($primary, 5%);
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 16px rgba(35, 34, 34, 0.3);
+                    transform: translateY(-1px);
+                    box-shadow: 0 6px 16px rgba(35, 34, 34, 0.25);
                 }
             }
         }
         
         .login-footer {
-            margin-top: 2rem;
-            font-size: 0.9rem;
+            margin-top: 1.75rem;
+            font-size: 0.85rem;
             color: $text-light;
             
             .link-contact {
                 color: $accent;
-                font-weight: 600;
-                margin-left: 5px;
+                font-weight: 500;
+                margin-left: 4px;
                 text-decoration: none;
                 &:hover { text-decoration: underline; }
             }
@@ -105,8 +129,11 @@ $radius: 12px;
     }
     
     /* ANIMATION */
-    .fade-in { animation: fadeInUp 0.5s ease-out; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeInUp 0.4s ease-out; }
+    @keyframes fadeInUp { 
+        from { opacity: 0; transform: translateY(15px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
 }
 
 /* RESPONSIVE */
@@ -115,9 +142,27 @@ $radius: 12px;
         padding: 16px;
 
         .login-card {
-            padding: 30px 20px;
-            box-shadow: none;
-            background: transparent;
+            padding: 28px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            background: #fff;
+            border-radius: 10px;
+            
+            .brand-header {
+                margin-bottom: 1.5rem;
+                .logo { font-size: 1.75rem; }
+                .subtitle { font-size: 0.85rem; }
+            }
+            
+            .login-form {
+                nz-form-item { margin-bottom: 1rem; }
+                
+                .btn-submit { height: 44px; font-size: 0.9rem; }
+            }
+            
+            .login-footer { 
+                margin-top: 1.5rem; 
+                font-size: 0.8rem; 
+            }
         }
     }
 }

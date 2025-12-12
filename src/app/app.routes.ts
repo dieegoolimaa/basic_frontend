@@ -18,13 +18,14 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { authGuard, adminGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    // Change Password Route (requires auth but no layout)
-    {
-        path: 'alterar-senha',
-        component: ChangePasswordComponent,
-        canActivate: [authGuard]
-    },
-    // Public Routes
+    // Auth Routes (no layout - full screen)
+    { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+    { path: 'registro', component: RegisterComponent, canActivate: [guestGuard] },
+    { path: 'esqueci-senha', component: ForgotPasswordComponent, canActivate: [guestGuard] },
+    { path: 'redefinir-senha', component: ResetPasswordComponent, canActivate: [guestGuard] },
+    { path: 'alterar-senha', component: ChangePasswordComponent, canActivate: [authGuard] },
+
+    // Public Routes (with MainLayout)
     {
         path: '',
         component: MainLayoutComponent,
@@ -32,16 +33,13 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'formacoes', component: CourseListComponent },
             { path: 'formacoes/:id', component: CourseDetailComponent },
-            { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
-            { path: 'registro', component: RegisterComponent, canActivate: [guestGuard] },
-            { path: 'esqueci-senha', component: ForgotPasswordComponent, canActivate: [guestGuard] },
-            { path: 'redefinir-senha', component: ResetPasswordComponent, canActivate: [guestGuard] },
 
             // Protected routes
             { path: 'meus-cursos', component: StudentDashboardComponent, canActivate: [authGuard] },
             { path: 'player/:id', component: CoursePlayerComponent, canActivate: [authGuard] },
         ]
     },
+
     // Admin Routes
     {
         path: 'admin',
@@ -55,6 +53,6 @@ export const routes: Routes = [
             { path: 'admins', component: AdminAdminManagerComponent },
         ]
     },
+
     { path: '**', redirectTo: '' }
 ];
-
