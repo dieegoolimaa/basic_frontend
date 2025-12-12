@@ -13,6 +13,8 @@ import { CourseListComponent } from './components/course-list/course-list.compon
 import { AdminCourseManagerComponent } from './components/admin-course-manager/admin-course-manager.component';
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { authGuard, adminGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -32,6 +34,8 @@ export const routes: Routes = [
             { path: 'formacoes/:id', component: CourseDetailComponent },
             { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
             { path: 'registro', component: RegisterComponent, canActivate: [guestGuard] },
+            { path: 'esqueci-senha', component: ForgotPasswordComponent, canActivate: [guestGuard] },
+            { path: 'redefinir-senha', component: ResetPasswordComponent, canActivate: [guestGuard] },
 
             // Protected routes
             { path: 'meus-cursos', component: StudentDashboardComponent, canActivate: [authGuard] },

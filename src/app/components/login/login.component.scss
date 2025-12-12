@@ -7,11 +7,13 @@ $radius: 12px;
 
 .login-wrapper {
     min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
     display: flex;
     justify-content: center;
     align-items: center;
     background: $bg-color;
     padding: 20px;
+    box-sizing: border-box;
     
     .login-card {
         width: 100%;
@@ -19,7 +21,7 @@ $radius: 12px;
         background: #fff;
         border-radius: $radius;
         padding: 40px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Soft, elevated shadow */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         text-align: center;
         
         .brand-header {
@@ -49,9 +51,26 @@ $radius: 12px;
             }
             
             .input-icon { color: $accent; font-size: 1.1rem; margin-right: 10px; }
+
+            .forgot-password {
+                text-align: right;
+                margin-bottom: 1.5rem;
+                margin-top: -0.5rem;
+
+                .forgot-link {
+                    color: $accent;
+                    font-size: 0.85rem;
+                    text-decoration: none;
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: darken($accent, 15%);
+                        text-decoration: underline;
+                    }
+                }
+            }
             
             .btn-submit {
-                margin-top: 1rem;
                 height: 48px;
                 background: $primary;
                 border: none;
@@ -92,9 +111,13 @@ $radius: 12px;
 
 /* RESPONSIVE */
 @media (max-width: 480px) {
-    .login-wrapper .login-card {
-        padding: 30px 20px;
-        box-shadow: none;
-        background: transparent;
+    .login-wrapper {
+        padding: 16px;
+
+        .login-card {
+            padding: 30px 20px;
+            box-shadow: none;
+            background: transparent;
+        }
     }
 }

@@ -144,4 +144,25 @@ export class AuthService {
         if (user.role === 'admin') return true;
         return user.enrolledCourses?.includes(courseId) ?? false;
     }
+
+    /**
+     * REQUEST PASSWORD RESET - Send email with reset link
+     */
+    requestPasswordReset(email: string): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(
+            `${this.apiUrl}/auth/forgot-password`,
+            { email }
+        );
+    }
+
+    /**
+     * RESET PASSWORD - With token from email
+     */
+    resetPassword(token: string, newPassword: string): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(
+            `${this.apiUrl}/auth/reset-password`,
+            { token, newPassword }
+        );
+    }
 }
+
