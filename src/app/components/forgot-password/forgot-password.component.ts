@@ -87,7 +87,7 @@ import { AuthService } from '../../services/auth.service';
     styles: [`
         $bg-color: #fdfbf7;
         $primary: #232222;
-        $accent: #d4a5a5;
+        $accent: #232222;
         $text-light: #888;
         $radius: 12px;
 

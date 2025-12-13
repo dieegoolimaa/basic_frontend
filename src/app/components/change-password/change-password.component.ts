@@ -108,7 +108,7 @@ import { AuthService } from '../../services/auth.service';
         }
 
         .card-header {
-            background: linear-gradient(135deg, #d4a5a5 0%, #8b6b8f 100%);
+            background: linear-gradient(135deg, #232222 0%, #444444 100%);
             padding: 40px 30px;
             text-align: center;
             color: white;

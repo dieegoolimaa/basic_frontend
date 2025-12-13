@@ -32,7 +32,7 @@
     font-weight: 700;
     color: #1a1a2e;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #d4a5a5 0%, #8b6b8f 100%);
+    background: linear-gradient(135deg, #232222 0%, #444444 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -43,7 +43,7 @@
     font-size: 0.95rem;
 
     strong {
-      color: #8b6b8f;
+      color: #444444;
     }
   }
 }
@@ -99,7 +99,7 @@
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #8b6b8f;
+    color: #444444;
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
@@ -129,7 +129,7 @@
     resize: none;
 
     &:focus {
-      border-color: #d4a5a5;
+      border-color: #232222;
       box-shadow: 0 0 0 2px rgba(212, 165, 165, 0.2);
     }
   }
@@ -166,7 +166,7 @@
     font-weight: 500;
 
     &[nzType="primary"] {
-      background: linear-gradient(135deg, #d4a5a5 0%, #8b6b8f 100%);
+      background: linear-gradient(135deg, #232222 0%, #444444 100%);
       border: none;
 
       &:hover:not(:disabled) {
