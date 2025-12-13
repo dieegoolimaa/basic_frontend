@@ -113,6 +113,94 @@
             </div>
             }
 
+            <!-- Quiz Section -->
+            @if (currentLesson()?.quiz?.questions?.length) {
+            <div class="quiz-section">
+                <h3 class="section-title">
+                    <span nz-icon nzType="question-circle"></span>
+                    Quiz - Teste seus conhecimentos
+                </h3>
+
+                @if (!quizSubmitted()) {
+                <!-- Quiz Questions -->
+                <div class="quiz-questions">
+                    @for (question of currentLesson()!.quiz!.questions; track question.id; let qIdx = $index) {
+                    <div class="quiz-question">
+                        <p class="question-text">{{ qIdx + 1 }}. {{ question.question }}</p>
+                        <div class="options-list">
+                            @for (option of question.options; track option; let optIdx = $index) {
+                            <div class="option-item" [class.selected]="quizAnswers()[question.id] === optIdx"
+                                (click)="selectQuizAnswer(question.id, optIdx)">
+                                <input type="radio" [name]="'q-' + question.id" [value]="optIdx"
+                                    [checked]="quizAnswers()[question.id] === optIdx">
+                                <span class="option-text">{{ option }}</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+
+                <button nz-button nzType="primary" nzSize="large" class="submit-quiz-btn" (click)="submitQuiz()"
+                    [disabled]="!allQuestionsAnswered()">
+                    <span nz-icon nzType="check-circle"></span>
+                    Verificar Respostas
+                </button>
+                } @else {
+                <!-- Quiz Results -->
+                <div class="quiz-results">
+                    <div class="result-header" [class.passed]="quizPassed()" [class.failed]="!quizPassed()">
+                        @if (quizPassed()) {
+                        <span class="result-icon">🎉</span>
+                        <h4>Parabéns! Você passou!</h4>
+                        } @else {
+                        <span class="result-icon">📚</span>
+                        <h4>Continue estudando!</h4>
+                        }
+                        <p class="score">Você acertou {{ quizScore() }}% ({{ getCorrectCount() }}/{{
+                            currentLesson()!.quiz!.questions.length }})</p>
+                    </div>
+
+                    <!-- Show answers with feedback -->
+                    <div class="quiz-feedback">
+                        @for (question of currentLesson()!.quiz!.questions; track question.id; let qIdx = $index) {
+                        <div class="feedback-item"
+                            [class.correct]="quizAnswers()[question.id] === question.correctOptionIndex"
+                            [class.incorrect]="quizAnswers()[question.id] !== question.correctOptionIndex">
+                            <div class="feedback-header">
+                                <span class="feedback-icon">
+                                    @if (quizAnswers()[question.id] === question.correctOptionIndex) {
+                                    ✓
+                                    } @else {
+                                    ✗
+                                    }
+                                </span>
+                                <span class="question-num">Questão {{ qIdx + 1 }}</span>
+                            </div>
+                            <p class="question-text">{{ question.question }}</p>
+                            <div class="answer-info">
+                                @if (quizAnswers()[question.id] !== question.correctOptionIndex) {
+                                <p class="your-answer">Sua resposta: <strong>{{
+                                        question.options[quizAnswers()[question.id]] }}</strong></p>
+                                }
+                                <p class="correct-answer">Resposta correta: <strong>{{
+                                        question.options[question.correctOptionIndex] }}</strong></p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    @if (!quizPassed()) {
+                    <button nz-button nzType="default" nzSize="large" class="retry-btn" (click)="retryQuiz()">
+                        <span nz-icon nzType="reload"></span>
+                        Tentar Novamente
+                    </button>
+                    }
+                </div>
+                }
+            </div>
+            }
+
             <!-- Action Bar -->
             <div class="action-bar">
                 <button nz-button nzType="default" (click)="previousLesson()" [disabled]="!hasPrevious()">

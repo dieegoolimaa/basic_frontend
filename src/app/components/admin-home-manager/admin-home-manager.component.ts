@@ -16,6 +16,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { HomeContentService } from '../../services/home-content.service';
 import { UploadService } from '../../services/upload.service';
+import { ReviewService, AdminReview } from '../../services/review.service';
 import { HomeBanner, SiteSettings } from '../../models';
 import { Subscription } from 'rxjs';
 
@@ -45,6 +46,7 @@ import { Subscription } from 'rxjs';
 export class AdminHomeManagerComponent implements OnInit {
   private homeContentService = inject(HomeContentService);
   private uploadService = inject(UploadService);
+  private reviewService = inject(ReviewService);
   private message = inject(NzMessageService);
 
   // Banners
@@ -74,9 +76,27 @@ export class AdminHomeManagerComponent implements OnInit {
   };
   isSavingSettings = false;
 
+  // Reviews
+  reviews: AdminReview[] = [];
+  isLoadingReviews = false;
+
   ngOnInit() {
     this.loadBanners();
     this.loadSettings();
+    this.loadReviews();
+  }
+
+  loadReviews() {
+    this.isLoadingReviews = true;
+    this.reviewService.getAllReviews().subscribe({
+      next: (reviews) => {
+        this.reviews = reviews;
+        this.isLoadingReviews = false;
+      },
+      error: () => {
+        this.isLoadingReviews = false;
+      }
+    });
   }
 
   // ========== BANNERS ==========

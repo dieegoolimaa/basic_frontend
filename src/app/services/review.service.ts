@@ -12,6 +12,16 @@ export interface Review {
     createdAt: string;
 }
 
+export interface AdminReview {
+    _id: string;
+    userId: { _id: string; name: string; email: string };
+    courseId: { _id: string; title: string; thumbnailUrl?: string };
+    rating: number;
+    comment?: string;
+    isAnonymous: boolean;
+    createdAt: string;
+}
+
 export interface CourseStats {
     averageRating: number;
     totalReviews: number;
@@ -60,4 +70,10 @@ export class ReviewService {
             catchError(() => of(null))
         );
     }
+
+    // Admin methods
+    getAllReviews(): Observable<AdminReview[]> {
+        return this.api.get<AdminReview[]>('/reviews/admin/all');
+    }
 }
+

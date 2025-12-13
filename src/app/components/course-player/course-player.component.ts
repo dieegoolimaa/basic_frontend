@@ -44,6 +44,12 @@ export class CoursePlayerComponent implements OnInit {
   // Review modal
   showReviewModal = signal(false);
 
+  // Quiz state
+  quizAnswers = signal<Record<string, number>>({});
+  quizSubmitted = signal(false);
+  quizScore = signal(0);
+  quizPassed = signal(false);
+
   currentVideoUrl = computed(() => {
     const lesson = this.currentLesson();
     if (!lesson || ['text', 'quiz'].includes(lesson.contentType || '')) return null;
@@ -81,6 +87,8 @@ export class CoursePlayerComponent implements OnInit {
 
   selectLesson(lesson: Lesson) {
     this.currentLesson.set(lesson);
+    // Reset quiz state when changing lessons
+    this.retryQuiz();
   }
 
   isLessonCompleted(lessonId: string): boolean {
@@ -245,5 +253,66 @@ export class CoursePlayerComponent implements OnInit {
 
   private getSafeUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  // Quiz Methods
+  selectQuizAnswer(questionId: string, optionIndex: number) {
+    this.quizAnswers.update(answers => ({
+      ...answers,
+      [questionId]: optionIndex
+    }));
+  }
+
+  allQuestionsAnswered(): boolean {
+    const lesson = this.currentLesson();
+    if (!lesson?.quiz?.questions) return false;
+    const answers = this.quizAnswers();
+    return lesson.quiz.questions.every(q => answers[q.id] !== undefined);
+  }
+
+  submitQuiz() {
+    const lesson = this.currentLesson();
+    if (!lesson?.quiz?.questions) return;
+
+    const { correct, total } = this.calculateScore();
+    const score = Math.round((correct / total) * 100);
+    const minPass = lesson.quiz.minPassScore || 70;
+
+    this.quizScore.set(score);
+    this.quizPassed.set(score >= minPass);
+    this.quizSubmitted.set(true);
+
+    if (score >= minPass) {
+      this.message.success(`Parabéns! Você acertou ${correct} de ${total} questões! 🎉`);
+    } else {
+      this.message.warning(`Você acertou ${correct} de ${total}. Tente novamente!`);
+    }
+  }
+
+  getCorrectCount(): number {
+    return this.calculateScore().correct;
+  }
+
+  private calculateScore(): { correct: number; total: number } {
+    const lesson = this.currentLesson();
+    if (!lesson?.quiz?.questions) return { correct: 0, total: 0 };
+
+    const answers = this.quizAnswers();
+    let correct = 0;
+
+    for (const question of lesson.quiz.questions) {
+      if (answers[question.id] === question.correctOptionIndex) {
+        correct++;
+      }
+    }
+
+    return { correct, total: lesson.quiz.questions.length };
+  }
+
+  retryQuiz() {
+    this.quizAnswers.set({});
+    this.quizSubmitted.set(false);
+    this.quizScore.set(0);
+    this.quizPassed.set(false);
   }
 }
