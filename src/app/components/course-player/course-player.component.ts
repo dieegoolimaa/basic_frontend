@@ -9,6 +9,7 @@ import { NzMessageService, NzMessageModule } from 'ng-zorro-antd/message';
 import { CourseService } from '../../services/course.service';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { ReviewService } from '../../services/review.service';
 import { Course, Lesson, ProcedureStep } from '../../models';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CourseReviewComponent } from '../course-review/course-review.component';
@@ -34,6 +35,7 @@ export class CoursePlayerComponent implements OnInit {
   private courseService = inject(CourseService);
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  private reviewService = inject(ReviewService);
   private sanitizer = inject(DomSanitizer);
   private message = inject(NzMessageService);
 
@@ -43,6 +45,7 @@ export class CoursePlayerComponent implements OnInit {
 
   // Review modal
   showReviewModal = signal(false);
+  hasReviewed = signal(false);
 
   // Quiz state
   quizAnswers = signal<Record<string, number>>({});
@@ -71,7 +74,21 @@ export class CoursePlayerComponent implements OnInit {
 
       // Load user progress
       this.loadProgress();
+
+      // Check if user already reviewed this course
+      this.checkExistingReview(courseId);
     }
+  }
+
+  checkExistingReview(courseId: string) {
+    this.reviewService.getMyReviewForCourse(courseId).subscribe({
+      next: (review) => {
+        this.hasReviewed.set(review !== null);
+      },
+      error: () => {
+        // Ignore error, assume not reviewed
+      }
+    });
   }
 
   loadProgress() {
@@ -86,6 +103,12 @@ export class CoursePlayerComponent implements OnInit {
   }
 
   selectLesson(lesson: Lesson) {
+    // Check if lesson is unlocked before allowing access
+    if (!this.isLessonUnlocked(lesson.id)) {
+      this.message.warning('Complete as aulas anteriores primeiro');
+      return;
+    }
+
     this.currentLesson.set(lesson);
     // Reset quiz state when changing lessons
     this.retryQuiz();
@@ -93,6 +116,25 @@ export class CoursePlayerComponent implements OnInit {
 
   isLessonCompleted(lessonId: string): boolean {
     return this.completedLessons().includes(lessonId);
+  }
+
+  isLessonUnlocked(lessonId: string): boolean {
+    const course = this.course();
+    if (!course) return false;
+
+    const allLessons: Lesson[] = [];
+    for (const mod of course.modules) {
+      for (const lesson of mod.lessons) {
+        allLessons.push(lesson);
+      }
+    }
+
+    const lessonIndex = allLessons.findIndex(l => l.id === lessonId);
+    if (lessonIndex === 0) return true; // First lesson is always unlocked
+
+    // Check if previous lesson is completed
+    const previousLesson = allLessons[lessonIndex - 1];
+    return this.isLessonCompleted(previousLesson.id);
   }
 
   toggleStep(step: ProcedureStep) {
@@ -110,8 +152,8 @@ export class CoursePlayerComponent implements OnInit {
         this.completedLessons.update(lessons => [...lessons, lesson.id]);
         this.message.success('Aula concluída! 🎉');
 
-        // Check if course is complete
-        if (this.isCourseComplete()) {
+        // Check if course is complete AND user hasn't reviewed yet
+        if (this.isCourseComplete() && !this.hasReviewed()) {
           this.showReviewModal.set(true);
         } else {
           this.nextLesson();

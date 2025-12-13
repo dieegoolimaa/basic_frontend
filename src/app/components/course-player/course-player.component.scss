@@ -102,6 +102,19 @@ $radius: 8px;
             .lesson-icon { color: #7bc47f; }
             .lesson-name { color: $text-light; }
         }
+
+        &.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            
+            &:hover { 
+                background: transparent; 
+            }
+            
+            .locked-icon {
+                color: #bbb;
+            }
+        }
         
         .lesson-icon {
             font-size: 1rem;

@@ -21,10 +21,15 @@
 
                 @for (lesson of module.lessons; track lesson.id) {
                 <div class="lesson-item" [class.active]="currentLesson()?.id === lesson.id"
-                    [class.completed]="isLessonCompleted(lesson.id)" (click)="selectLesson(lesson)">
+                    [class.completed]="isLessonCompleted(lesson.id)" [class.locked]="!isLessonUnlocked(lesson.id)"
+                    (click)="selectLesson(lesson)">
                     <div class="lesson-icon">
+                        @if (!isLessonUnlocked(lesson.id) && !isLessonCompleted(lesson.id)) {
+                        <span nz-icon nzType="lock" class="locked-icon"></span>
+                        } @else {
                         <span nz-icon [nzType]="getLessonIcon(lesson)"
                             [class.completed-icon]="isLessonCompleted(lesson.id)"></span>
+                        }
                     </div>
                     <div class="lesson-details">
                         <span class="lesson-name">{{ lesson.title }}</span>
