@@ -23,13 +23,25 @@
 
             <div class="cta-area">
                 @if (isLoggedIn()) {
+                @if (hasAccess()) {
                 <button nz-button nzType="primary" nzSize="large" class="start-btn" (click)="startCourse(c._id)">
                     Acessar Conteúdo
                     <span nz-icon nzType="arrow-right"></span>
                 </button>
                 } @else {
+                <div class="no-access-message">
+                    <span nz-icon nzType="lock" class="lock-icon"></span>
+                    <p>Você ainda não tem acesso a esta formação</p>
+                    <a href="https://wa.me/351937299329?text=Olá! Gostaria de adquirir acesso à formação: {{ c.title }}"
+                        target="_blank" class="contact-btn" nz-button nzSize="large">
+                        <span nz-icon nzType="message"></span>
+                        Solicitar Acesso
+                    </a>
+                </div>
+                }
+                } @else {
                 <button nz-button nzType="primary" nzSize="large" class="start-btn" routerLink="/login"
-                    [queryParams]="{returnUrl: '/player/' + c._id}">
+                    [queryParams]="{returnUrl: '/formacoes/' + c._id}">
                     Entrar para Acessar
                     <span nz-icon nzType="arrow-right"></span>
                 </button>

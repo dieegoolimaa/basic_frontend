@@ -65,6 +65,13 @@ export class CoursePlayerComponent implements OnInit {
   ngOnInit() {
     const courseId = this.route.snapshot.paramMap.get('id');
     if (courseId) {
+      // Check if user has access to this course
+      if (!this.authService.canAccessCourse(courseId)) {
+        this.message.error('Você não tem acesso a este curso');
+        this.router.navigate(['/formacoes', courseId]);
+        return;
+      }
+
       this.courseService.getCourseById(courseId).subscribe(c => {
         this.course.set(c);
         if (c.modules.length > 0 && c.modules[0].lessons.length > 0) {

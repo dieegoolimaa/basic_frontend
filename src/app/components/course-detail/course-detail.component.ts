@@ -23,6 +23,12 @@ export class CourseDetailComponent implements OnInit {
   course = signal<Course | null>(null);
   isLoggedIn = this.authService.isAuthenticated;
 
+  hasAccess = computed(() => {
+    const c = this.course();
+    if (!c) return false;
+    return this.authService.canAccessCourse(c._id);
+  });
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

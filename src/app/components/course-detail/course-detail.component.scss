@@ -100,6 +100,48 @@ $radius: 10px;
                 &:hover { text-decoration: underline; }
             }
         }
+
+        .no-access-message {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: $accent-light;
+            border-radius: $radius;
+            
+            .lock-icon {
+                font-size: 2rem;
+                color: $text-light;
+                margin-bottom: 0.8rem;
+                display: block;
+            }
+            
+            p {
+                color: #666;
+                font-size: 0.95rem;
+                margin: 0 0 1rem 0;
+            }
+            
+            .contact-btn {
+                background: #25D366;
+                border-color: #25D366;
+                color: #fff;
+                border-radius: 25px;
+                height: 44px;
+                padding: 0 24px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.2s;
+                
+                &:hover {
+                    background: darken(#25D366, 5%);
+                    border-color: darken(#25D366, 5%);
+                    color: #fff;
+                    transform: translateY(-2px);
+                }
+            }
+        }
     }
 }
 
