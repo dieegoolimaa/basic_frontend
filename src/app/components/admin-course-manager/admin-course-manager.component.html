@@ -11,57 +11,65 @@
             </button>
         </div>
 
-        <div class="table-card">
-            <nz-table #basicTable [nzData]="courses" [nzLoading]="isLoading" [nzBordered]="false" nzSize="middle">
-                <thead>
-                    <tr>
-                        <th nzWidth="90px">Capa</th>
-                        <th>Detalhes do Curso</th>
-                        <th nzWidth="100px">Conteúdo</th>
-                        <th nzWidth="80px">Status</th>
-                        <th nzWidth="90px" nzAlign="center">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td>
-                            <div class="thumb-wrapper">
-                                <img [src]="data.thumbnailUrl" alt="{{data.title}}" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="course-info">
-                                <span class="course-title">{{ data.title }}</span>
-                                <span class="course-desc">{{ data.description }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <nz-tag [nzColor]="'#f0e1e1'" class="custom-tag">{{ data.modules.length }} Módulos</nz-tag>
-                        </td>
-                        <td>
-                            <div class="status-badge active"><span class="dot"></span> Ativo</div>
-                        </td>
-                        <td nzAlign="center">
-                            <button nz-button nzType="text" nzSize="small" (click)="editCourse(data)"><span nz-icon
-                                    nzType="edit"></span></button>
-                            <button nz-button nzType="text" nzDanger nzSize="small"
-                                (click)="deleteCourse(data._id)"><span nz-icon nzType="delete"></span></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
+        <div class="responsive-table-wrapper">
+            <div class="table-card">
+                <nz-table #basicTable [nzData]="courses" [nzLoading]="isLoading" [nzBordered]="false" nzSize="middle">
+                    <thead>
+                        <tr>
+                            <th nzWidth="90px">Capa</th>
+                            <th>Detalhes do Curso</th>
+                            <th nzWidth="100px">Conteúdo</th>
+                            <th nzWidth="80px">Status</th>
+                            <th nzWidth="90px" nzAlign="center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>
+                                <div class="thumb-wrapper">
+                                    <img [src]="data.thumbnailUrl" alt="{{data.title}}" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="course-info">
+                                    <span class="course-title">{{ data.title }}</span>
+                                    <span class="course-desc">{{ data.description }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <nz-tag class="custom-tag">{{ data.modules.length }} Módulos</nz-tag>
+                            </td>
+                            <td>
+                                <div class="status-badge"><span class="dot"></span> Ativo</div>
+                            </td>
+                            <td nzAlign="center">
+                                <div class="action-btns">
+                                    <button nz-button nzType="text" (click)="editCourse(data)" nz-tooltip
+                                        nzTooltipTitle="Editar">
+                                        <span nz-icon nzType="edit"></span>
+                                    </button>
+                                    <button nz-button nzType="text" nzDanger (click)="deleteCourse(data._id)" nz-tooltip
+                                        nzTooltipTitle="Remover">
+                                        <span nz-icon nzType="delete"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
         </div>
     </ng-container>
 
     <!-- EDITOR VIEW -->
     <ng-container *ngIf="isEditingMode">
         <div class="editor-header">
-            <button nz-button nzType="text" (click)="cancelEdit()">
-                <span nz-icon nzType="arrow-left"></span> Voltar
+            <button nz-button nzType="text" class="btn-back" (click)="cancelEdit()">
+                <span nz-icon nzType="arrow-left"></span> VOLTAR
             </button>
             <h2 class="editor-title">{{ currentCourse._id ? 'Editar' : 'Nova' }} Formação</h2>
-            <button nz-button nzType="primary" (click)="saveCourse()" [nzLoading]="isLoading">
-                Salvar
+            <button nz-button nzType="primary" class="btn-save" (click)="saveCourse()" [nzLoading]="isLoading">
+                SALVAR
             </button>
         </div>
 
@@ -124,6 +132,29 @@
                                     </div>
                                 </nz-collapse-panel>
                             </nz-collapse>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="Privilégios">
+                        <div class="form-section">
+                            <button nz-button nzType="dashed" nzBlock class="add-benefit-btn" (click)="addBenefit()">
+                                + Adicionar Privilégio
+                            </button>
+
+                            <div *ngFor="let benefit of currentCourse.benefits; let i = index"
+                                class="benefit-card fade-in">
+                                <div class="benefit-header-row">
+                                    <span class="benefit-label">Privilégio #{{i + 1}}</span>
+                                    <button nz-button nzType="text" nzDanger nzSize="small" (click)="removeBenefit(i)">
+                                        <span nz-icon nzType="delete"></span>
+                                    </button>
+                                </div>
+                                <div class="benefit-fields">
+                                    <input nz-input [(ngModel)]="benefit.title"
+                                        placeholder="Título (Ex: Acesso Vitalício)" />
+                                    <textarea nz-input [(ngModel)]="benefit.description" rows="2"
+                                        placeholder="Descrição curta..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </nz-tab>
                 </nz-tabset>

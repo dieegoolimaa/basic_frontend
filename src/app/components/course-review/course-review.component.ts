@@ -39,6 +39,7 @@ export class CourseReviewComponent implements OnInit {
     isAnonymous = signal(false);
     isSubmitting = signal(false);
     existingReview = signal<Review | null>(null);
+    hoverRating = 0;
 
     ngOnInit() {
         this.checkExistingReview();

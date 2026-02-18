@@ -12,27 +12,27 @@
     <!-- Stats Cards -->
     <div class="stats-row">
         <div class="stat-card">
-            <span class="stat-icon" style="background: #e8f4f0;">
-                <span nz-icon nzType="user" style="color: #52c41a;"></span>
-            </span>
+            <div class="stat-icon-wrapper">
+                <span nz-icon nzType="user"></span>
+            </div>
             <div class="stat-info">
                 <span class="stat-number">{{ users.length }}</span>
                 <span class="stat-label">Alunas Cadastradas</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon" style="background: #f0e8f4;">
-                <span nz-icon nzType="check-circle" style="color: #722ed1;"></span>
-            </span>
+            <div class="stat-icon-wrapper">
+                <span nz-icon nzType="check-circle"></span>
+            </div>
             <div class="stat-info">
                 <span class="stat-number">{{ getActiveUsers() }}</span>
                 <span class="stat-label">Alunas Ativas</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon" style="background: #f4f0e8;">
-                <span nz-icon nzType="mail" style="color: #fa8c16;"></span>
-            </span>
+            <div class="stat-icon-wrapper">
+                <span nz-icon nzType="mail"></span>
+            </div>
             <div class="stat-info">
                 <span class="stat-number">{{ inviteCodes.length }}</span>
                 <span class="stat-label">Convites Pendentes</span>
@@ -107,7 +107,7 @@
 
         <div class="users-grid" *ngIf="users.length > 0">
             <div *ngFor="let user of users" class="user-card">
-                <div class="user-header">
+                <div class="user-top">
                     <div class="user-avatar">{{ getInitials(user.name) }}</div>
                     <div class="user-status" [class.active]="user.isActive" [class.inactive]="!user.isActive">
                         {{ user.isActive ? 'Ativa' : 'Inativa' }}

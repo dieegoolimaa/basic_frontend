@@ -59,7 +59,7 @@ export class StudentDashboardComponent implements OnInit {
 
         for (const mod of course.modules) {
             for (const lesson of mod.lessons) {
-                if (!completed.includes(lesson.title)) {
+                if (!completed.includes(lesson.id)) {
                     return lesson.title;
                 }
             }

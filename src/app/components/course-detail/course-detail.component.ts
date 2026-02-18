@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, AfterViewInit, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -19,6 +19,7 @@ export class CourseDetailComponent implements OnInit {
   private router = inject(Router);
   private courseService = inject(CourseService);
   private authService = inject(AuthService);
+  private el = inject(ElementRef);
 
   course = signal<Course | null>(null);
   isLoggedIn = this.authService.isAuthenticated;
@@ -32,8 +33,32 @@ export class CourseDetailComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.courseService.getCourseById(id).subscribe(c => this.course.set(c));
+      this.courseService.getCourseById(id).subscribe(c => {
+        this.course.set(c);
+        setTimeout(() => this.initScrollReveal(), 100);
+      });
     }
+  }
+
+  ngAfterViewInit() {
+    this.initScrollReveal();
+  }
+
+  private initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    const elements = this.el.nativeElement.querySelectorAll('.reveal');
+    elements.forEach((el: Element) => observer.observe(el));
   }
 
   startCourse(courseId: string) {

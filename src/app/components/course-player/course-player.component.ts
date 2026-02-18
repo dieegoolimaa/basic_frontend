@@ -42,6 +42,7 @@ export class CoursePlayerComponent implements OnInit {
   course = signal<Course | null>(null);
   currentLesson = signal<Lesson | null>(null);
   completedLessons = signal<string[]>([]);
+  isSidebarOpen = signal(false);
 
   // Review modal
   showReviewModal = signal(false);
@@ -142,6 +143,19 @@ export class CoursePlayerComponent implements OnInit {
     // Check if previous lesson is completed
     const previousLesson = allLessons[lessonIndex - 1];
     return this.isLessonCompleted(previousLesson.id);
+  }
+
+  isModuleReached(index: number): boolean {
+    if (index === 0) return true;
+    const course = this.course();
+    if (!course) return false;
+
+    // A module is reached if at least one lesson of it is unlocked
+    // Or more strictly: if the previous module is completely finished
+    const prevModule = course.modules[index - 1];
+    if (!prevModule || prevModule.lessons.length === 0) return true;
+    const lastLessonOfPrev = prevModule.lessons[prevModule.lessons.length - 1];
+    return this.isLessonCompleted(lastLessonOfPrev.id);
   }
 
   toggleStep(step: ProcedureStep) {

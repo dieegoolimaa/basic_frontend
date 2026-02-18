@@ -28,11 +28,13 @@ import { AuthService } from '../../services/auth.service';
             <!-- Invalid Token State -->
             <ng-container *ngIf="!token">
                 <div class="error-state">
-                    <div class="error-icon">⚠️</div>
+                    <div class="error-icon">
+                        <span nz-icon nzType="warning" nzTheme="outline"></span>
+                    </div>
                     <h2>Link Inválido</h2>
-                    <p>O link de redefinição de senha é inválido ou expirou.</p>
-                    <a routerLink="/esqueci-senha" nz-button nzType="primary" nzSize="large">
-                        Solicitar novo link
+                    <p>O link de redefinição de senha é inválido ou já expirou por segurança.</p>
+                    <a routerLink="/esqueci-senha" nz-button nzType="primary" nzSize="large" class="btn-action">
+                        SOLICITAR NOVO LINK
                     </a>
                 </div>
             </ng-container>
@@ -41,7 +43,7 @@ import { AuthService } from '../../services/auth.service';
             <ng-container *ngIf="token && !success">
                 <div class="brand-header">
                     <div class="logo">basic.</div>
-                    <p class="subtitle">Criar nova senha</p>
+                    <p class="subtitle">Nova Senha de Acesso</p>
                 </div>
 
                 <form (ngSubmit)="submitReset()" class="reset-form">
@@ -49,7 +51,7 @@ import { AuthService } from '../../services/auth.service';
                         <nz-form-control>
                             <nz-input-group [nzPrefix]="prefixLock" [nzSuffix]="suffixEye1">
                                 <input nz-input [type]="showPassword ? 'text' : 'password'" 
-                                       placeholder="Nova senha" [(ngModel)]="newPassword" name="newPassword" 
+                                       placeholder="Nova Senha" [(ngModel)]="newPassword" name="newPassword" 
                                        required class="custom-input" />
                             </nz-input-group>
                             <ng-template #prefixLock>
@@ -66,11 +68,11 @@ import { AuthService } from '../../services/auth.service';
                         <nz-form-control>
                             <nz-input-group [nzPrefix]="prefixLock2" [nzSuffix]="suffixEye2">
                                 <input nz-input [type]="showConfirmPassword ? 'text' : 'password'" 
-                                       placeholder="Confirmar nova senha" [(ngModel)]="confirmPassword" 
+                                       placeholder="Confirmar Senha" [(ngModel)]="confirmPassword" 
                                        name="confirmPassword" required class="custom-input" />
                             </nz-input-group>
                             <ng-template #prefixLock2>
-                                <span nz-icon nzType="safety-certificate" class="input-icon"></span>
+                                <span nz-icon nzType="check-square" class="input-icon"></span>
                             </ng-template>
                             <ng-template #suffixEye2>
                                 <span nz-icon [nzType]="showConfirmPassword ? 'eye-invisible' : 'eye'" 
@@ -92,7 +94,7 @@ import { AuthService } from '../../services/auth.service';
 
                     <button nz-button nzType="primary" nzBlock nzSize="large" 
                             [disabled]="!isValid" [nzLoading]="isLoading" class="btn-submit">
-                        Redefinir Senha
+                        REDEFINIR SENHA
                     </button>
                 </form>
             </ng-container>
@@ -100,11 +102,13 @@ import { AuthService } from '../../services/auth.service';
             <!-- Success State -->
             <ng-container *ngIf="success">
                 <div class="success-state">
-                    <div class="success-icon">✅</div>
-                    <h2>Senha Redefinida!</h2>
-                    <p>Sua senha foi alterada com sucesso. Faça login com sua nova senha.</p>
-                    <a routerLink="/login" nz-button nzType="primary" nzSize="large" class="btn-login">
-                        Fazer Login
+                    <div class="success-icon">
+                        <span nz-icon nzType="check-circle" nzTheme="outline"></span>
+                    </div>
+                    <h2>Tudo pronto!</h2>
+                    <p>Sua senha foi redefinida com sucesso. Use sua nova credencial para acessar a plataforma.</p>
+                    <a routerLink="/login" nz-button nzType="primary" nzSize="large" class="btn-action">
+                        FAZER LOGIN
                     </a>
                 </div>
             </ng-container>
@@ -112,133 +116,220 @@ import { AuthService } from '../../services/auth.service';
     </div>
     `,
     styles: [`
-        $bg-color: #fdfbf7;
-        $primary: #232222;
-        $accent: #232222;
-        $text-light: #888;
-        $radius: 12px;
-
         .reset-wrapper {
-            min-height: 100vh;
-            min-height: 100dvh;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: $bg-color;
+            background: var(--background-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(229, 213, 176, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(229, 213, 176, 0.03) 0%, transparent 40%);
             padding: 20px;
-            box-sizing: border-box;
+            z-index: 2000;
         }
 
         .reset-card {
             width: 100%;
-            max-width: 400px;
-            background: #fff;
-            border-radius: $radius;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 440px;
+            background: #080808;
+            border: 1px solid var(--border-color);
+            padding: 5rem 4rem;
             text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }
 
         .brand-header {
-            margin-bottom: 2rem;
-            .logo { font-size: 2rem; font-weight: 700; color: $primary; letter-spacing: -1px; margin-bottom: 0.5rem; }
-            .subtitle { color: $text-light; font-size: 0.95rem; font-weight: 400; margin: 0; }
+            margin-bottom: 3rem;
+            .logo { 
+                font-family: var(--font-serif);
+                font-size: 3rem; 
+                color: #fff;
+                margin-bottom: 1.5rem;
+                display: block;
+                letter-spacing: -0.02em;
+
+                &::after {
+                    content: '.';
+                    color: var(--primary-color);
+                }
+            }
+            .subtitle { 
+                color: var(--primary-color); 
+                font-size: 0.65rem; 
+                letter-spacing: 0.4em;
+                text-transform: uppercase;
+                opacity: 0.6;
+            }
         }
 
         .reset-form {
             text-align: left;
 
-            nz-form-item { margin-bottom: 1.5rem; }
+            nz-form-item { margin-bottom: 2rem; }
 
-            ::ng-deep .ant-input-affix-wrapper {
-                border: none;
-                border-bottom: 1px solid #eee;
-                border-radius: 0;
-                padding: 10px 0;
-                box-shadow: none !important;
+            ::ng-deep {
+                .ant-input-affix-wrapper {
+                    background: transparent !important;
+                    border: none !important;
+                    border-bottom: 1px solid var(--border-color) !important;
+                    border-radius: 0 !important;
+                    padding: 12px 0 !important;
+                    box-shadow: none !important;
+                    transition: var(--transition-lux);
+                    
+                    &:hover, &.ant-input-affix-wrapper-focused { 
+                        border-bottom-color: var(--primary-color) !important; 
+                    }
+                    
+                    input {
+                        background: transparent !important;
+                        border: none !important;
+                        box-shadow: none !important;
+                        color: #fff !important;
+                        font-size: 1rem !important;
+                        height: auto !important;
+                        padding: 0 !important;
+                        
+                        &::placeholder { color: rgba(255,255,255,0.2) !important; }
 
-                &:hover, &:focus-within { border-bottom-color: $accent; }
-            }
+                        /* Fix for autofill blue background */
+                        &:-webkit-autofill,
+                        &:-webkit-autofill:hover,
+                        &:-webkit-autofill:focus,
+                        &:-webkit-autofill:active {
+                            -webkit-text-fill-color: #fff !important;
+                            -webkit-box-shadow: 0 0 0px 1000px #080808 inset !important;
+                            transition: background-color 5000s ease-in-out 0s;
+                        }
+                    }
 
-            .custom-input {
-                font-size: 1rem;
-                &::placeholder { color: #ccc; }
-            }
+                    .ant-input-prefix { 
+                        color: var(--primary-color) !important; 
+                        margin-right: 20px !important; 
+                        opacity: 0.5;
+                    }
 
-            .input-icon { color: $accent; font-size: 1.1rem; margin-right: 10px; }
-
-            .toggle-eye {
-                cursor: pointer;
-                color: #ccc;
-                &:hover { color: $primary; }
+                    .ant-input-suffix {
+                        .toggle-eye {
+                            color: rgba(255,255,255,0.3);
+                            cursor: pointer;
+                            transition: var(--transition-lux);
+                            &:hover { color: #fff; }
+                        }
+                    }
+                }
             }
 
             .btn-submit {
-                height: 48px;
-                background: $primary;
-                border: none;
-                border-radius: 8px;
-                font-size: 1rem;
-                font-weight: 500;
+                height: 60px;
+                background: var(--primary-color) !important;
+                border: 1px solid var(--primary-color) !important;
+                color: #000 !important;
+                font-size: 0.75rem !important;
+                font-weight: 600 !important;
+                letter-spacing: 0.35em !important;
+                text-transform: uppercase !important;
+                border-radius: 0 !important;
+                transition: var(--transition-lux) !important;
+                margin-top: 1rem;
+                
+                &:hover:not(:disabled) {
+                    background: transparent !important;
+                    color: var(--primary-color) !important;
+                }
+
+                &:disabled {
+                    opacity: 0.3;
+                    border-color: var(--border-color) !important;
+                    background: transparent !important;
+                    color: #fff !important;
+                }
             }
         }
 
         .password-requirements {
-            background: #fafafa;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
 
             p {
-                margin: 0 0 6px;
-                font-size: 0.85rem;
-                color: #999;
+                margin: 0;
+                font-size: 0.65rem;
+                color: rgba(255,255,255,0.3);
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 10px;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                transition: var(--transition-lux);
 
-                &:last-child { margin-bottom: 0; }
-                &.valid { color: #10b981; }
+                &.valid { color: var(--primary-color); opacity: 1; }
+                
+                span { font-size: 0.9rem; }
             }
         }
 
         .error-state, .success-state {
             .error-icon, .success-icon {
-                font-size: 3rem;
-                margin-bottom: 1rem;
+                font-size: 3.5rem;
+                color: var(--primary-color);
+                margin-bottom: 2rem;
+                opacity: 0.8;
             }
 
             h2 {
-                font-size: 1.5rem;
-                color: $primary;
-                margin: 0 0 1rem 0;
-                font-weight: 600;
+                font-family: var(--font-serif);
+                font-size: 2rem;
+                color: #fff;
+                margin-bottom: 1.5rem;
             }
 
             p {
-                color: $text-light;
+                color: var(--text-muted);
                 font-size: 0.95rem;
-                line-height: 1.6;
-                margin: 0 0 2rem 0;
+                line-height: 1.8;
+                margin-bottom: 3rem;
             }
 
-            button, a[nz-button] {
-                border-radius: 8px;
-                height: 44px;
+            .btn-action {
+                height: 60px;
+                background: var(--primary-color) !important;
+                border: 1px solid var(--primary-color) !important;
+                color: #000 !important;
+                font-size: 0.75rem !important;
+                font-weight: 600 !important;
+                letter-spacing: 0.35em !important;
+                text-transform: uppercase !important;
+                border-radius: 0 !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                
+                &:hover {
+                    background: transparent !important;
+                    color: var(--primary-color) !important;
+                }
             }
         }
 
-        .fade-in { animation: fadeInUp 0.5s ease-out; }
+        .fade-in { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeInUp { 
-            from { opacity: 0; transform: translateY(20px); } 
+            from { opacity: 0; transform: translateY(30px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
         @media (max-width: 480px) {
+            .reset-wrapper { padding: 0; }
             .reset-card {
-                padding: 30px 20px;
-                box-shadow: none;
-                background: transparent;
+                height: 100vh;
+                max-width: 100%;
+                padding: 4rem 2rem;
+                border: none;
+                .brand-header .logo { font-size: 2.5rem; }
             }
         }
     `]

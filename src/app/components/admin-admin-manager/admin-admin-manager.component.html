@@ -12,9 +12,9 @@
     <!-- Stats Cards -->
     <div class="stats-row">
         <div class="stat-card">
-            <span class="stat-icon" style="background: #f0e8f4;">
-                <span nz-icon nzType="safety-certificate" style="color: #722ed1;"></span>
-            </span>
+            <div class="stat-icon-wrapper">
+                <span nz-icon nzType="safety-certificate"></span>
+            </div>
             <div class="stat-info">
                 <span class="stat-number">{{ admins.length }}</span>
                 <span class="stat-label">Administradores</span>
@@ -44,7 +44,7 @@
 
         <div class="admins-grid" *ngIf="admins.length > 0">
             <div *ngFor="let admin of admins" class="admin-card">
-                <div class="admin-header">
+                <div class="admin-top">
                     <div class="admin-avatar">{{ getInitials(admin.name) }}</div>
                     <div class="admin-badge" *ngIf="admin._id === currentUserId">
                         <span nz-icon nzType="user"></span> Você

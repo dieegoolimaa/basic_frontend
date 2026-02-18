@@ -243,6 +243,17 @@ export class AdminCourseManagerComponent implements OnInit {
     return index;
   }
 
+  // --- BENEFITS ---
+
+  addBenefit() {
+    if (!this.currentCourse.benefits) this.currentCourse.benefits = [];
+    this.currentCourse.benefits.push({ title: 'Novo Benefício', description: 'Descrição' });
+  }
+
+  removeBenefit(index: number) {
+    this.currentCourse.benefits?.splice(index, 1);
+  }
+
   handleUpload = (item: any) => {
     const file = item.file as File;
     const reader = new FileReader();

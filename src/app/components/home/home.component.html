@@ -1,48 +1,122 @@
-<div class="hero-section">
-    <nz-carousel [nzEffect]="'fade'" [nzAutoPlay]="true">
-        @for (banner of banners(); track banner._id) {
-        <div nz-carousel-content (click)="navigateToCourses()">
-            <div class="banner-content" [style.backgroundImage]="'url(' + banner.imageUrl + ')'">
-                <div class="banner-overlay">
-                    <div class="banner-text">
-                        <h1>{{ banner.title || 'Bem-vinda à Basic' }}</h1>
-                        <p>{{ banner.subtitle || 'Sua jornada para a excelência começa aqui.' }}</p>
-                        <button nz-button nzSize="large" class="cta-button">VER FORMAÇÕES</button>
+<!-- WELCOME HERO SECTION -->
+<section class="welcome-hero" [style.backgroundImage]="'url(' + getFullUrl(settings()?.welcomeImageUrl) + ')'">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <!-- Strictly no hardcoded text: The welcome image contains its own typography -->
+    </div>
+
+    <div class="scroll-indicator reveal">
+        <div class="mouse"></div>
+        <span>EXPLORAR</span>
+    </div>
+</section>
+
+<!-- INNOVATIVE COURSE CAROUSEL -->
+<section class="featured-courses">
+    <div class="innovative-carousel reveal">
+        <nz-carousel [nzEffect]="'fade'" [nzAutoPlay]="true" [nzAutoPlaySpeed]="4000" [nzEnableSwipe]="true" #carousel>
+            @for (course of featuredCourses(); track course._id) {
+            <div nz-carousel-content class="course-feature-slide">
+                <div class="full-slide" [routerLink]="['/formacoes', course._id]">
+                    <div class="slide-bg">
+                        <img [src]="getFullUrl(course.imageUrl)" [alt]="course.title">
+                        <div class="dark-gradient-overlay"></div>
+                    </div>
+
+                    <div class="slide-content-container">
+                        <div class="content-wrapper">
+                            <span class="course-category">{{ course.instructor | uppercase }} PRESENTS</span>
+                            <h2 class="course-title-hero">{{ course.title }}</h2>
+                            <p class="course-subtitle">{{ course.subtitle }}</p>
+
+                            <div class="expanded-details">
+                                <div class="divider-line"></div>
+                                <p class="course-desc-text">{{ course.description }}</p>
+                                <button class="explore-btn">
+                                    {{ settings()?.carouselButtonText || 'EXPLORAR' }}
+                                    <span nz-icon nzType="arrow-right"></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        }
-    </nz-carousel>
-</div>
+            }
+        </nz-carousel>
 
-<section class="about-section">
-    <div class="about-container">
-        <div class="image-wrapper">
-            <img [src]="settings()?.aboutImageUrl || 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80'"
-                alt="Instrutora Master" class="about-image" />
-            <div class="experience-badge">
-                <span class="years">{{ settings()?.experienceYears || '10+' }}</span>
-                <span class="text">Anos de<br>Experiência</span>
+        <!-- Navigation Arrows -->
+        <button class="nav-arrow prev" (click)="carousel.pre()">
+            <span nz-icon nzType="left"></span>
+        </button>
+        <button class="nav-arrow next" (click)="carousel.next()">
+            <span nz-icon nzType="right"></span>
+        </button>
+    </div>
+</section>
+
+<!-- THE PHILOSOPHY SECTION (NEW) -->
+<section class="philosophy-section section-padding">
+    <div class="container">
+        <div class="philosophy-grid">
+            <div class="philosophy-item reveal">
+                <span class="phi-num">01</span>
+                <h3>{{ settings()?.philosophyTitle1 || 'EXCLUSIVIDADE' }}</h3>
+                <p>{{ settings()?.philosophyDesc1 || 'Metodologias únicas desenhadas para elevar o seu padrão
+                    profissional ao topo do mercado.' }}</p>
+            </div>
+            <div class="philosophy-item reveal">
+                <span class="phi-num">02</span>
+                <h3>{{ settings()?.philosophyTitle2 || 'MAESTRIA' }}</h3>
+                <p>{{ settings()?.philosophyDesc2 || 'O domínio técnico aliado ao olhar artístico que diferencia uma
+                    profissional comum de uma referência.' }}</p>
+            </div>
+            <div class="philosophy-item reveal">
+                <span class="phi-num">03</span>
+                <h3>{{ settings()?.philosophyTitle3 || 'LEGADO' }}</h3>
+                <p>{{ settings()?.philosophyDesc3 || 'Não formamos apenas técnicos, construímos carreiras sólidas e
+                    marcas pessoais inesquecíveis.' }}</p>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="about-content">
-            <span class="section-tag">{{ settings()?.aboutTag || 'Sobre a Basic Studio' }}</span>
-            <h2>{{ settings()?.aboutTitle || 'Formando Nail Artists em Portugal' }}</h2>
-            <p>{{ settings()?.aboutParagraph1 || 'A Basic nasceu do desejo de elevar o nível profissional do mercado de
-                unhas.' }}</p>
-            <p>{{ settings()?.aboutParagraph2 || 'Nossos cursos não ensinam apenas a "fazer unhas". Ensinamos você a
-                construir uma carreira sólida.' }}</p>
-
-            <div class="stats-row">
-                <div class="stat-item">
-                    <span class="number">{{ settings()?.studentsFormed || '5k+' }}</span>
-                    <span class="label">Alunas Formadas</span>
+<!-- ABOUT SECTION (Refined) -->
+<section class="about-section section-padding">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-image-side reveal">
+                <div class="image-reveal-wrapper">
+                    <div class="image-frame">
+                        <img [src]="getFullUrl(settings()?.aboutImageUrl)" alt="Cris Souza" />
+                    </div>
+                    <div class="decorative-box"></div>
                 </div>
-                <div class="stat-item">
-                    <span class="number">{{ settings()?.averageRating || '4.9' }}</span>
-                    <span class="label">Avaliação Média</span>
+            </div>
+
+            <div class="about-content-side reveal">
+                <span class="tag">{{ settings()?.aboutTag || 'A FUNDADORA' }}</span>
+                <h2 class="section-title">{{ settings()?.aboutTitle || 'A Maestria por trás da Basic' }}</h2>
+                <div class="gold-divider"></div>
+
+                <div class="about-text">
+                    <p class="lead-text">{{ settings()?.aboutParagraph1 }}</p>
+                    <p>{{ settings()?.aboutParagraph2 }}</p>
+                </div>
+
+                <div class="stats-elegant">
+                    <div class="stat-item">
+                        <div class="val">{{ settings()?.experienceYears || '10+' }}</div>
+                        <div class="lbl">ANOS DE MASTERIA</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="val">{{ settings()?.studentsFormed || '5K+' }}</div>
+                        <div class="lbl">VIDAS TRANSFORMADAS</div>
+                    </div>
+                </div>
+
+                <div class="signature-area">
+                    <p class="founder-name">{{ settings()?.founderName || 'Cris Souza' }}</p>
+                    <span class="founder-role">Founder & Lead Educator</span>
                 </div>
             </div>
         </div>

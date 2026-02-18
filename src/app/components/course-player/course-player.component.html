@@ -1,10 +1,15 @@
 <div class="player-layout">
+    <!-- MOBILE TOGGLE (Visible only on 991px or less) -->
+    <button class="mobile-sidebar-toggle" (click)="isSidebarOpen.set(!isSidebarOpen())">
+        <span nz-icon [nzType]="isSidebarOpen() ? 'close' : 'menu-unfold'"></span>
+    </button>
+
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" [class.mobile-open]="isSidebarOpen()">
         <div class="sidebar-header">
-            <h3>Conteúdo do Curso</h3>
+            <div class="player-logo">basic<span>.</span></div>
             <div class="progress-info">
-                <span class="lesson-count">{{ completedLessons().length }}/{{ getTotalLessons() }} aulas</span>
+                <span class="lesson-count">{{ completedLessons().length }}/{{ getTotalLessons() }} AULAS</span>
                 <div class="progress-bar">
                     <div class="progress-fill" [style.width.%]="getProgress()"></div>
                 </div>
@@ -14,15 +19,19 @@
         <div class="modules-list">
             @for (module of course()?.modules; track module.id; let modIdx = $index) {
             <div class="module-group">
-                <div class="module-header">
-                    <span class="module-number">{{ modIdx + 1 }}</span>
-                    {{ module.title }}
+                <div class="module-header" [class.locked]="!isModuleReached(modIdx)">
+                    <div class="module-title-wrap">
+                        <span class="module-number">MOD {{ modIdx + 1 }}</span>
+                        {{ module.title }}
+                    </div>
+                    <span *ngIf="!isModuleReached(modIdx)" nz-icon nzType="lock" class="mod-lock"></span>
                 </div>
 
+                @if (isModuleReached(modIdx)) {
                 @for (lesson of module.lessons; track lesson.id) {
                 <div class="lesson-item" [class.active]="currentLesson()?.id === lesson.id"
                     [class.completed]="isLessonCompleted(lesson.id)" [class.locked]="!isLessonUnlocked(lesson.id)"
-                    (click)="selectLesson(lesson)">
+                    (click)="selectLesson(lesson); isSidebarOpen.set(false)">
                     <div class="lesson-icon">
                         @if (!isLessonUnlocked(lesson.id) && !isLessonCompleted(lesson.id)) {
                         <span nz-icon nzType="lock" class="locked-icon"></span>
@@ -38,6 +47,7 @@
                     <span class="lesson-time">{{ lesson.duration }}</span>
                 </div>
                 }
+                }
             </div>
             }
         </div>
@@ -46,7 +56,7 @@
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <!-- Video/Header Area -->
-        <div class="content-header" [class.has-video]="currentVideoUrl()">
+        <header class="content-header" [class.has-video]="currentVideoUrl()">
             @if (currentVideoUrl()) {
             <div class="video-wrapper">
                 <iframe [src]="currentVideoUrl()" allowfullscreen></iframe>
@@ -54,10 +64,10 @@
             } @else {
             <div class="text-header">
                 <span class="lesson-badge">{{ getTypeLabel(currentLesson()?.contentType) }}</span>
-                <h1>{{ currentLesson()?.title }}</h1>
+                <h1 class="reveal-text">{{ currentLesson()?.title }}</h1>
             </div>
             }
-        </div>
+        </header>
 
         <!-- Content Body -->
         <div class="content-body">
@@ -75,7 +85,7 @@
 
             <!-- Steps Checklist (Procedure Steps) -->
             @if (currentLesson()?.procedureSteps?.length) {
-            <div class="steps-section">
+            <section class="steps-section">
                 <h3 class="section-title">
                     <span nz-icon nzType="check-circle"></span>
                     Passo a Passo
@@ -84,7 +94,7 @@
                     @for(step of currentLesson()?.procedureSteps; track step.step; let i = $index) {
                     <div class="step-item" [class.completed]="step.isCompleted">
                         <label nz-checkbox [ngModel]="step.isCompleted" (ngModelChange)="toggleStep(step)">
-                            <span class="step-number">{{ step.step }}</span>
+                            <span class="step-number">{{ (i + 1).toString().padStart(2, '0') }}</span>
                             <span class="step-text">{{ step.description }}</span>
                         </label>
                         @if (step.tips?.length) {
@@ -97,33 +107,33 @@
                     </div>
                     }
                 </div>
-            </div>
+            </section>
             }
 
             <!-- Supplementary Material -->
             @if (currentLesson()?.supplementaryMaterial?.length) {
-            <div class="supplementary-section">
+            <section class="supplementary-section">
                 <h3 class="section-title">
                     <span nz-icon nzType="file-pdf"></span>
-                    Material Complementar
+                    Material de Apoio
                 </h3>
                 <div class="materials-list">
                     @for (material of currentLesson()?.supplementaryMaterial; track material) {
                     <a class="material-link" [href]="material" target="_blank">
-                        <span nz-icon nzType="download"></span>
-                        {{ material }}
+                        <span nz-icon nzType="cloud-download"></span>
+                        DOCUMENTO {{ $index + 1 }}
                     </a>
                     }
                 </div>
-            </div>
+            </section>
             }
 
             <!-- Quiz Section -->
             @if (currentLesson()?.quiz?.questions?.length) {
-            <div class="quiz-section">
+            <section class="quiz-section">
                 <h3 class="section-title">
-                    <span nz-icon nzType="question-circle"></span>
-                    Quiz - Teste seus conhecimentos
+                    <span nz-icon nzType="experiment"></span>
+                    Check de Conhecimento
                 </h3>
 
                 @if (!quizSubmitted()) {
@@ -148,48 +158,32 @@
 
                 <button nz-button nzType="primary" nzSize="large" class="submit-quiz-btn" (click)="submitQuiz()"
                     [disabled]="!allQuestionsAnswered()">
-                    <span nz-icon nzType="check-circle"></span>
-                    Verificar Respostas
+                    FINALIZAR TESTE
                 </button>
                 } @else {
                 <!-- Quiz Results -->
                 <div class="quiz-results">
+                    <!-- Similar structure updated via CSS -->
                     <div class="result-header" [class.passed]="quizPassed()" [class.failed]="!quizPassed()">
                         @if (quizPassed()) {
-                        <span class="result-icon">🎉</span>
-                        <h4>Parabéns! Você passou!</h4>
+                        <span class="result-icon">✓</span>
+                        <h4>Maestria Atingida!</h4>
                         } @else {
-                        <span class="result-icon">📚</span>
-                        <h4>Continue estudando!</h4>
+                        <span class="result-icon">!</span>
+                        <h4>Review Necessário</h4>
                         }
-                        <p class="score">Você acertou {{ quizScore() }}% ({{ getCorrectCount() }}/{{
-                            currentLesson()!.quiz!.questions.length }})</p>
+                        <p class="score">Sua pontuação final: {{ quizScore() }}%</p>
                     </div>
 
-                    <!-- Show answers with feedback -->
                     <div class="quiz-feedback">
                         @for (question of currentLesson()!.quiz!.questions; track question.id; let qIdx = $index) {
                         <div class="feedback-item"
                             [class.correct]="quizAnswers()[question.id] === question.correctOptionIndex"
                             [class.incorrect]="quizAnswers()[question.id] !== question.correctOptionIndex">
-                            <div class="feedback-header">
-                                <span class="feedback-icon">
-                                    @if (quizAnswers()[question.id] === question.correctOptionIndex) {
-                                    ✓
-                                    } @else {
-                                    ✗
-                                    }
-                                </span>
-                                <span class="question-num">Questão {{ qIdx + 1 }}</span>
-                            </div>
                             <p class="question-text">{{ question.question }}</p>
                             <div class="answer-info">
-                                @if (quizAnswers()[question.id] !== question.correctOptionIndex) {
-                                <p class="your-answer">Sua resposta: <strong>{{
-                                        question.options[quizAnswers()[question.id]] }}</strong></p>
-                                }
-                                <p class="correct-answer">Resposta correta: <strong>{{
-                                        question.options[question.correctOptionIndex] }}</strong></p>
+                                <p class="correct-answer">RESPOSTA CORRETA: {{
+                                    question.options[question.correctOptionIndex] }}</p>
                             </div>
                         </div>
                         }
@@ -197,31 +191,30 @@
 
                     @if (!quizPassed()) {
                     <button nz-button nzType="default" nzSize="large" class="retry-btn" (click)="retryQuiz()">
-                        <span nz-icon nzType="reload"></span>
-                        Tentar Novamente
+                        <span nz-icon nzType="reload"></span> TENTAR NOVAMENTE
                     </button>
                     }
                 </div>
                 }
-            </div>
+            </section>
             }
 
             <!-- Action Bar -->
-            <div class="action-bar">
+            <footer class="action-bar">
                 <button nz-button nzType="default" (click)="previousLesson()" [disabled]="!hasPrevious()">
-                    <span nz-icon nzType="arrow-left"></span> Anterior
+                    <span nz-icon nzType="arrow-left"></span> ANTERIOR
                 </button>
 
                 @if (isLessonCompleted(currentLesson()?.id || '')) {
                 <button nz-button nzType="default" (click)="nextLesson()" [disabled]="!hasNext()">
-                    Próxima <span nz-icon nzType="arrow-right"></span>
+                    PRÓXIMA <span nz-icon nzType="arrow-right"></span>
                 </button>
                 } @else {
                 <button nz-button nzType="primary" (click)="markAsCompleted()">
-                    <span nz-icon nzType="check"></span> Concluir e Avançar
+                    CONCLUIR AULA
                 </button>
                 }
-            </div>
+            </footer>
         </div>
     </main>
 </div>

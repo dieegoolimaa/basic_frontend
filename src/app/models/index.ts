@@ -7,12 +7,18 @@ export interface Course {
     imageUrl?: string;
     thumbnailUrl?: string;
     modules: CourseModule[];
+    benefits?: CourseBenefit[];
     isActive: boolean;
     averageRating: number;
     totalReviews: number;
     totalStudents: number;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface CourseBenefit {
+    title: string;
+    description: string;
 }
 
 export interface CourseModule {
@@ -122,6 +128,7 @@ export interface CourseStats {
 
 export interface SiteSettings {
     _id?: string;
+    welcomeImageUrl: string;
     aboutTag: string;
     aboutTitle: string;
     aboutParagraph1: string;
@@ -131,4 +138,14 @@ export interface SiteSettings {
     studentsFormed: string;
     averageRating: string;
     founderName: string;
+    coursesTag: string;
+    coursesTitle: string;
+    carouselButtonText: string;
+    philosophyTitle1: string;
+    philosophyDesc1: string;
+    philosophyTitle2: string;
+    philosophyDesc2: string;
+    philosophyTitle3: string;
+    philosophyDesc3: string;
+
 }

@@ -22,7 +22,7 @@
 
             <p *ngIf="codeError" class="error-msg">{{ codeError }}</p>
 
-            <button nz-button nzBlock [disabled]="!inviteCode || isValidating" (click)="validateCode()"
+            <button *ngIf="inviteCode" nz-button nzBlock [disabled]="isValidating" (click)="validateCode()"
                 class="btn-next">
                 Validar Código
             </button>
