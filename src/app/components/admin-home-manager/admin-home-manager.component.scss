@@ -232,7 +232,7 @@
 
     ::ng-deep {
         .ant-input, .ant-input-textarea {
-            padding: 12px 16px !important; /* Internal padding for readability */
+            padding: 12px 16px !important; 
             background: rgba(255, 255, 255, 0.02) !important;
         }
     }
@@ -256,7 +256,6 @@
         transition: var(--transition-lux);
         color: #fff;
         gap: 10px;
-        
         &:hover { opacity: 1; }
     }
 }
@@ -268,12 +267,29 @@
     justify-content: center;
     padding: 10rem 0;
     color: var(--primary-color);
-    
     .loading-icon { font-size: 3rem; margin-bottom: 1.5rem; }
     p { letter-spacing: 0.25em; text-transform: uppercase; font-size: 0.8rem; opacity: 0.8; }
 }
 
 .btn-save {
     position: relative;
-    z-index: 10000; /* Ensure button and loader are visible */
+    z-index: 10000;
+}
+@media (max-width: 991px) {
+    .settings-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .page-header .page-title { font-size: 2rem; }
+    .upload-card, .table-card, .settings-card { padding: 1.5rem !important; }
+}
+
+@media (max-width: 768px) {
+    .home-tabs { 
+        ::ng-deep .ant-tabs-nav-list { width: 100%; display: flex; justify-content: flex-start; overflow-x: auto; padding-bottom: 5px; }
+        ::ng-deep .ant-tabs-tab { padding: 8px 16px !important; margin-right: 2px !important; flex-shrink: 0; }
+    }
+    .page-header { margin-bottom: 2.5rem; }
+}
+
+@media (max-width: 480px) {
+    .page-header .page-title { font-size: 1.6rem; }
+    .banner-preview { width: 100px; height: 50px; }
 }

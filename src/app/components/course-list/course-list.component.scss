@@ -135,19 +135,34 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .courses-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 2rem;
+    }
+}
+
 @media (max-width: 991px) {
-    .courses-list-page { padding-top: 5rem; }
+    .courses-list-page { padding-top: 4rem; }
     .list-header { 
         margin-bottom: 3rem; 
         padding: 0 1rem;
-        h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+        h1 { font-size: clamp(2rem, 8vw, 3rem); }
+        p { font-size: 0.55rem; letter-spacing: 0.3em; }
     }
-    .courses-grid { gap: 2rem; }
-    .course-card .card-content { padding: 2rem; }
+}
+
+@media (max-width: 768px) {
+    .courses-grid { 
+        grid-template-columns: 1fr; 
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .course-card .img-container { height: 280px; }
+    .course-card .card-content { padding: 1.8rem; }
 }
 
 @media (max-width: 480px) {
-    .courses-grid { grid-template-columns: 1fr; }
-    .course-card .img-container { height: 250px; }
-    .course-card .card-footer { .price { font-size: 1rem; } }
+    .course-card .img-container { height: 230px; }
+    .course-card .card-footer { .price { display: none; } } /* Hide price label on tiny screens */
 }

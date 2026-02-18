@@ -410,51 +410,62 @@
         border-bottom: none;
         
         .hero-text-side { 
-            padding: 4rem 1.5rem; 
+            padding: 5rem 6% 4rem; 
             order: 2; 
         }
         .hero-image-side { 
-            height: 50vh; 
+            height: 55vh; 
             order: 1; 
             border-left: none;
             border-bottom: 1px solid var(--border-color);
         }
     }
     .content-container {
-        padding: 4rem 0 8rem;
+        padding: 5rem 0;
     }
     .content-grid {
         grid-template-columns: 1fr;
-        gap: 5rem;
+        gap: 4rem;
     }
 }
 
+@media (max-width: 991px) {
+    .hero-meta { gap: 3rem; }
+}
+
 @media (max-width: 768px) {
-    .breadcrumb-lux { margin-bottom: 2.5rem; }
-    .title-area { margin-bottom: 3rem; }
+    .breadcrumb-lux { margin-bottom: 2rem; }
+    .title-area { 
+        margin-bottom: 2.5rem; 
+        .hero-title { font-size: 2.5rem; }
+        .hero-subtitle { font-size: 0.95rem; }
+    }
     .hero-meta { 
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
-        margin-bottom: 4rem;
+        gap: 2rem;
+        margin-bottom: 3rem;
     }
     .hero-cta .btn-premium { 
         width: 100%; 
         justify-content: center; 
         height: 60px;
-        padding: 0 20px;
-        .btn-text { font-size: 0.75rem; }
+        .btn-text { font-size: 0.7rem; letter-spacing: 0.3em; }
     }
-    .benefit-card-lux {
-        padding: 3rem 1.5rem;
-    }
+    .section-heading { font-size: 1.8rem; margin-bottom: 2.5rem; }
+    .about-module .description-lux .lead-text { font-size: 1.2rem; }
+    
     .module-item {
-        gap: 1.5rem !important;
-        .module-title { font-size: 1.2rem !important; }
+        padding: 2rem 0 !important;
+        .module-summary { 
+            gap: 1.5rem !important; 
+            .module-title { font-size: 1.1rem !important; }
+        }
     }
 }
 
 @media (max-width: 480px) {
-    .hero-split .hero-image-side { height: 40vh; }
-    .hero-meta { grid-template-columns: 1fr; }
+    .hero-split .hero-image-side { height: 45vh; }
+    .hero-meta { grid-template-columns: 1fr; gap: 1.5rem; }
+    .content-container { padding: 3rem 0; }
 }

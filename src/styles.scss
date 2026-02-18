@@ -78,21 +78,31 @@ p {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 4rem;
+  padding: 0 5vw; /* Fluid padding */
   
-  @media (max-width: 1200px) { padding: 0 2rem; }
-  @media (max-width: 768px) { padding: 0 1.5rem; }
+  @media (max-width: 1200px) { padding: 0 4vw; }
+  @media (max-width: 768px) { padding: 0 6vw; } /* More gutter on mobile */
+  @media (max-width: 480px) { padding: 0 20px; }
 }
 
 .section-padding {
-  padding: 8rem 0;
-  @media (max-width: 991px) { padding: 5rem 0; }
-  @media (max-width: 768px) { padding: 4rem 0; }
+  padding: 10rem 0;
+  @media (max-width: 1200px) { padding: 8rem 0; }
+  @media (max-width: 991px) { padding: 6rem 0; }
+  @media (max-width: 768px) { padding: 5rem 0; }
 }
 
 .section-padding-small {
-  padding: 4rem 0;
-  @media (max-width: 768px) { padding: 2.5rem 0; }
+  padding: 5rem 0;
+  @media (max-width: 768px) { padding: 3rem 0; }
+}
+
+.mobile-hide {
+  @media (max-width: 768px) { display: none !important; }
+}
+
+.tablet-hide {
+  @media (max-width: 1024px) { display: none !important; }
 }
 
 .fade-in {

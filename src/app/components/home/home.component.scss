@@ -538,13 +538,69 @@
 }
 
 /* RESPONSIVE */
+@media (max-width: 1200px) {
+    .showcase-outer { padding: 0 2vw; }
+    .about-grid { gap: 4rem; }
+}
+
 @media (max-width: 991px) {
-    .about-grid { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
+    .philosophy-section { padding: 6rem 0; }
+    .philosophy-grid { gap: 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 5rem; text-align: center; }
     .about-image-side .image-reveal-wrapper { padding-right: 0; padding-bottom: 2rem; }
     .about-content-side .gold-divider { margin: 2rem auto; }
 }
 
 @media (max-width: 768px) {
-    .welcome-hero { height: 80vh; background-attachment: scroll; }
-    .showcase-container { height: auto; }
+    .hero-content {
+        .hero-top-tags {
+            top: 15%;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            padding: 0;
+            
+            span { font-size: 0.55rem; letter-spacing: 0.3em; }
+        }
+        .hero-main-title { font-size: 18vw; }
+    }
+
+    .luxury-showcase { padding: 6rem 0; }
+    .showcase-header { margin-bottom: 4rem; }
+    
+    .showcase-container {
+        gap: 20px;
+        height: 550px;
+    }
+
+    .showcase-card {
+        flex: 0 0 80vw; /* Wider cards on mobile */
+        border-radius: 30px;
+
+        /* ALWAYS SHOW CONTENT ON MOBILE SINCE NO HOVER */
+        .card-overlay { background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%); opacity: 1; }
+        .expand-logic { max-height: 200px; opacity: 1; transform: translateY(0); margin-bottom: 1rem; }
+        .course-name { font-size: 1.6rem; }
+        .card-content { padding: 2.5rem 1.5rem; }
+        
+        .premium-cta {
+            position: relative;
+            bottom: 0;
+            margin-top: 2rem;
+            opacity: 1;
+        }
+
+        .course-brief { font-size: 0.95rem; margin-bottom: 2rem !important; }
+    }
+
+    .philosophy-item {
+        .phi-num { margin-bottom: 2rem; &::after { height: 30px; } }
+        p { font-size: 0.9rem; }
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-hero { height: 85vh; }
+    .hero-main-title { font-size: 22vw; }
+    .showcase-card { flex: 0 0 85vw; }
 }

@@ -213,6 +213,7 @@ $header-height-mobile: 70px;
 @media (max-width: 991px) {
     .site-header {
         height: $header-height-mobile;
+        background: rgba(5, 5, 5, 0.98); /* Less transparent on mobile for better readability */
         
         .header-container {
             padding: 0 1.5rem;
@@ -231,37 +232,64 @@ $header-height-mobile: 70px;
         background: #050505;
         flex-direction: column;
         justify-content: center;
-        padding: 4rem 2rem;
-        gap: 2.5rem;
-        transition: right 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 4rem 10vw;
+        gap: 1.5rem;
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                    right 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1050;
+        text-align: center;
 
         &.mobile-open {
             right: 0;
         }
 
         a.nav-link {
-            font-size: 1rem;
-            letter-spacing: 0.4em;
+            font-size: 1.2rem;
+            letter-spacing: 0.35em;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            width: 100%;
+            
+            &.active { color: var(--primary-color); }
+            &::after { display: none; }
         }
 
         .mobile-auth {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
             width: 100%;
             margin-top: 2rem;
             padding-top: 3rem;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(229, 213, 176, 0.1);
 
-            .user-greeting { font-size: 0.9rem; margin-bottom: 1rem; }
-            .btn-register { width: 100%; text-align: center; height: 55px; display: flex; align-items: center; justify-content: center; }
+            .user-greeting { 
+                font-size: 0.8rem; 
+                margin-bottom: 0.5rem; 
+                color: var(--primary-color);
+                letter-spacing: 0.2em;
+            }
+            
+            .btn-register { 
+                width: 100%; 
+                max-width: 250px;
+                text-align: center; 
+                height: 55px; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                background: var(--primary-color);
+                color: #000;
+            }
         }
     }
 }
 
 @media (max-width: 480px) {
-    .logo { font-size: 1.4rem; }
-    .footer-content { padding: 0 1rem; }
+    .logo { font-size: 1.3rem; }
+    .footer-content { 
+        padding: 0 1.5rem; 
+        .footer-logo { font-size: 1.8rem; }
+    }
 }
