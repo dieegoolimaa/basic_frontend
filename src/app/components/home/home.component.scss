@@ -206,6 +206,7 @@
 
     .showcase-container {
         display: flex;
+        justify-content: center; /* CENTER CARDS ON PAGE */
         gap: 30px;
         height: 650px;
         width: max-content;
@@ -262,20 +263,23 @@
             position: absolute;
             inset: 0;
             z-index: 5;
-            padding: 4rem;
+            padding: 2.5rem; /* REDUCED PADDING FOR BETTER CENTERING */
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Still at bottom, but layout below centers children */
+            justify-content: flex-end; 
             align-items: center; /* CENTER HORIZONTALLY */
             text-align: center; /* CENTER TEXT */
             color: #fff;
             transform: translateY(0);
             transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 
-            @media (max-width: 768px) { padding: 2rem; }
+            @media (max-width: 768px) { padding: 1.5rem; }
 
             .content-top {
                 margin-bottom: auto;
+                width: 100%;
+                display: flex;
+                justify-content: center;
             }
 
             .instructor-badge {
@@ -293,12 +297,13 @@
 
             .course-name {
                 font-family: var(--font-serif);
-                font-size: 1.6rem; /* SMALER DEFAULT */
+                font-size: 1.8rem;
                 margin: 0;
-                line-height: 1.1;
-                text-shadow: 0 5px 20px rgba(0,0,0,0.6);
+                line-height: 1;
+                text-shadow: 0 10px 40px rgba(0,0,0,0.6);
                 font-weight: 400;
-                transition: font-size 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+                transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+                transform-origin: bottom center; /* GROWS FROM CENTER */
             }
 
             .expand-logic {
