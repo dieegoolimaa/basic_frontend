@@ -16,18 +16,18 @@
                 <nz-table #basicTable [nzData]="courses" [nzLoading]="isLoading" [nzBordered]="false" nzSize="middle">
                     <thead>
                         <tr>
-                            <th nzWidth="90px">Capa</th>
+                            <th nzWidth="230px">Capa</th>
                             <th>Detalhes do Curso</th>
-                            <th nzWidth="100px">Conteúdo</th>
-                            <th nzWidth="80px">Status</th>
-                            <th nzWidth="90px" nzAlign="center">Ações</th>
+                            <th nzWidth="150px">Conteúdo</th>
+                            <th nzWidth="120px">Status</th>
+                            <th nzWidth="150px" nzAlign="center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of basicTable.data">
                             <td>
                                 <div class="thumb-wrapper">
-                                    <img [src]="data.thumbnailUrl" alt="{{data.title}}" />
+                                    <img [src]="getFullUrl(data.thumbnailUrl)" alt="Course thumb">
                                 </div>
                             </td>
                             <td>
@@ -46,11 +46,11 @@
                                 <div class="action-btns">
                                     <button nz-button nzType="text" (click)="editCourse(data)" nz-tooltip
                                         nzTooltipTitle="Editar">
-                                        <span nz-icon nzType="edit"></span>
+                                        <span nz-icon nzType="edit" style="font-size: 1.2rem;"></span>
                                     </button>
                                     <button nz-button nzType="text" nzDanger (click)="deleteCourse(data._id)" nz-tooltip
                                         nzTooltipTitle="Remover">
-                                        <span nz-icon nzType="delete"></span>
+                                        <span nz-icon nzType="delete" style="font-size: 1.2rem;"></span>
                                     </button>
                                 </div>
                             </td>
@@ -86,10 +86,15 @@
                             <div class="form-group">
                                 <label>Capa</label>
                                 <nz-upload nzType="drag" [nzCustomRequest]="handleUpload" [nzShowUploadList]="false"
-                                    class="thumb-upload">
-                                    <img *ngIf="currentCourse.thumbnailUrl" [src]="currentCourse.thumbnailUrl"
-                                        class="thumb-preview" />
-                                    <div *ngIf="!currentCourse.thumbnailUrl" class="thumb-placeholder">
+                                    class="thumb-upload" [class.is-uploading]="isUploadingImage">
+                                    <div class="loader-overlay" *ngIf="isUploadingImage">
+                                        <span nz-icon nzType="loading" class="loader-icon"></span>
+                                        <p>Carregando...</p>
+                                    </div>
+                                    <img *ngIf="currentCourse.thumbnailUrl && !isUploadingImage"
+                                        [src]="currentCourse.thumbnailUrl" class="thumb-preview" />
+                                    <div *ngIf="!currentCourse.thumbnailUrl && !isUploadingImage"
+                                        class="thumb-placeholder">
                                         <span nz-icon nzType="plus"></span>
                                     </div>
                                 </nz-upload>
@@ -210,9 +215,9 @@
                             <div *ngIf="videoInputType === 'file'" class="video-file-input">
                                 <nz-upload [nzCustomRequest]="handleVideoUpload" [nzShowUploadList]="false"
                                     nzAccept="video/*">
-                                    <button nz-button>
-                                        <span nz-icon nzType="cloud-upload"></span>
-                                        Selecionar Arquivo de Vídeo
+                                    <button nz-button [nzLoading]="isUploadingVideo">
+                                        <span nz-icon nzType="cloud-upload" *ngIf="!isUploadingVideo"></span>
+                                        {{ isUploadingVideo ? 'Processando Vídeo...' : 'Selecionar Arquivo de Vídeo' }}
                                     </button>
                                 </nz-upload>
                                 <div *ngIf="selectedLesson.videoUrl && videoInputType === 'file'"

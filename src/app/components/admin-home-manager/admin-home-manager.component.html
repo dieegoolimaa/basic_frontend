@@ -1,13 +1,23 @@
 <div class="page-container fade-in">
     <div class="page-header">
         <div>
-            <h1 class="page-title">Gestão da Home</h1>
-            <p class="page-subtitle">Configure a seção inicial e a seção "Sobre" da página principal.</p>
+            <h1 class="page-title">Configurações da Home</h1>
+            <p class="page-subtitle">Personalize a identidade visual e os textos da página inicial.</p>
         </div>
+        <button nz-button nzType="primary" class="btn-save" (click)="$event.stopPropagation(); saveSettings()"
+            [nzLoading]="isSavingSettings">
+            <span nz-icon nzType="save" *ngIf="!isSavingSettings"></span>
+            {{ isSavingSettings ? 'SALVANDO...' : 'SALVAR ALTERAÇÕES' }}
+        </button>
+    </div>
+
+    <div *ngIf="isLoadingSettings" class="global-loading">
+        <span nz-icon nzType="loading" class="loading-icon"></span>
+        <p>Carregando configurações...</p>
     </div>
 
     <!-- Tabs -->
-    <nz-tabset nzType="card" class="home-tabs">
+    <nz-tabset nzType="card" class="home-tabs" *ngIf="!isLoadingSettings">
         <!-- Tab: Hero -->
         <nz-tab nzTitle="Seção Inicial (Hero)">
             <div class="tab-header">
@@ -16,10 +26,31 @@
 
             <div class="settings-grid single-col">
                 <nz-card nzTitle="Foto de Bem-vinda" class="settings-card">
+                    <div class="row-flex mb-2">
+                        <div class="form-section flex-1 mr-1">
+                            <label class="form-label">Texto Esquerda (Ex: MENTORIA)</label>
+                            <input nz-input [(ngModel)]="settingsForm.heroTagLeft" placeholder="MENTORIA" />
+                        </div>
+                        <div class="form-section flex-1">
+                            <label class="form-label">Texto Direita (Ex: CRIS SOUZA)</label>
+                            <input nz-input [(ngModel)]="settingsForm.heroTagRight" placeholder="CRIS SOUZA" />
+                        </div>
+                    </div>
+                    <div class="form-section mb-2">
+                        <label class="form-label">Título Principal (Ex: BEM VINDA)</label>
+                        <input nz-input [(ngModel)]="settingsForm.heroTitle" placeholder="BEM VINDA" />
+                    </div>
+
                     <nz-upload nzType="drag" [nzCustomRequest]="handleWelcomeImageUpload" [nzShowUploadList]="false"
-                        class="hero-image-upload" [class.has-image]="settingsForm.welcomeImageUrl">
+                        class="hero-image-upload" [class.has-image]="settingsForm.welcomeImageUrl"
+                        [class.is-uploading]="isUploadingWelcome">
                         <div class="upload-content">
-                            @if (settingsForm.welcomeImageUrl) {
+                            <div class="loader-overlay" *ngIf="isUploadingWelcome">
+                                <span nz-icon nzType="loading" class="loader-icon"></span>
+                                <p>Carregando...</p>
+                            </div>
+
+                            @if (settingsForm.welcomeImageUrl && !isUploadingWelcome) {
                             <div class="preview-container">
                                 <img [src]="getFullUrl(settingsForm.welcomeImageUrl)" alt="Welcome Image"
                                     class="upload-preview" />
@@ -28,7 +59,7 @@
                                     <span>Alterar foto de boas-vindas</span>
                                 </div>
                             </div>
-                            } @else {
+                            } @else if (!isUploadingWelcome) {
                             <div class="upload-placeholder">
                                 <span nz-icon nzType="cloud-upload" class="upload-icon"></span>
                                 <p class="upload-text">Arraste ou clique para upload da foto principal</p>
@@ -62,9 +93,15 @@
                 <!-- Left Column: Image -->
                 <nz-card nzTitle="Imagem da Seção" class="settings-card">
                     <nz-upload nzType="drag" [nzCustomRequest]="handleAboutImageUpload" [nzShowUploadList]="false"
-                        class="about-image-upload" [class.has-image]="settingsForm.aboutImageUrl">
+                        class="about-image-upload" [class.has-image]="settingsForm.aboutImageUrl"
+                        [class.is-uploading]="isUploadingAbout">
                         <div class="upload-content">
-                            @if (settingsForm.aboutImageUrl) {
+                            <div class="loader-overlay" *ngIf="isUploadingAbout">
+                                <span nz-icon nzType="loading" class="loader-icon"></span>
+                                <p>Carregando...</p>
+                            </div>
+
+                            @if (settingsForm.aboutImageUrl && !isUploadingAbout) {
                             <div class="preview-container">
                                 <img [src]="getFullUrl(settingsForm.aboutImageUrl)" alt="About Image"
                                     class="upload-preview" />
@@ -73,7 +110,7 @@
                                     <span>Alterar imagem</span>
                                 </div>
                             </div>
-                            } @else {
+                            } @else if (!isUploadingAbout) {
                             <div class="upload-placeholder">
                                 <span nz-icon nzType="cloud-upload" class="upload-icon"></span>
                                 <p class="upload-text">Arraste ou clique para upload</p>
@@ -223,15 +260,14 @@
                             <tr *ngFor="let review of reviewsTable.data">
                                 <td>
                                     <div class="course-info-cell">
-                                        <span class="course-title">{{ review.courseId.title || 'Curso removido'
-                                            }}</span>
+                                        <span class="course-title">{{ review.courseId.title }}</span>
                                     </div>
                                 </td>
                                 <td>
                                     @if (review.isAnonymous) {
                                     <span class="anonymous-badge">Anônimo</span>
                                     } @else {
-                                    <span class="user-name">{{ review.userId.name || 'Usuário' }}</span>
+                                    <span class="user-name">{{ review.userId.name }}</span>
                                     <span class="user-email">{{ review.userId.email }}</span>
                                     }
                                 </td>

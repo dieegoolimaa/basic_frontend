@@ -2,7 +2,11 @@
 <section class="welcome-hero" [style.backgroundImage]="'url(' + getFullUrl(settings()?.welcomeImageUrl) + ')'">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <!-- Strictly no hardcoded text: The welcome image contains its own typography -->
+        <div class="hero-top-tags reveal">
+            <span class="tag-left">{{ settings()?.heroTagLeft || 'MENTORIA' }}</span>
+            <span class="tag-right">{{ settings()?.heroTagRight || 'CRIS SOUZA' }}</span>
+        </div>
+        <h1 class="hero-main-title serif reveal">{{ settings()?.heroTitle || 'BEM VINDA' }}</h1>
     </div>
 
     <div class="scroll-indicator reveal">
@@ -11,44 +15,53 @@
     </div>
 </section>
 
-<!-- INNOVATIVE COURSE CAROUSEL -->
-<section class="featured-courses">
-    <div class="innovative-carousel reveal">
-        <nz-carousel [nzEffect]="'fade'" [nzAutoPlay]="true" [nzAutoPlaySpeed]="4000" [nzEnableSwipe]="true" #carousel>
-            @for (course of featuredCourses(); track course._id) {
-            <div nz-carousel-content class="course-feature-slide">
-                <div class="full-slide" [routerLink]="['/formacoes', course._id]">
-                    <div class="slide-bg">
-                        <img [src]="getFullUrl(course.imageUrl)" [alt]="course.title">
-                        <div class="dark-gradient-overlay"></div>
+<!-- CINEMATIC COURSE SHOWCASE -->
+<section class="luxury-showcase">
+    <div class="showcase-header reveal">
+        <span class="gold-tag">{{ settings()?.coursesTag || 'MASTERCLASS SERIES' }}</span>
+        <h2 class="showcase-title serif">{{ settings()?.coursesTitle || 'Formações de Elite' }}</h2>
+    </div>
+
+    <div class="showcase-outer reveal">
+        <button class="nav-btn prev" (click)="prevSlide()" [class.hidden]="!shouldShowNav()">
+            <span nz-icon nzType="left"></span>
+        </button>
+
+        <div class="showcase-wrapper">
+            <div class="showcase-container">
+                @for (course of featuredCourses(); track course._id) {
+                <div class="showcase-card" [routerLink]="['/formacoes', course._id]">
+                    <!-- Background Image -->
+                    <div class="card-bg">
+                        <img [src]="getFullUrl(course.imageUrl || course.thumbnailUrl)" [alt]="course.title">
+                        <div class="card-overlay"></div>
                     </div>
 
-                    <div class="slide-content-container">
-                        <div class="content-wrapper">
-                            <span class="course-category">{{ course.instructor | uppercase }} PRESENTS</span>
-                            <h2 class="course-title-hero">{{ course.title }}</h2>
-                            <p class="course-subtitle">{{ course.subtitle }}</p>
+                    <!-- Floating Content -->
+                    <div class="card-content">
+                        <div class="content-top">
+                            <span class="instructor-badge">{{ course.instructor || 'BASIC STUDIO' }}</span>
+                        </div>
 
-                            <div class="expanded-details">
-                                <div class="divider-line"></div>
-                                <p class="course-desc-text">{{ course.description }}</p>
-                                <button class="explore-btn">
-                                    {{ settings()?.carouselButtonText || 'EXPLORAR' }}
-                                    <span nz-icon nzType="arrow-right"></span>
-                                </button>
+                        <div class="content-main">
+                            <div class="expand-logic">
+                                <p class="course-brief">{{ course.description }}</p>
+                                <div class="premium-cta">
+                                    <span>VER CURSO</span>
+                                    <div class="cta-circle">
+                                        <span nz-icon nzType="arrow-right"></span>
+                                    </div>
+                                </div>
                             </div>
+                            <h3 class="course-name serif">{{ course.title }}</h3>
                         </div>
                     </div>
                 </div>
+                }
             </div>
-            }
-        </nz-carousel>
+        </div>
 
-        <!-- Navigation Arrows -->
-        <button class="nav-arrow prev" (click)="carousel.pre()">
-            <span nz-icon nzType="left"></span>
-        </button>
-        <button class="nav-arrow next" (click)="carousel.next()">
+        <button class="nav-btn next" (click)="nextSlide()" [class.hidden]="!shouldShowNav()">
             <span nz-icon nzType="right"></span>
         </button>
     </div>

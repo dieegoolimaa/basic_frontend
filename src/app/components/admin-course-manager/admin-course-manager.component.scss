@@ -74,12 +74,12 @@
             background: transparent !important;
             border-bottom: 1px solid var(--border-subtle) !important;
             transition: var(--transition-lux);
-            padding: 1.5rem 1rem;
+            padding: 2rem 1.5rem !important; /* Increased padding */
             color: var(--text-muted);
         }
 
         &-tbody > tr:hover > td {
-            background: rgba(229, 213, 176, 0.02) !important;
+            background: rgba(229, 213, 176, 0.04) !important; /* Slightly brighter hover */
         }
     }
 }
@@ -442,6 +442,29 @@
     .thumb-upload {
         display: block;
         margin-bottom: 0;
+        position: relative;
+
+        &.is-uploading {
+            pointer-events: none;
+            opacity: 0.8;
+            border-color: var(--primary-color) !important;
+        }
+
+        .loader-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            gap: 10px;
+            
+            .loader-icon { font-size: 1.5rem; }
+            p { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
+        }
 
         ::ng-deep .ant-upload.ant-upload-drag {
             background: rgba(255, 255, 255, 0.02) !important;
@@ -509,22 +532,26 @@
 
 /* Thumbnails in List */
 .thumb-wrapper {
-    width: 60px; height: 40px;
+    width: 200px; 
+    height: 120px;
     border: 1px solid var(--border-color);
     overflow: hidden;
-    img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8); }
+    background: #000;
+    img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); transition: transform 0.3s; }
+    &:hover img { transform: scale(1.1); }
 }
 
 /* Course Info in List */
 .course-info {
     .course-title { 
         display: block; color: #fff; font-family: var(--font-serif); 
-        font-size: 1rem; margin-bottom: 4px; line-height: 1.2;
+        font-size: 1.4rem; margin-bottom: 8px; line-height: 1.2;
+        letter-spacing: -0.01em;
     }
     .course-desc { 
-        display: block; color: var(--text-muted); font-size: 0.75rem; 
-        max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        opacity: 0.7;
+        display: block; color: var(--text-muted); font-size: 0.85rem; 
+        max-width: 500px; line-height: 1.5;
+        opacity: 0.8;
     }
 }
 

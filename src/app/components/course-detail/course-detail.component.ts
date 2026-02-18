@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal, computed, AfterViewInit, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -84,5 +85,13 @@ export class CourseDetailComponent implements OnInit {
 
   getTotalLessons(course: Course): number {
     return course.modules.reduce((total, mod) => total + mod.lessons.length, 0);
+  }
+
+  getFullUrl(url: string | undefined): string {
+    if (!url) return '';
+    if (url.startsWith('data:')) return url;
+    if (url.startsWith('http')) return url;
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}${url}`;
   }
 }

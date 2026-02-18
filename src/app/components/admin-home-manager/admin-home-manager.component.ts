@@ -75,6 +75,9 @@ export class AdminHomeManagerComponent implements OnInit {
     philosophyDesc3: ''
   };
   isSavingSettings = false;
+  isLoadingSettings = false;
+  isUploadingAbout = false;
+  isUploadingWelcome = false;
 
   // Reviews
   reviews: AdminReview[] = [];
@@ -89,7 +92,12 @@ export class AdminHomeManagerComponent implements OnInit {
     this.isLoadingReviews = true;
     this.reviewService.getAllReviews().subscribe({
       next: (reviews) => {
-        this.reviews = reviews;
+        // Sanitize data to avoid template errors if relations are missing
+        this.reviews = reviews.map(r => ({
+          ...r,
+          courseId: r.courseId || { title: 'Curso removido' },
+          userId: r.userId || { name: 'Usuário', email: '' }
+        }));
         this.isLoadingReviews = false;
       },
       error: () => {
@@ -100,6 +108,7 @@ export class AdminHomeManagerComponent implements OnInit {
 
   getFullUrl(url: string | undefined): string {
     if (!url) return '';
+    if (url.startsWith('data:')) return url;
     if (url.startsWith('http')) return url;
     const baseUrl = environment.apiUrl.replace('/api', '');
     return `${baseUrl}${url}`;
@@ -108,12 +117,15 @@ export class AdminHomeManagerComponent implements OnInit {
   // ========== SITE SETTINGS ==========
 
   loadSettings() {
+    this.isLoadingSettings = true;
     this.homeContentService.getSettings().subscribe({
       next: (settings) => {
         this.settingsForm = { ...settings };
+        this.isLoadingSettings = false;
       },
       error: (err) => {
         console.error('Error loading settings:', err);
+        this.isLoadingSettings = false;
       }
     });
   }
@@ -129,15 +141,18 @@ export class AdminHomeManagerComponent implements OnInit {
       return new Subscription();
     }
 
+    this.isUploadingAbout = true;
     this.uploadService.uploadFile(file, 'image').subscribe({
       next: (response) => {
         this.settingsForm.aboutImageUrl = response.url;
+        this.isUploadingAbout = false;
         if (item.onSuccess) {
           item.onSuccess(response, item.file, new Event(''));
         }
         this.message.success('Imagem carregada!');
       },
       error: (err) => {
+        this.isUploadingAbout = false;
         if (item.onError) {
           item.onError(err, item.file);
         }
@@ -159,15 +174,18 @@ export class AdminHomeManagerComponent implements OnInit {
       return new Subscription();
     }
 
+    this.isUploadingWelcome = true;
     this.uploadService.uploadFile(file, 'image').subscribe({
       next: (response) => {
         this.settingsForm.welcomeImageUrl = response.url;
+        this.isUploadingWelcome = false;
         if (item.onSuccess) {
           item.onSuccess(response, item.file, new Event(''));
         }
         this.message.success('Imagem de boas-vindas carregada!');
       },
       error: (err) => {
+        this.isUploadingWelcome = false;
         if (item.onError) {
           item.onError(err, item.file);
         }

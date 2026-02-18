@@ -26,6 +26,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CourseService } from '../../services/course.service';
 import { Course, Lesson, QuizQuestion } from '../../models';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-course-manager',
@@ -65,6 +66,8 @@ export class AdminCourseManagerComponent implements OnInit {
 
   courses: Course[] = [];
   isLoading = false;
+  isUploadingImage = false;
+  isUploadingVideo = false;
   isEditingMode = false;
   videoInputType: 'url' | 'file' = 'url';
 
@@ -93,7 +96,15 @@ export class AdminCourseManagerComponent implements OnInit {
   // --- ACTIONS ---
 
   createNewCourse() {
-    this.currentCourse = { title: 'Nova Formação', description: '', thumbnailUrl: '', modules: [] };
+    this.currentCourse = {
+      title: 'Nova Formação',
+      description: '',
+      thumbnailUrl: '',
+      imageUrl: '',
+      modules: [],
+      instructor: 'Cris Souza',
+      isActive: true
+    };
     this.isEditingMode = true;
     this.selectedLesson = null;
   }
@@ -126,6 +137,7 @@ export class AdminCourseManagerComponent implements OnInit {
   }
 
   saveCourse() {
+    this.isLoading = true;
     if (this.currentCourse._id) {
       // Update existing course
       this.courseService.updateCourse(this.currentCourse._id, this.currentCourse).subscribe({
@@ -133,9 +145,11 @@ export class AdminCourseManagerComponent implements OnInit {
           const idx = this.courses.findIndex(c => c._id === this.currentCourse._id);
           if (idx !== -1) this.courses[idx] = updated;
           this.isEditingMode = false;
+          this.isLoading = false;
           this.message.success('Curso atualizado com sucesso!');
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.error('Erro ao atualizar curso');
         }
       });
@@ -145,9 +159,11 @@ export class AdminCourseManagerComponent implements OnInit {
         next: (newCourse) => {
           this.courses.push(newCourse);
           this.isEditingMode = false;
+          this.isLoading = false;
           this.message.success('Curso criado com sucesso!');
         },
         error: (err) => {
+          this.isLoading = false;
           this.message.error('Erro ao criar curso');
         }
       });
@@ -255,12 +271,19 @@ export class AdminCourseManagerComponent implements OnInit {
   }
 
   handleUpload = (item: any) => {
+    this.isUploadingImage = true;
     const file = item.file as File;
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.currentCourse.thumbnailUrl = e.target.result;
+      this.currentCourse.imageUrl = e.target.result; // Ensure both are updated
+      this.isUploadingImage = false;
       item.onSuccess({}, item.file, event);
       this.message.success('Imagem carregada');
+    };
+    reader.onerror = () => {
+      this.isUploadingImage = false;
+      this.message.error('Erro ao ler arquivo');
     };
     reader.readAsDataURL(file);
     return new Subscription();
@@ -268,15 +291,27 @@ export class AdminCourseManagerComponent implements OnInit {
 
   handleVideoUpload = (item: any) => {
     if (!this.selectedLesson) return new Subscription();
+    this.isUploadingVideo = true;
 
     const file = item.file as File;
     // For demo, we'll create a blob URL. In production, you'd upload to a server.
     const videoUrl = URL.createObjectURL(file);
     this.selectedLesson.videoUrl = videoUrl;
 
-    item.onSuccess({}, item.file, event);
-    this.message.success(`Vídeo "${file.name}" carregado com sucesso!`);
+    setTimeout(() => {
+      this.isUploadingVideo = false;
+      item.onSuccess({}, item.file, event);
+      this.message.success(`Vídeo "${file.name}" carregado com sucesso!`);
+    }, 1500); // Simulate processing delay for visual feedback
 
     return new Subscription();
   };
+
+  getFullUrl(url: string | undefined): string {
+    if (!url) return '';
+    if (url.startsWith('data:')) return url;
+    if (url.startsWith('http')) return url;
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}${url}`;
+  }
 }

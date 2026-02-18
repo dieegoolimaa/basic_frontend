@@ -1,13 +1,17 @@
-/* ADMIN HOME MANAGER - DARK LUXURY FLIP */
 .page-container {
-    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeIn 0.5s ease-out;
     color: var(--text-color);
+    position: relative;
+    z-index: 20;
 }
 
 .page-header {
     margin-bottom: 4rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 2rem;
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
     
     .page-title {
         font-family: var(--font-serif);
@@ -26,6 +30,28 @@
     }
 }
 
+/* TABS FIX */
+.home-tabs {
+    position: relative;
+    z-index: 9999 !important; /* Force to top */
+    margin-top: 2rem;
+    pointer-events: auto !important;
+    isolation: isolate;
+
+    ::ng-deep {
+        .ant-tabs { overflow: visible !important; }
+        .ant-tabs-nav { 
+            pointer-events: auto !important; 
+            z-index: 10000 !important;
+        }
+        .ant-tabs-nav-wrap, .ant-tabs-nav-list, .ant-tabs-tab {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            user-select: auto !important;
+        }
+    }
+}
+
 .upload-card, .table-card, .settings-card {
     background: var(--background-alt) !important;
     border: 1px solid var(--border-color) !important;
@@ -34,6 +60,8 @@
     padding: 2.5rem !important;
     margin-bottom: 2.5rem !important;
     transition: var(--transition-lux);
+    position: relative;
+    z-index: 5;
     
     &:hover {
         border-color: var(--primary-color);
@@ -41,9 +69,20 @@
 }
 
 ::ng-deep {
+    .ant-tabs-nav {
+        margin-bottom: 3rem !important;
+        position: relative !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+
+        &::before { border-bottom: 1px solid var(--border-color) !important; }
+    }
+
     .ant-table {
         background: transparent !important;
         color: var(--text-color) !important;
+        position: relative;
+        z-index: 1;
     }
     .ant-table-thead > tr > th {
         background: rgba(255, 255, 255, 0.02) !important;
@@ -82,17 +121,14 @@
         }
     }
 
-    .ant-tabs-nav {
-        margin-bottom: 3rem !important;
-        &::before { border-bottom: 1px solid var(--border-color) !important; }
-    }
-
     .ant-tabs-tab {
-        background: transparent !important;
+        background: rgba(255, 255, 255, 0.02) !important;
         border: 1px solid var(--border-color) !important;
-        margin-right: 2px !important;
+        margin-right: 4px !important;
         padding: 12px 32px !important;
         transition: var(--transition-lux) !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
         
         .ant-tabs-tab-btn {
             color: var(--text-muted) !important;
@@ -102,17 +138,18 @@
             font-weight: 500 !important;
         }
         
+        &:hover {
+            border-color: var(--primary-color) !important;
+            .ant-tabs-tab-btn { color: var(--primary-color) !important; }
+        }
+        
         &-active {
-            background: rgba(229, 213, 176, 0.05) !important;
+            background: rgba(229, 213, 176, 0.1) !important;
             border-color: var(--primary-color) !important;
             
             .ant-tabs-tab-btn {
                 color: var(--primary-color) !important;
             }
-        }
-        
-        &:hover .ant-tabs-tab-btn {
-            color: var(--primary-color) !important;
         }
     }
 
@@ -125,6 +162,30 @@
         border: 1px dashed var(--border-color) !important;
         border-radius: 0 !important;
         transition: var(--transition-lux);
+        position: relative;
+        overflow: hidden;
+
+        &.is-uploading {
+            pointer-events: none;
+            opacity: 0.8;
+            border-color: var(--primary-color) !important;
+        }
+
+        .loader-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            gap: 12px;
+            
+            .loader-icon { font-size: 2rem; }
+            p { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; font-weight: 500; }
+        }
         
         &:hover { border-color: var(--primary-color) !important; }
         
@@ -200,11 +261,19 @@
     }
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .page-header {
-        .page-title { font-size: 1.8rem; }
-    }
-    .upload-card, .table-card, .settings-card { padding: 1.5rem !important; }
-    .settings-grid { grid-template-columns: 1fr; }
+.global-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10rem 0;
+    color: var(--primary-color);
+    
+    .loading-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+    p { letter-spacing: 0.25em; text-transform: uppercase; font-size: 0.8rem; opacity: 0.8; }
+}
+
+.btn-save {
+    position: relative;
+    z-index: 10000; /* Ensure button and loader are visible */
 }

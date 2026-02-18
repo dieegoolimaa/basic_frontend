@@ -147,5 +147,7 @@ export interface SiteSettings {
     philosophyDesc2: string;
     philosophyTitle3: string;
     philosophyDesc3: string;
-
+    heroTagLeft: string;
+    heroTagRight: string;
+    heroTitle: string;
 }
